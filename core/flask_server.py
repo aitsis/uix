@@ -1,0 +1,41 @@
+import os
+import tempfile
+from functools import wraps
+from uuid import uuid4
+from threading import Lock
+
+from flask import Flask, request, send_from_directory, abort, jsonify, make_response
+from flask_cors import CORS
+from flask_socketio import SocketIO
+
+# DISABLE LOGGING
+import logging
+logging.getLogger('werkzeug').disabled = True
+
+from core.web_server import Server
+class FlaskServer(Server):
+    def __init__(self, port, host = "0.0.0.0"):
+        self.port = port
+        self.host = host
+        self.app = Flask(__name__)
+        #self.socketio = SocketIO(self.app, cors_allowed_origins="*", transports=["websocket"])
+        CORS(self.app)
+        #self.socketio.on("connect", self.on_socket_connect)
+        self.app.add_url_rule("/", "index", self.index)
+        self.app.add_url_rule("/<path:path>", "static_files", FlaskServer.static_files)
+        self.app.add_url_rule("/api/<path:path>", "api", self.api, methods=["POST"])
+
+    @staticmethod
+    def static_files(path):
+        response = send_from_directory("static", path)
+        response.headers['Cache-Control'] = 'max-age=31536000'
+        return response
+
+    def api(self, path):
+        return "Hello World from API!"
+    
+    def index(self):
+        return "Hello World!"
+    
+    def start(self):
+        self.app.run(port=self.port, host=self.host, threaded=True)
