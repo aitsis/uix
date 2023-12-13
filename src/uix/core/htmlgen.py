@@ -5,12 +5,12 @@ class HTMLGen:
         self.default_header_items = {
             'meta-charset': '<meta charset="UTF-8">',
             'meta-viewport': '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
-            'socket.io': '<script src="js/socket.io.min.js"></script>',
+            'socket.io': '<script src="socket.io.min.js"></script>',
             'style': '<link rel="stylesheet" href="style.css">',
             'favicon': '<link rel="icon" href="https://ai.ait.com.tr/wp-content/uploads/cropped-favicon_aiait-32x32.png" sizes="32x32" />'
         }
         self.header_items = {}
-        self.default_script_sources = {"main": "<script src='js/main.js'></script>"}
+        self.default_script_sources = {"main": "<script src='main.js'></script>"}
         self.script_sources = {}
         self.scripts = {}
         self.styles = {}
@@ -36,7 +36,7 @@ class HTMLGen:
     def minify_html(self, html_code):
         return re.sub(r'>\s+<', '><', re.sub(r'<!--.*?-->', '', html_code)).strip()
 
-    def get_index(self):
+    def generate(self):
         # HTML BEGIN ------------------------------------------------------------
         index_str = '<!DOCTYPE html><html lang="en"><head>'
         # HEADER ITEMS ----------------------------------------------------------
