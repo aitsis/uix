@@ -21,11 +21,11 @@ class FlaskServer(Server):
         self.app = Flask(__name__)
         self.socketio = SocketIO(self.app, cors_allowed_origins="*", transports=["websocket"])
         CORS(self.app)
-        self.socketio.on("connect", self.on_socket_connect)
         self.app.add_url_rule("/", "index", self._index)
         self.app.add_url_rule("/<path:path>", "static_files", FlaskServer.static_files)
         self.app.add_url_rule("/api/<path:path>", "api", self.api, methods=["POST"])
         self.index = None
+        
 
     @staticmethod
     def static_files(path):
@@ -39,7 +39,11 @@ class FlaskServer(Server):
         if self.index is None:
             return "Undefined index handler."
         else:
-            return self.index()
+            html, cookie = self.index()
+            response = make_response(html)
+            response.set_cookie("session_id", cookie["session_id"])
+            return response
+        
     def start(self):
         self.app.run(port=self.port, host=self.host, threaded=True, debug=self.debug)
 
@@ -50,5 +54,8 @@ class FlaskServer(Server):
         self.socketio.stop()
         self.app.stop()
     
-    def on_socket_connect(self):
-        pass
+    def set_socket_handler(self, message, handler):
+        self.socketio.on(message, handler)
+    
+    def get_cookie(self, name):
+        return request.cookies.get(name)

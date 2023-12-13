@@ -1,3 +1,2 @@
-1 - HTMLCreator class htmlgen.py
-2 - index generator on app.py
-3 - kayıtlar gitti
+1 - socketio handler fonksiyonları FlaskServer içinde yazılacak.
+
