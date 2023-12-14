@@ -1,1 +1,1 @@
-from .app import UIX
+from .app import uix_app

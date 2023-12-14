@@ -2,6 +2,7 @@ import re
 
 class HTMLGen:
     def __init__(self):
+
         self.default_header_items = {
             'meta-charset': '<meta charset="UTF-8">',
             'meta-viewport': '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
@@ -36,7 +37,8 @@ class HTMLGen:
     def minify_html(self, html_code):
         return re.sub(r'>\s+<', '><', re.sub(r'<!--.*?-->', '', html_code)).strip()
 
-    def generate(self):
+    def generate(self,sid):
+        self.scripts[sid] = f"let session_id = {sid};"
         # HTML BEGIN ------------------------------------------------------------
         index_str = '<!DOCTYPE html><html lang="en"><head>'
         # HEADER ITEMS ----------------------------------------------------------
@@ -54,15 +56,15 @@ class HTMLGen:
         index_str += '<body>'
         index_str += "<div id='myapp'></div>"
         # SCRIPTS ---------------------------------------------------------------
-        for key in self.default_script_sources:
-            index_str += self.default_script_sources[key]
-        for key in self.script_sources:
-            index_str += self.script_sources[key]
         if len(self.scripts) > 0:
             for id in self.scripts:
                 index_str += '<script>'
                 index_str += self.minify_js(self.scripts[id])
                 index_str += '</script>'
+        for key in self.default_script_sources:
+            index_str += self.default_script_sources[key]
+        for key in self.script_sources:
+            index_str += self.script_sources[key]
         index_str += '</body>'
         index_str += '</html>'
         index_str = self.minify_html(index_str)

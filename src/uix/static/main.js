@@ -56,8 +56,8 @@ const getSocketInstance = () => {
     if (!socket) {
         socket = io.connect(`${window.location.origin}`, {
             query: {
-                clientPublicData: JSON.stringify(clientPublicData),
-                session_id: getCookie('session_id'),
+                //clientPublicData: JSON.stringify(clientPublicData),
+                session_id: session_id,
             },
             reconnection: true,
             reconnectionAttempts: 5,
