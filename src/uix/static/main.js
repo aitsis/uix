@@ -54,6 +54,7 @@ function clientEmit(id, value, event_name) {
 
 const getSocketInstance = () => {
     if (!socket) {
+        console.log('session_id : ', session_id);
         socket = io.connect(`${window.location.origin}`, {
             query: {
                 //clientPublicData: JSON.stringify(clientPublicData),

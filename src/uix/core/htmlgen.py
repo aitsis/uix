@@ -38,7 +38,7 @@ class HTMLGen:
         return re.sub(r'>\s+<', '><', re.sub(r'<!--.*?-->', '', html_code)).strip()
 
     def generate(self,sid):
-        self.scripts[sid] = f"let session_id = {sid};"
+        self.scripts[sid] = f"var session_id = '{sid}';"
         # HTML BEGIN ------------------------------------------------------------
         index_str = '<!DOCTYPE html><html lang="en"><head>'
         # HEADER ITEMS ----------------------------------------------------------
