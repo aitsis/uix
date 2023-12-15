@@ -11,6 +11,7 @@ from uix.core.web_server import Server
 
 
 class FlaskServer(Server):
+    static_files_path = None # set on UIX
     def __init__(self, port=5000, host = "0.0.0.0", debug=False):
         super().__init__(port, host,debug)
         if debug == False:
@@ -24,8 +25,8 @@ class FlaskServer(Server):
         self.app.add_url_rule("/api/<path:path>", "api", self.api, methods=["POST"])
         self.index = None
         self.socketio.on_event("connect", self._socketio_on_connect)
-        self.socketio.on("disconnect", FlaskServer._socket_on_disconnect)
-        #self.socketio.on("from-client", FlaskServer._socket_on_client)
+        self.socketio.on_event("disconnect", self._socketio_on_disconnect)
+        self.socketio.on_event("from_client", self._socketio_on_client)
 
     @staticmethod
     def static_files(path):
@@ -52,6 +53,9 @@ class FlaskServer(Server):
         self.socketio.stop()
         self.app.stop()
     
+    def emit(self, event, data, room=None):
+        self.socketio.emit(event, data, room=room)
+        
     def _socketio_on_connect(self):
         print("Client connected: ", request.args.get('session_id'))
         if self.socket_on_connect:
@@ -59,19 +63,18 @@ class FlaskServer(Server):
             #clientPublicData = request.args.get('clientPublicData')
             #socket_on_connect(sid, clientPublicData)
             self.socket_on_connect(sid)
-
-    @staticmethod
-    def _socket_on_disconnect():
-        if socket_on_disconnect:
+    
+    def _socketio_on_disconnect(self):
+        if self.socket_on_disconnect:
             sid = request.args.get('session_id')
-            socket_on_disconnect(sid)
+            self.socket_on_disconnect(sid)
 
-    @staticmethod
-    def _socket_on_client(data):
+    def _socketio_on_client(self, data):
         print("Client sent: ", data)
-        if socket_on_client:
+        if self.socket_on_client:
+            print("Client sent2: ", data)
             sid = request.args.get('session_id')
-            socket_on_client(sid,data)
+            self.socket_on_client(sid,data)
 
     def get_cookie(self, name):
         return request.cookies.get(name)

@@ -15,7 +15,7 @@ class UIX:
         # if(self.ui_root is None):
         #     return "UIX Not Initialized"
         sid = str(uuid4())
-        session = Session(sid, self)
+        session = Session(sid, self.ui_root,self)
         self.sessions[sid] = session
         html = session.index.generate(sid)
         return html
@@ -32,10 +32,9 @@ class UIX:
 
 
     def socket_on_connect(self, sid):
-        print("Client connected: ", sid)
         if sid in self.sessions:
             session = self.sessions[sid]
-            session.init_ui(self.ui)
+            
 
     def socket_on_disconnect(self, sid):
         if sid in self.sessions:
@@ -44,8 +43,8 @@ class UIX:
             del self.sessions[sid]
 
     def socket_on_client(self, sid, data):
-        print("Client sent: ", data)
         if sid in self.sessions:
+            print(data,sid)
             session = self.sessions[sid]
             session.clientHandler(data)
 

@@ -2,8 +2,8 @@ from uuid import uuid4
 from .session import Session
 from ..app import uix_app
 class Element:
-    def __init__(self, id = None,value = None, autoBind = True):
-        self.session = None
+    def __init__(self, value, id = None, autoBind = True):
+        self._session = None
         self.tag = "div"
         self.id = id
         self._value = value
@@ -16,30 +16,22 @@ class Element:
         self.value_name = "value"
         self.has_content = True
 
-        if uix_app.ui_root is None:
-            self.session = self.create_session()
-        else:
-            self.session = uix_app.ui_root.session
-
+    def bind(self,sid):
+        self._session = uix_app.sessions[sid]
         if self.id is not None:
             self.session.elements[self.id] = self
 
-        if autoBind:
-            self.bind()
-
-
-    def create_session(self):
-        sid = str(uuid4())
-        session = Session(sid, self)
-        session.push_parent(self)
-        self.session = session
-        uix_app.sessions[sid] = session
-        return session
-
-    def bind(self):
         self.parent = self.session.current_parent()
         if self.parent is not None:
             self.parent.children.append(self)
+
+    @property
+    def session(self):
+        if self._session:
+            return self._session
+        if self.parent:
+            return self.parent.session
+        return None  
 
     # RUNTIME UPDATE ELEMENT ------------------------------------------------------------------------
     def update(self):

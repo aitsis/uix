@@ -1,18 +1,24 @@
 from .htmlgen import HTMLGen
 class Session:
-    def __init__(self,sid,ui):
+    def __init__(self,sid,ui,app):
         self.sid = sid
-        self.ui = ui
-        self.cur_parent = None
+        self.app = app
+        self.ui_root = ui
         self.index = HTMLGen()
         self.parent_stack = []
         self.elements = {}
+        self.message_queue = []
 
     def clientHandler(self, data):
-        if data.id == "myapp":
-            if data.value == "init":                
+        print(data)
+        if data["id"] == "myapp":
+            if data["value"] == "init":                
                 print("Client Initialized")
-                self.send("myapp", self.ui.render(), "init-content")
+                ui = self.ui_root()
+                ui.bind(self.sid)
+                html = ui.render()
+                print(html)
+                self.send("myapp", html, "init-content")
                 self.flush_message_queue()
         else:
             if id in self.elements:
@@ -29,3 +35,17 @@ class Session:
 
     def current_parent(self):
         return self.parent_stack[-1] if self.parent_stack else None
+
+    def send(self,id, value, event_name):
+        self.app.server.emit("from_server", {'id': id, 'value': value, 'event_name': event_name}, room=self.sid)
+
+    def queue_for_send(self, id, value, event_name):
+        self.message_queue.append({'id': id, 'value': value, 'event_name': event_name})
+
+    def flush_message_queue(self):
+        for item in self.message_queue:            
+            self.send(item['id'], item['value'], item['event_name'])
+        self.message_queue = []
+
+    def navigate(self, path):
+        self.send("myapp", path, "navigate")

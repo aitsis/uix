@@ -95,6 +95,7 @@ const initSocketEvents = () => {
     }
 
     socket.on('connect', () => {
+        console.log('socket connected');
         clientEmit('myapp', 'init', 'init');
     });
 
