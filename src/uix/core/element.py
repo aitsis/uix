@@ -1,9 +1,9 @@
 from uuid import uuid4
 from .session import Session
-from ..app import app
+import uix
 class Element:
-    def __init__(self, value, id = None, autoBind = True):
-        self._session = None
+    def __init__(self, value = None, id = None, autoBind = True, session = None):
+        self._session = session
         self.tag = "div"
         self.id = id
         self._value = value
@@ -16,8 +16,10 @@ class Element:
         self.value_name = "value"
         self.has_content = True
 
-    def bind(self,sid):
-        self._session = app.sessions[sid]
+        if autoBind:
+            self.bind()
+            
+    def bind(self):
         if self.id is not None:
             self.session.elements[self.id] = self
 
@@ -93,12 +95,12 @@ class Element:
 
     # WITH ENTRY - EXIT -------------------------------------------------------------------------------
     def __enter__(self):
-        Session.current_session.push_parent(self)
+        self.session.push_parent(self)
         self.children = []
         return self
 
     def __exit__(self, type, value, traceback):
-        Session.current_session.pop_parent()
+        self.session.pop_parent()
 
     def __str__(self):
         return self.render()

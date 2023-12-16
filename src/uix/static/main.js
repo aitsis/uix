@@ -102,6 +102,7 @@ const initSocketEvents = () => {
     socket.on('disconnect', () => { });
 
     socket.on('from_server', (data) => {
+        console.log('from_server : ', data);
         if (socketEvents[data.event_name]) {
             socketEvents[data.event_name](data);
         } else if (handleDynamicEvents(data)) {

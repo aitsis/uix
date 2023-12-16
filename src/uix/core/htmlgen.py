@@ -54,7 +54,7 @@ class HTMLGen:
         index_str += '</head>'
         # BODY ------------------------------------------------------------------
         index_str += '<body>'
-        index_str += "<div id='myapp'></div>"
+        index_str += "<div id='uix-main' class='container'><div id='myapp'></div></div>"
         # SCRIPTS ---------------------------------------------------------------
         if len(self.scripts) > 0:
             for id in self.scripts:

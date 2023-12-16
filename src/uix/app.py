@@ -15,22 +15,22 @@ ui_root = None
 sessions = {}
 
 # SERVER -------------------------------------------------------------------------------------------
-app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*", transports=["websocket"],engineio_logger=True, logger=True)
-CORS(app)
+flask = Flask(__name__)
+socketio = SocketIO(flask, cors_allowed_origins="*", transports=["websocket"],engineio_logger=True, logger=True)
+CORS(flask)
 
 # ROUTES -------------------------------------------------------------------------------------------
 # INDEX
-@app.route("/")
+@flask.route("/")
 def index():
-    sid = str(uuid4())
-    session = Session(sid, ui_root,app)
-    sessions[sid] = session
-    html = session.index.generate(sid)
+    session_id = str(uuid4())
+    session = Session(session_id, ui_root)
+    sessions[session_id] = session
+    html = session.index.generate(session_id)
     return html
 
 # STATIC FILES
-@app.route("/<path:path>")
+@flask.route("/<path:path>")
 def static_files(path):
         return send_from_directory(static_files_path, path)
 
@@ -38,28 +38,30 @@ def static_files(path):
 @socketio.on("connect")
 def socket_on_connect():
     print("Client connected: ", request.args.get('session_id'))
-    sid = request.args.get('session_id')
-    if sid in sessions:
-        session = sessions[sid]
+    session_id = request.args.get('session_id')
+    if session_id in sessions:
+        session = sessions[session_id]
+        session.sid = request.sid
+
 
 @socketio.on("disconnect")
 def socket_on_disconnect():
-    sid = request.args.get('session_id')
-    if sid in sessions:
-        session = sessions[sid]
+    session_id = request.args.get('session_id')
+    if session_id in sessions:
+        session = sessions[session_id]
         session.close()
-        del sessions[sid]
+        del sessions[session_id]
 
 @socketio.on("from_client")
 def socket_on_client(data):
-    sid = request.args.get('session_id')
-    if sid in sessions:
-        print(data,sid)
-        session = sessions[sid]
+    session_id = request.args.get('session_id')
+    if session_id in sessions:
+        print(data,session_id)
+        session = sessions[session_id]
         session.clientHandler(data)
 
 # START --------------------------------------------------------------------------------------------
 def start(ui = None, port=5000, host="0.0.0.0", debug=False, threaded=True):
     global ui_root
     ui_root = ui
-    app.run(port=port, host=host, threaded=threaded, debug=debug)
+    flask.run(port=port, host=host, threaded=threaded, debug=debug)

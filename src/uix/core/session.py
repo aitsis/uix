@@ -1,8 +1,9 @@
 from .htmlgen import HTMLGen
+import uix
 class Session:
-    def __init__(self,sid,ui,app):
-        self.sid = sid
-        self.app = app
+    def __init__(self, session_id, ui):
+        self.sid = None
+        self.session_id = session_id
         self.ui_root = ui
         self.index = HTMLGen()
         self.parent_stack = []
@@ -14,8 +15,7 @@ class Session:
         if data["id"] == "myapp":
             if data["value"] == "init":                
                 print("Client Initialized")
-                ui = self.ui_root()
-                ui.bind(self.sid)
+                ui = self.ui_root(session = self)
                 html = ui.render()
                 print(html)
                 self.send("myapp", html, "init-content")
@@ -37,7 +37,8 @@ class Session:
         return self.parent_stack[-1] if self.parent_stack else None
 
     def send(self,id, value, event_name):
-        self.app.server.emit("from_server", {'id': id, 'value': value, 'event_name': event_name}, room=self.sid)
+        print("Sending: ", id, value, event_name)
+        uix.socketio.emit("from_server", {'id': id, 'value': value, 'event_name': event_name}, room=self.sid)
 
     def queue_for_send(self, id, value, event_name):
         self.message_queue.append({'id': id, 'value': value, 'event_name': event_name})
