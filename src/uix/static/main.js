@@ -111,7 +111,7 @@ const initSocketEvents = () => {
         }
     });
 
-    socket.on('error', (error) => { });
+    socket.on('error', (error) => { console.log('socket error : ', error);});
 };
 
 

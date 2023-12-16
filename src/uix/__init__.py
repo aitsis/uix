@@ -1,1 +1,1 @@
-from .app import uix_app
+from .app import start

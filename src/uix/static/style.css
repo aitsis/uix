@@ -1,0 +1,518 @@
+@import url('exo2_font.css');
+
+body,
+html {
+  background-color: var(--background);
+  font-family: var(--ait-text-font);
+  font-size: 14px;
+  /* Default font size */
+  color: white;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--ait-header-text), Tahoma, sans-serif;
+}
+
+
+
+/* Font size classes */
+.small {
+  font-size: xx-small;
+}
+
+.larger {
+  font-size: larger;
+}
+
+.point {
+  font-size: 24pt;
+}
+
+/* Font size classes */
+
+
+/* AIT Style Variables */
+:root {
+  --primary: #007a53;
+  --secondary: gray;
+  --tertiary: #444;
+  --quaternary: rgba(255, 255, 255, 0.2);
+  --ait: #00573d;
+  --red: #ff0000;
+  --background: #282f3a;
+  --background-secondary: #464c56;
+  --background-mask: #00000050;
+  --success-color: var(--ait);
+  --warning-color: #b49300;
+  --danger-color: #d50000;
+  --info-color: #0071aa;
+  --normal-color: gray;
+  --ait-text-font: "Exo 2";
+  --ait-header-text: "Trebuchet MS";
+}
+
+a {
+  color: var(--info-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: #0099dd;
+  text-decoration: underline;
+}
+
+/* Scroll Bar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: gray;
+  border-radius: 12px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: white;
+  border-radius: 12px;
+}
+.canvas-container{
+  height: 100% !important;
+}
+.modal {
+  position: fixed;
+  z-index: 999999999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: var(--background-mask);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input {
+  font-family: var(--ait-text-font);
+  outline: none;
+  height: 1.2rem;
+  border: #aaa 1px solid;
+  padding: 5px;
+  color: white;
+  background-color: var(--background-secondary);
+  border-radius: 6px;
+}
+
+.disabled {
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.3;
+}
+
+input:disabled,
+textarea:disabled,
+.disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+input:focus {
+  box-shadow: inset 0 0 6px #88a;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+select {
+  font-family: var(--ait-text-font);
+  outline: none;
+  border: #aaa 1px solid;
+  padding: 5px;
+  color: white;
+  background-color: var(--background-secondary);
+  border-radius: 6px;
+}
+
+
+
+/* Radio Buttons */
+input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid gray;
+  border-radius: 50%;
+  outline: none;
+  background-color: var(--background-secondary);
+  margin-right: 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+/* Checkboxes */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 20px;
+  height: 20px;
+  min-width: 20px !important;
+  min-height: 20px !important;
+  max-width: 20px !important;
+  max-height: 20px !important;
+  border: 2px solid gray;
+  border-radius: 4px;
+  outline: none;
+  background-color: var(--background-secondary);
+  position: relative;
+  cursor: pointer;
+}
+
+
+input[type="radio"]::after,
+input[type="checkbox"]::after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+input[type="radio"]:checked::after,
+input[type="checkbox"]:checked::after {
+  display: block;
+}
+
+input[type="radio"]::after {
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: white;
+}
+
+input[type="checkbox"]::after {
+  content: "\2713";
+  /* Checkmark Unicode character */
+  font-size: 12px;
+  top: 0;
+  left: 3px;
+  color: white;
+}
+
+
+/********** Range Input Styles **********/
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 150px;
+  height: 6px;
+  border-radius: 6px;
+  background: var(--ait);
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  padding: 0;
+}
+
+input[type="range"]:hover {
+  opacity: 1;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+}
+
+input[type="range"]:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+
+textarea {
+  font-family: var(--ait-text-font);
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--background-secondary);
+  border: 1px solid gray;
+  border-radius: 6px;
+  box-sizing: border-box;
+  color: white;
+  outline: none;
+  resize: none;
+}
+
+button {
+  color: white;
+  border-style: none;
+  border-radius: 3px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  background-color: var(--ait);
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 300ms ease-out;
+  font-family: var(--ait-text-font);
+  font-size: 15px;
+  min-width: 100px;
+}
+
+button:active {
+  scale: 0.95 !important;
+  background-color: rgba(0, 0, 0, 0.9) !important;
+}
+
+button:hover {
+  filter: brightness(150%);
+}
+
+button:disabled {
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+.btn-warning {
+  background-color: var(--warning-color);
+  color: #fff;
+}
+
+.btn-red {
+  background-color: var(--danger-color);
+  color: #fff;
+}
+
+.btn-reset {
+  background-color: var(--normal-color);
+  color: #fff;
+}
+
+.btn-info {
+  background-color: var(--info-color);    
+}
+
+.main {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background);
+  color: white;
+
+}
+
+.header {
+  width: 100%;
+  height: 10%;
+  background-color: var(--background-secondary);
+  border-bottom: 0px solid gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  height: 85%;
+}
+
+.wrapper {
+  width: fit-content;
+  height: fit-content;
+  background-color: var(--background);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px;
+  margin: 0;
+  box-sizing: border-box;
+  border-radius: 3px;
+  border: 1px solid gray;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  gap: 10px;
+}
+
+
+
+.row {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 2px;
+  margin: 2px;
+  border: 1px solid #444;
+  background-color: white;
+  transition: all 300ms ease-out;
+}
+
+
+.right {
+  justify-content: flex-end;
+}
+
+.center {
+  justify-content: center;
+}
+
+.border {
+  border: 1px solid gray;
+}
+
+.hidden {
+  display: none;
+}
+
+.strong {
+  font-weight: bold;
+}
+
+.hall {
+  height: 100%;
+}
+
+.wall {
+  width: 100%;
+}
+
+/* BURADAN Aşağısı TAB */
+.tabs {
+  width: 460px;
+  height: 100%;
+  float: none;
+  list-style: none;
+  position: relative;
+  text-align: left;
+  bottom: 41px;
+}
+
+.tabs li {
+  float: left;
+  display: block;
+}
+
+.tabs input[type="radio"] {
+  position: absolute;
+  top: 0;
+  left: -9999px;
+}
+
+.tabs label {
+  display: block;
+  padding: 14px 21px;
+  border-radius: 2px 2px 0 0;
+  font-size: 20px;
+  font-weight: normal;
+  background: gray;
+  cursor: pointer;
+  position: relative;
+  top: 10px;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  border-radius: 12px 12px 0px 0px;
+}
+
+.tabs label:hover {
+  background: var(--background-secondary);
+}
+
+.tabs .tab-content {
+  z-index: 2;
+  display: none;
+  overflow: hidden;
+  width: 500px;
+  font-size: 17px;
+  line-height: 25px;
+  position: absolute;
+  left: 0;
+  background: var(--background-secondary);
+  border-radius: 12px 12px 12px 12px;
+  border: 1px solid gray;
+  padding: 30px;
+}
+
+.tabs [id^="tab"]:checked+label {
+  top: 0;
+  padding-top: 17px;
+  background: var(--background-secondary);
+}
+
+.tabs [id^="tab"]:checked~[id^="tab-content"] {
+  display: flex;
+}
+
+.clear-tab {
+  font-size: initial !important;
+  background-color: initial !important;
+  display: initial !important;
+  top: initial !important;
+  cursor: initial !important;
+  padding: 0 !important;
+}
+
+/* BURADAN Yukarısı TAB */
+
+.opacity-30 {
+  opacity:0.3 ;
+}

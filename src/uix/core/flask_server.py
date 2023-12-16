@@ -18,7 +18,8 @@ class FlaskServer(Server):
             log = logging.getLogger('werkzeug')
             log.disabled = True
         self.app = Flask(__name__)
-        self.socketio = SocketIO(self.app, cors_allowed_origins="*", transports=["websocket"])
+        self.host = host
+        self.socketio = SocketIO(self.app, cors_allowed_origins="*", transports=["websocket"],engineio_logger=True, logger=True)
         CORS(self.app)
         self.app.add_url_rule("/", "index", self._index)
         self.app.add_url_rule("/<path:path>", "static_files", FlaskServer.static_files)

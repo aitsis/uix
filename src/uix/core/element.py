@@ -1,6 +1,6 @@
 from uuid import uuid4
 from .session import Session
-from ..app import uix_app
+from ..app import app
 class Element:
     def __init__(self, value, id = None, autoBind = True):
         self._session = None
@@ -17,7 +17,7 @@ class Element:
         self.has_content = True
 
     def bind(self,sid):
-        self._session = uix_app.sessions[sid]
+        self._session = app.sessions[sid]
         if self.id is not None:
             self.session.elements[self.id] = self
 
