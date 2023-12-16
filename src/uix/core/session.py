@@ -1,26 +1,30 @@
-from .htmlgen import HTMLGen
+
 import uix
+from copy import deepcopy
 class Session:
-    def __init__(self, session_id, ui):
-        self.sid = None
-        self.session_id = session_id
-        self.ui_root = ui
-        self.index = HTMLGen()
-        self.parent_stack = []
+    def __init__(self,sid):
+        self.sid = sid
+        self.ui_root = None
+        self._next_id = 0
         self.elements = {}
         self.message_queue = []
 
     def clientHandler(self, data):
-        print(data)
-        if data["id"] == "myapp":
+        id = data["id"]
+        if id == "myapp":
             if data["value"] == "init":                
                 print("Client Initialized")
-                ui = self.ui_root(session = self)
-                html = ui.render()
-                print(html)
-                self.send("myapp", html, "init-content")
-                self.flush_message_queue()
+                if( uix.app.ui_root is not None):
+                    self.ui_root = deepcopy(uix.app.ui_root)
+                    self.ui_root.bind(self)
+                    html = self.ui_root.render()
+                    self.send("myapp", html, "init-content")
+                    self.flush_message_queue()
+                else:
+                    print("No UI Root")
         else:
+            event_name = data["event_name"]
+            value = data["value"]
             if id in self.elements:
                 elm = self.elements[id]
                 if elm is not None:            
@@ -37,7 +41,6 @@ class Session:
         return self.parent_stack[-1] if self.parent_stack else None
 
     def send(self,id, value, event_name):
-        print("Sending: ", id, value, event_name)
         uix.socketio.emit("from_server", {'id': id, 'value': value, 'event_name': event_name}, room=self.sid)
 
     def queue_for_send(self, id, value, event_name):
@@ -50,3 +53,7 @@ class Session:
 
     def navigate(self, path):
         self.send("myapp", path, "navigate")
+
+    def next_id(self):
+        self._next_id += 1
+        return self._next_id

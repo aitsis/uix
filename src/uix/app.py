@@ -12,22 +12,19 @@ from .core.session import Session
 # GLOBALS ------------------------------------------------------------------------------------------
 static_files_path = os.path.join(os.path.dirname(__file__), "static")
 ui_root = None
+ui_parent = None
 sessions = {}
-
+indexGen = HTMLGen()
 # SERVER -------------------------------------------------------------------------------------------
 flask = Flask(__name__)
-socketio = SocketIO(flask, cors_allowed_origins="*", transports=["websocket"],engineio_logger=True, logger=True)
+socketio = SocketIO(flask, cors_allowed_origins="*", transports=["websocket"])
 CORS(flask)
 
 # ROUTES -------------------------------------------------------------------------------------------
 # INDEX
 @flask.route("/")
 def index():
-    session_id = str(uuid4())
-    session = Session(session_id, ui_root)
-    sessions[session_id] = session
-    html = session.index.generate(session_id)
-    return html
+    return indexGen.generate()
 
 # STATIC FILES
 @flask.route("/<path:path>")
@@ -37,28 +34,24 @@ def static_files(path):
 # SOCKETIO -----------------------------------------------------------------------------------------
 @socketio.on("connect")
 def socket_on_connect():
-    print("Client connected: ", request.args.get('session_id'))
-    session_id = request.args.get('session_id')
-    if session_id in sessions:
-        session = sessions[session_id]
-        session.sid = request.sid
-
+    print("Client Connected")
+    sid = request.sid
+    sessions[sid] = Session(sid)
 
 @socketio.on("disconnect")
 def socket_on_disconnect():
-    session_id = request.args.get('session_id')
-    if session_id in sessions:
-        session = sessions[session_id]
-        session.close()
-        del sessions[session_id]
+    sid = request.sid
+    if sid in sessions:
+        del sessions[sid]
 
 @socketio.on("from_client")
 def socket_on_client(data):
-    session_id = request.args.get('session_id')
-    if session_id in sessions:
-        print(data,session_id)
-        session = sessions[session_id]
-        session.clientHandler(data)
+    sid = request.sid
+    if sid in sessions:
+        sessions[sid].clientHandler(data)
+    
+         
+
 
 # START --------------------------------------------------------------------------------------------
 def start(ui = None, port=5000, host="0.0.0.0", debug=False, threaded=True):

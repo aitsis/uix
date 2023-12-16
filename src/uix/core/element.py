@@ -2,8 +2,8 @@ from uuid import uuid4
 from .session import Session
 import uix
 class Element:
-    def __init__(self, value = None, id = None, autoBind = True, session = None):
-        self._session = session
+    def __init__(self, value = None, id = None):
+        self.session = None
         self.tag = "div"
         self.id = id
         self._value = value
@@ -13,28 +13,37 @@ class Element:
         self.classes = []
         self.attrs = {}
         self.parent = None
+        self.old_parent = None
         self.value_name = "value"
         self.has_content = True
+        
+        if uix.ui_root is None:
+            uix.ui_root = self
 
-        if autoBind:
-            self.bind()
-            
-    def bind(self):
-        if self.id is not None:
-            self.session.elements[self.id] = self
-
-        self.parent = self.session.current_parent()
+        self.parent = uix.app.ui_parent
         if self.parent is not None:
             self.parent.children.append(self)
+    
+    def bind(self,session):
+        self.session = session
+        if self.id is not None:
+            self.session.elements[self.id] = self
+        for child in self.children:
+            child.bind(session)
 
-    @property
-    def session(self):
-        if self._session:
-            return self._session
-        if self.parent:
-            return self.parent.session
-        return None  
+    # WITH ENTRY - EXIT -------------------------------------------------------------------------------
+    def __enter__(self):
+        self.old_parent = uix.app.ui_parent
+        uix.app.ui_parent = self
+        self.children = []
+        return self
 
+    def __exit__(self, type, value, traceback):
+        uix.app.ui_parent = self.old_parent
+
+    def __str__(self):
+        return self.render()
+    
     # RUNTIME UPDATE ELEMENT ------------------------------------------------------------------------
     def update(self):
         self.session.send(self.id, self.render(), "init-content")
@@ -47,7 +56,7 @@ class Element:
     @value.setter
     def value(self, value):
         self._value = value
-        Session.current_session.send(self.id, value, "change-"+self.value_name)
+        self.session.send(self.id, value, "change-"+self.value_name)
 
     def set_value(self, value):
         self.value = value
@@ -92,18 +101,6 @@ class Element:
 
     def focus(self):
         self.session.send(self.id, None, "focus")
-
-    # WITH ENTRY - EXIT -------------------------------------------------------------------------------
-    def __enter__(self):
-        self.session.push_parent(self)
-        self.children = []
-        return self
-
-    def __exit__(self, type, value, traceback):
-        self.session.pop_parent()
-
-    def __str__(self):
-        return self.render()
 
     # RENDER -----------------------------------------------------------------------------------------
     def cls(self, class_names):

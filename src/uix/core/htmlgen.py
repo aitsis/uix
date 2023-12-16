@@ -37,8 +37,7 @@ class HTMLGen:
     def minify_html(self, html_code):
         return re.sub(r'>\s+<', '><', re.sub(r'<!--.*?-->', '', html_code)).strip()
 
-    def generate(self,sid):
-        self.scripts[sid] = f"var session_id = '{sid}';"
+    def generate(self):
         # HTML BEGIN ------------------------------------------------------------
         index_str = '<!DOCTYPE html><html lang="en"><head>'
         # HEADER ITEMS ----------------------------------------------------------
