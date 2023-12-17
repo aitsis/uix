@@ -1,6 +1,13 @@
 
 import uix
 from copy import deepcopy
+
+class Context:
+    def __init__(self, session, element):
+        self.session = session
+        self.element = element
+        self.elements = session.elements
+
 class Session:
     def __init__(self,sid):
         self.sid = sid
@@ -8,6 +15,7 @@ class Session:
         self._next_id = 0
         self.elements = {}
         self.message_queue = []
+        self.context = Context(self, None)
 
     def clientHandler(self, data):
         id = data["id"]
@@ -29,7 +37,8 @@ class Session:
                 elm = self.elements[id]
                 if elm is not None:            
                     if event_name in elm.events:
-                        elm.events[event_name](self, id, value)
+                        self.context.element = elm
+                        elm.events[event_name](self.context, id, value)
     
     def push_parent(self, parent):
         self.parent_stack.append(parent)

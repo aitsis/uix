@@ -1,9 +1,13 @@
 import uix
 from uix.elements import div, button
+counter = 0
+def next_counter():
+    global counter
+    counter = counter + 1
+    return counter
 
 def on_click(session, id, value):
-    print("Clicked!", id, value, session.sid)
-    session.elements[id].value = "Clicked!" + str(session.next_id())
+    session.elements[id].value = "Clicked!" + str(next_counter())
 
 def comp1():
     with div("A!",):

@@ -1,6 +1,7 @@
 
 let socket;
 let event_handlers = {};
+let page_loaded = false;
 document.cookie = `locale=${localStorage.getItem('locale') || navigator.language || navigator.userLanguage}; path=/`;
 
 
@@ -60,8 +61,8 @@ const getSocketInstance = () => {
                 //session_id: session_id,
             },
             reconnection: true,
-            reconnectionAttempts: 5,
-            reconnectionDelay: 5000,
+            reconnectionAttempts: 15,
+            reconnectionDelay: 500,
             transports: ['websocket']
         });
     }
@@ -95,13 +96,18 @@ const initSocketEvents = () => {
 
     socket.on('connect', () => {
         console.log('socket connected');
+        if (page_loaded) {
+            console.log('reloading page.');
+            window.location.reload();
+        }
+        page_loaded = true;
         clientEmit('myapp', 'init', 'init');
     });
 
     socket.on('disconnect', () => { });
 
     socket.on('from_server', (data) => {
-        console.log('from_server : ', data);
+        //console.log('from_server : ', data);
         if (socketEvents[data.event_name]) {
             socketEvents[data.event_name](data);
         } else if (handleDynamicEvents(data)) {
