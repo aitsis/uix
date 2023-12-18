@@ -516,3 +516,13 @@ button:disabled {
 .opacity-30 {
   opacity:0.3 ;
 }
+
+
+
+/* UIX */
+
+.border {
+  border: 1px solid gray;
+  border-radius: 3px;
+  padding: 5px;
+}

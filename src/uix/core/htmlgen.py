@@ -1,4 +1,5 @@
 import re
+import os
 
 class HTMLGen:
     def __init__(self):
@@ -27,6 +28,11 @@ class HTMLGen:
 
     def add_css(self, id, style):
         self.styles.setdefault(id, style)
+
+    def add_css_file(self, path):
+        with open(path, 'r') as file:
+            id = os.path.basename(path)
+            self.styles.setdefault(id, file.read())
 
     def minify_js(self, js_code):
         return re.sub(r'\s+', ' ', re.sub(r'//.*?\n|/\*.*?\*/', '', js_code)).strip()

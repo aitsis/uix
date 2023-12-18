@@ -14,7 +14,7 @@ static_files_path = os.path.join(os.path.dirname(__file__), "static")
 ui_root = None
 ui_parent = None
 sessions = {}
-indexGen = HTMLGen()
+html = HTMLGen()
 # SERVER -------------------------------------------------------------------------------------------
 flask = Flask(__name__)
 socketio = SocketIO(flask, cors_allowed_origins="*", transports=["websocket"])
@@ -24,7 +24,7 @@ CORS(flask)
 # INDEX
 @flask.route("/")
 def index():
-    return indexGen.generate()
+    return html.generate()
 
 # STATIC FILES
 @flask.route("/<path:path>")
