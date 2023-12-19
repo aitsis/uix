@@ -1,4 +1,4 @@
 1 - uix-private-demos
     1.1 - prompt builder
-2 - register_component
-
+2 - ai ui generator
+    json to python

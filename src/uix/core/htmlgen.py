@@ -13,18 +13,26 @@ class HTMLGen:
         }
         self.header_items = {}
         self.default_script_sources = {"main": "<script src='main.js'></script>"}
-        self.script_sources = {}
-        self.scripts = {}
+        self.script_sources_before_main = {}
+        self.script_sources_after_main = {}
+        self.scripts_before_main = {}
+        self.scripts_after_main = {}
         self.styles = {}
 
     def add_header_item(self, id, item):
         self.header_items.setdefault(id, item)
         
-    def add_script_source(self, id, script):
-        self.script_sources.setdefault(id, script)
+    def add_script_source(self, id, beforeMain = True, script = None):
+        if beforeMain:
+            self.script_sources_before_main.setdefault(id, script)
+        else:
+            self.script_sources_after_main.setdefault(id, script)
 
-    def add_script(self, id, script):
-        self.scripts.setdefault(id, script)
+    def add_script(self, id, beforeMain = True, script = None):
+        if beforeMain:
+            self.scripts_before_main.setdefault(id, script)
+        else:
+            self.scripts_after_main.setdefault(id, script)
 
     def add_css(self, id, style):
         self.styles.setdefault(id, style)
@@ -61,15 +69,26 @@ class HTMLGen:
         index_str += '<body>'
         index_str += "<div id='uix-main' class='container'><div id='myapp'></div></div>"
         # SCRIPTS ---------------------------------------------------------------
-        if len(self.scripts) > 0:
-            for id in self.scripts:
-                index_str += '<script>'
-                index_str += self.minify_js(self.scripts[id])
-                index_str += '</script>'
+        # SCRIPT SOURCES --------------------------------------------------------
+        for key in self.script_sources_before_main:
+            index_str += self.script_sources_before_main[key]
+        # BEFORE MAIN SCRIPTS ---------------------------------------------------
+        for id in self.scripts_before_main:
+            index_str += '<script>'
+            index_str += self.minify_js(self.scripts_before_main[id])
+            index_str += '</script>'
+        # MAIN SCRIPT -----------------------------------------------------------
         for key in self.default_script_sources:
             index_str += self.default_script_sources[key]
-        for key in self.script_sources:
-            index_str += self.script_sources[key]
+        # AFTER MAIN SCRIPTS ----------------------------------------------------
+        for id in self.scripts_after_main:
+            index_str += '<script>'
+            index_str += self.minify_js(self.scripts_after_main[id])
+            index_str += '</script>'
+        # SCRIPT SOURCES --------------------------------------------------------
+        for key in self.script_sources_after_main:
+            index_str += self.script_sources_after_main[key]
+        # HTML END --------------------------------------------------------------
         index_str += '</body>'
         index_str += '</html>'
         index_str = self.minify_html(index_str)

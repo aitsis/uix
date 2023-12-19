@@ -24,22 +24,32 @@ class Element:
         if self.parent is not None:
             self.parent.children.append(self)
     
-    def bind(self,session):
+    def bind(self,session,only_children=False):
         self.session = session
-        if self.id is not None:
-            self.session.elements[self.id] = self
+        if not only_children:
+            if self.id is not None:
+                self.session.elements[self.id] = self
         for child in self.children:
             child.bind(session)
 
+    def unbind(self):
+        if self.id is not None:
+            del self.session.elements[self.id]
+        for child in self.children:
+            child.unbind()
     # WITH ENTRY - EXIT -------------------------------------------------------------------------------
     def __enter__(self):
         self.old_parent = uix.app.ui_parent
         uix.app.ui_parent = self
+        for child in self.children:
+            child.unbind()
         self.children = []
         return self
 
     def __exit__(self, type, value, traceback):
         uix.app.ui_parent = self.old_parent
+        if(self.session is not None):
+            self.bind(self.session,only_children=True)
 
     def __str__(self):
         return self.render()
@@ -47,6 +57,7 @@ class Element:
     # RUNTIME UPDATE ELEMENT ------------------------------------------------------------------------
     def update(self):
         self.session.send(self.id, self.render(), "init-content")
+        self.session.flush_message_queue()
 
     # VALUE -----------------------------------------------------------------------------------------
     @property
@@ -56,7 +67,10 @@ class Element:
     @value.setter
     def value(self, value):
         self._value = value
-        self.session.send(self.id, value, "change-"+self.value_name)
+        self.send_value(value)
+
+    def send_value(self, value):
+        self.session.send(self.id, value, "change"+self.value_name)
 
     def set_value(self, value):
         self.value = value

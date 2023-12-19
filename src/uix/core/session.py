@@ -7,6 +7,7 @@ class Context:
         self.session = session
         self.element = element
         self.elements = session.elements
+        self.data = {}
 
 class Session:
     def __init__(self,sid):
