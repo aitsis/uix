@@ -53,15 +53,18 @@ def socket_on_client(data):
 def load_config(uix_config):
     global config
     if uix_config is not None:
-        for key in config:
-            if key in config:
-                config[key] = uix_config[key]
+        for key in uix_config:
+            config[key] = uix_config[key]
          
 
 
 # START --------------------------------------------------------------------------------------------
-def start(ui = None, port=5000, host="0.0.0.0", debug=False, threaded=True, uix_config = None):
+def start(ui = None, port=5000, host="0.0.0.0", debug=False, threaded=True, config = None):
     global ui_root
-    ui_root = ui
-    load_config(uix_config)
+    if ui is not None:
+        ui_root = ui
+    else:
+        from .example import main
+        ui_root = main 
+    load_config(config)
     flask.run(port=port, host=host, threaded=threaded, debug=debug)
