@@ -38,18 +38,23 @@ class Element:
         for child in self.children:
             child.unbind()
     # WITH ENTRY - EXIT -------------------------------------------------------------------------------
-    def __enter__(self):
+    def enter(self):
         self.old_parent = uix.app.ui_parent
         uix.app.ui_parent = self
         for child in self.children:
             child.unbind()
         self.children = []
         return self
-
-    def __exit__(self, type, value, traceback):
+    
+    def exit(self):
         uix.app.ui_parent = self.old_parent
         if(self.session is not None):
             self.bind(self.session,only_children=True)
+    
+    def __enter__(self):
+        return self.enter()
+    def __exit__(self, type, value, traceback):
+        self.exit()
 
     def __str__(self):
         return self.render()
