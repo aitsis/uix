@@ -53,6 +53,11 @@ def socket_on_client(data):
 
 def load_config(uix_config):
     global config
+    config["host"] = "0.0.0.0"
+    config["port"] = 5000
+    config["threaded"] = True
+    config["debug"] = False
+
     if uix_config is not None:
         for key in uix_config:
             config[key] = uix_config[key]
@@ -61,9 +66,14 @@ def get_start_example():
     from .example import start_example
     return start_example
 
+def flask_run():
+    flask.run(port=     config["port"],
+              host=     config["host"],
+              threaded= config["threaded"],
+              debug =   config["debug"])
 # START --------------------------------------------------------------------------------------------
-def start(ui = None, port=5000, host="0.0.0.0", debug=False, threaded=True, config = None):
+def start(ui = None, config = None):
     global ui_root
     ui_root = ui if ui is not None else get_start_example() 
     load_config(config)
-    flask.run(port=port, host=host, threaded=threaded, debug=debug)
+    flask_run()

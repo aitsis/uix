@@ -2,8 +2,6 @@
 import uix
 from copy import deepcopy
 
-from .app import pipes
-
 class Context:
     def __init__(self, session, element):
         self.session = session
@@ -20,28 +18,33 @@ class Session:
         self.message_queue = []
         self.context = Context(self, None)
 
-    def clientHandler(self, data):
-        id = data["id"]
-        if id == "myapp":
-            if data["value"] == "init":                
-                print("Client Initialized")
-                if( uix.app.ui_root is not None):
-                    self.ui_root = deepcopy(uix.app.ui_root)
-                    self.ui_root.bind(self)
-                    html = self.ui_root.render()
-                    self.send("myapp", html, "init-content")
-                    self.flush_message_queue()
-                else:
-                    print("No UI Root")
+    def InitializeClient(self):
+        if uix.config["debug"]: print("Client Initialized")
+        if( uix.app.ui_root is not None):
+            self.ui_root = deepcopy(uix.app.ui_root)
+            self.ui_root.bind(self)
+            html = self.ui_root.render()
+            self.send("myapp", html, "init-content")
+            self.flush_message_queue()
         else:
-            event_name = data["event_name"]
-            value = data["value"]
-            if id in self.elements:
-                elm = self.elements[id]
-                if elm is not None:            
-                    if event_name in elm.events:
-                        self.context.element = elm
-                        elm.events[event_name](self.context, id, value)
+            print("No UI Root")
+
+    def eventHandler(self, data):
+        id = data["id"]
+        if id in self.elements:
+            elm = self.elements[id]
+            if elm is not None:
+                event_name = data["event_name"]
+                if event_name in elm.events:
+                    self.context.element = elm
+                    elm.events[event_name](self.context, id, data["value"])
+
+    def clientHandler(self, data):
+        global config
+        if data["id"] == "myapp" and data["value"] == "init":
+            self.InitializeClient()                
+        else:
+            self.eventHandler(data)
     
     def push_parent(self, parent):
         self.parent_stack.append(parent)
