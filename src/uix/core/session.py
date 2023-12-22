@@ -2,6 +2,8 @@
 import uix
 from copy import deepcopy
 
+from .app import pipes
+
 class Context:
     def __init__(self, session, element):
         self.session = session

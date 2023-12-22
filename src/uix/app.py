@@ -15,6 +15,7 @@ ui_root = None
 ui_parent = None
 sessions = {}
 html = HTMLGen()
+pipes = {}
 # SERVER -------------------------------------------------------------------------------------------
 flask = Flask(__name__)
 socketio = SocketIO(flask, cors_allowed_origins="*", transports=["websocket"])
@@ -56,15 +57,13 @@ def load_config(uix_config):
         for key in uix_config:
             config[key] = uix_config[key]
          
-
+def get_start_example():
+    from .example import start_example
+    return start_example
 
 # START --------------------------------------------------------------------------------------------
 def start(ui = None, port=5000, host="0.0.0.0", debug=False, threaded=True, config = None):
     global ui_root
-    if ui is not None:
-        ui_root = ui
-    else:
-        from .example import main
-        ui_root = main 
+    ui_root = ui if ui is not None else get_start_example() 
     load_config(config)
     flask.run(port=port, host=host, threaded=threaded, debug=debug)

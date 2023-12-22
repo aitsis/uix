@@ -20,6 +20,6 @@ uix.start(ui = main)
 import uix
 from uix.elements import md
 
-main = md(md_text)
+start_example = md(md_text)
 if __name__ == "__main__":
-    uix.start(ui = main, debug=True)
+    uix.start(ui = start_example, debug=True)
