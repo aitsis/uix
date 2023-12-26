@@ -1,11 +1,12 @@
 
 import uix
 from copy import deepcopy
-
+import threading
+threadStorage = {}
 class Context:
-    def __init__(self, session, element):
+    def __init__(self, session, threadId):
         self.session = session
-        self.element = element
+        self.threadId = threadId
         self.elements = session.elements
         self.data = {}
 
@@ -19,7 +20,7 @@ class Session:
         self.context = Context(self, None)
 
     def InitializeClient(self):
-        if uix.config["debug"]: print("Client Initialized")
+        uix.log("Client Initialized")
         if( uix.app.ui_root is not None):
             self.ui_root = deepcopy(uix.app.ui_root)
             self.ui_root.bind(self)
@@ -27,8 +28,10 @@ class Session:
             self.send("myapp", html, "init-content")
             self.flush_message_queue()
         else:
-            print("No UI Root")
+            uix.error("No UI Root")
 
+    def add_ThreadStorage(self, thread_id, data):
+        threadStorage[thread_id] = data
     def eventHandler(self, data):
         id = data["id"]
         if id in self.elements:
@@ -44,6 +47,14 @@ class Session:
         if data["id"] == "myapp" and data["value"] == "init":
             self.InitializeClient()                
         else:
+            current_thread = threading.current_thread()
+            thread_id = current_thread.name.split(" ")[0].split("-")[1]
+            if self.context.threadId == None:
+                self.context.threadId = thread_id
+            if self.context.threadId != thread_id:
+                threadStorage.remove(self.context.threadId)
+                threadStorage[thread_id] = self.context
+                self.context.threadId = thread_id
             self.eventHandler(data)
     
     def push_parent(self, parent):

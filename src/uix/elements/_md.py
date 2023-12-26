@@ -18,11 +18,9 @@ class md(Element):
         if self.id is None:
             self.id = "md_" + str(session.next_id())
         super().bind(session, only_children)
-        print("id = ", self.id, "value = ", self.value)
         self.session.queue_for_send(self.id, self.value, "md-change-md")
     
     def send_value(self, value):
-        print("id = ", self.id, "value = ", value)
         self.session.send(self.id, value, "md-change-md")
 
     

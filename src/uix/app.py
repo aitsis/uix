@@ -1,21 +1,28 @@
+from typing import List
 from uuid import uuid4
 import os
 import logging
+import threading
 # FLASK SERVER -------------------------------------------------------------------------------------
 from flask import Flask, request, send_from_directory, abort, jsonify, make_response
 from flask_cors import CORS
 from flask_socketio import SocketIO
 # UIX CORE -----------------------------------------------------------------------------------------
 from .core.htmlgen import HTMLGen
-from .core.session import Session
+from .core.session import Session, threadStorage
 from ._config import config
+from .core.pipe import Pipe
 # GLOBALS ------------------------------------------------------------------------------------------
 static_files_path = os.path.join(os.path.dirname(__file__), "static")
+log_handler = None
+error_handler = None
 ui_root = None
 ui_parent = None
 sessions = {}
 html = HTMLGen()
-pipes = {}
+_pipes: List[Pipe] = []
+locale = None
+
 # SERVER -------------------------------------------------------------------------------------------
 flask = Flask(__name__)
 socketio = SocketIO(flask, cors_allowed_origins="*", transports=["websocket"])
@@ -48,20 +55,68 @@ def socket_on_disconnect():
 @socketio.on("from_client")
 def socket_on_client(data):
     sid = request.sid
+    for pipe in _pipes:
+        data = pipe.run(sid, data)
     if sid in sessions:
         sessions[sid].clientHandler(data)
 
-def load_config(uix_config):
+def log(*args):
+    if log_handler is not None:
+        log_handler(*args)
+    else:
+        if config["debug"]:
+            print(*args)
+
+def error(*args):
+    if error_handler is not None:
+        error_handler(*args)
+    else:
+        print(*args)
+
+def set_locale(locale_):
+    global locale
+    locale = locale_
+
+def init_app(uix_config):
     global config
+    # DEFAULT CONFIG --------------------------------------------------------------------------------
     config["host"] = "0.0.0.0"
     config["port"] = 5000
     config["threaded"] = True
     config["debug"] = False
-
+    config["pipes"] = []
+    config["locales_path"] = None
+    # CONFIG ----------------------------------------------------------------------------------------
     if uix_config is not None:
         for key in uix_config:
+            print(key)
             config[key] = uix_config[key]
-         
+    # INIT PIPES -----------------------------------------------------------------------------------
+    for pipe in config["pipes"]:
+        _pipes.append(pipe)
+    
+def set_lang(lang):
+    global locale
+    if "locales_path" in config and config["locales_path"] is not None:
+        from .core.locale import Locale
+        locale = Locale(config["locales_path"])
+        locale.load(lang.lower())
+    else:
+        error("No locales_path in config")
+        locale = None
+
+def T(text):
+    global locale
+    ct = threading.current_thread()
+    name = ct.name.split(" ")[0].split("-")[1]
+    if name in threadStorage:
+        locale = threadStorage[name].locale
+    
+    if locale is None:
+        return text
+    else:
+        return locale[text]
+    
 def get_start_example():
     from .example import start_example
     return start_example
@@ -75,5 +130,5 @@ def flask_run():
 def start(ui = None, config = None):
     global ui_root
     ui_root = ui if ui is not None else get_start_example() 
-    load_config(config)
+    init_app(config)
     flask_run()

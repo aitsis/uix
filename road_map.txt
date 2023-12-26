@@ -2,3 +2,6 @@
     1.1 - prompt builder
 2 - ai ui generator
     json to python
+3 - uix_client
+4 - global context
+
