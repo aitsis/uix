@@ -83,28 +83,6 @@ class Element:
     def set_value(self, value):
         self.value = value
 
-    # SCRIPT PROPERTIES -----------------------------------------------------------------------------
-    def add_header_item(self, id, item):
-        header_items = self.session.index.header_items
-        if id not in header_items:
-            header_items[id] = item
-
-    # def add_script_source(self, id, script):
-    #     script_sources = self.session.index.script_sources
-    #     if id in scripts:
-    #         return
-    #     script_sources[id] = script
-
-    # def add_script(self, id, script):
-    #     if id in scripts:
-    #         return
-    #     scripts[id] = script
-
-    # def add_css(self, id, style):
-    #     if id in styles:
-    #         return
-    #     styles[id] = style
-
     # RUNTIME JAVASCRIPT -------------------------------------------------------------------------------  
     def toggle_class(self, class_name):
         self.session.send(self.id, class_name, "toggle-class")
