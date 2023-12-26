@@ -1,18 +1,14 @@
 
+import threading
 import uix
 from copy import deepcopy
-import threading
-threadStorage = {}
-class Context:
-    def __init__(self, session, threadId):
-        self.session = session
-        self.threadId = threadId
-        self.elements = session.elements
-        self.data = {}
+from .context import Context
+context = threading.local()
 
 class Session:
     def __init__(self,sid):
         self.sid = sid
+        self.locale = None
         self.ui_root = None
         self._next_id = 0
         self.elements = {}
@@ -30,8 +26,6 @@ class Session:
         else:
             uix.error("No UI Root")
 
-    def add_ThreadStorage(self, thread_id, data):
-        threadStorage[thread_id] = data
     def eventHandler(self, data):
         id = data["id"]
         if id in self.elements:
@@ -43,18 +37,11 @@ class Session:
                     elm.events[event_name](self.context, id, data["value"])
 
     def clientHandler(self, data):
-        global config
         if data["id"] == "myapp" and data["value"] == "init":
             self.InitializeClient()                
         else:
-            current_thread = threading.current_thread()
-            thread_id = current_thread.name.split(" ")[0].split("-")[1]
-            if self.context.threadId == None:
-                self.context.threadId = thread_id
-            if self.context.threadId != thread_id:
-                threadStorage.remove(self.context.threadId)
-                threadStorage[thread_id] = self.context
-                self.context.threadId = thread_id
+            if not hasattr(context, "session"):
+                context.session = self
             self.eventHandler(data)
     
     def push_parent(self, parent):

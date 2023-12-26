@@ -60,7 +60,10 @@ class Element:
         return self.render()
     
     # RUNTIME UPDATE ELEMENT ------------------------------------------------------------------------
-    def update(self):
+    def update(self, content = None):
+        if content is not None:
+            with self:
+                content()
         self.session.send(self.id, self.render(), "init-content")
         self.session.flush_message_queue()
 

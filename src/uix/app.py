@@ -2,14 +2,13 @@ from typing import List
 from uuid import uuid4
 import os
 import logging
-import threading
 # FLASK SERVER -------------------------------------------------------------------------------------
 from flask import Flask, request, send_from_directory, abort, jsonify, make_response
 from flask_cors import CORS
 from flask_socketio import SocketIO
 # UIX CORE -----------------------------------------------------------------------------------------
 from .core.htmlgen import HTMLGen
-from .core.session import Session, threadStorage
+from .core.session import Session
 from ._config import config
 from .core.pipe import Pipe
 # GLOBALS ------------------------------------------------------------------------------------------
@@ -21,7 +20,7 @@ ui_parent = None
 sessions = {}
 html = HTMLGen()
 _pipes: List[Pipe] = []
-locale = None
+
 
 # SERVER -------------------------------------------------------------------------------------------
 flask = Flask(__name__)
@@ -73,10 +72,6 @@ def error(*args):
     else:
         print(*args)
 
-def set_locale(locale_):
-    global locale
-    locale = locale_
-
 def init_app(uix_config):
     global config
     # DEFAULT CONFIG --------------------------------------------------------------------------------
@@ -95,27 +90,7 @@ def init_app(uix_config):
     for pipe in config["pipes"]:
         _pipes.append(pipe)
     
-def set_lang(lang):
-    global locale
-    if "locales_path" in config and config["locales_path"] is not None:
-        from .core.locale import Locale
-        locale = Locale(config["locales_path"])
-        locale.load(lang.lower())
-    else:
-        error("No locales_path in config")
-        locale = None
 
-def T(text):
-    global locale
-    ct = threading.current_thread()
-    name = ct.name.split(" ")[0].split("-")[1]
-    if name in threadStorage:
-        locale = threadStorage[name].locale
-    
-    if locale is None:
-        return text
-    else:
-        return locale[text]
     
 def get_start_example():
     from .example import start_example
