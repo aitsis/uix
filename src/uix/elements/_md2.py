@@ -55,4 +55,25 @@ class md2(Element):
     def send_value(self, value):
         self.session.send(self.id, value, "md2-change-md")
 
+
+
+title = "Markdown"
+description = '''
+Markdown elementi. Markdown dilinde yazılmış metni html'e çevirir.
+id= Markdown elementinin id'si
+value= Markdown elementinin içeriği
+'''
+
+sample = """
     
+    md2('''# Markdown!
+    ```python
+    from uix.elements import div
+
+    def hello_world_example():
+        main = div("Hello World!").style("font-size","30px")
+        return main
+    ```
+                ''')
+
+"""
