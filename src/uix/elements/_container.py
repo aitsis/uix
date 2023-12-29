@@ -4,3 +4,18 @@ class container(Element):
     def __init__(self,value,id = None):
         super().__init__(value, id = id)
         self.classes.append("container")
+
+
+title = "Container"
+description = '''
+Container elementi. İçerisine elemanlar eklenerek kullanılır. Eklenen elemanları yatayda ve dikeyde ortalar.
+
+id= Container elementinin id'si
+value= Container elementinin içeriği
+'''
+
+sample = """
+    with container(""):
+        text("Hello World")
+
+"""
