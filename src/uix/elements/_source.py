@@ -15,14 +15,16 @@ class source(Element):
 title = "Source"
 
 description = '''
-Html'deki source elementine karşılık gelir. Medya öğelerinde birden fazla kaynak belirtmek için kullanılır. Bunun sebebi tarayıcıların farklı formatları desteklemesidir.
-id= Source elementinin id'si
-value= Source elementinin src'si
-media= CSS'de normalde tanımlanacak herhangi bir geçerli medya sorgusunu kabul eder.
-type= Kaynak dosyanın MIME türü. Örneğin, video/mp4, video/webm veya video/ogg. 
-Type'ı farklı birden fazla source belirtilirse tarayıcı desteklediği ilk kaynağı kullanır.
-Default değeri video/mp4'dür.
+# source(value,id,media,type)
+1. Source elementi.
+    | attr          | desc                                              |
+    | :------------ | :------------------------------------------------ |
+    | id            | Source elementinin id'si                          |
+    | value         | Source elementinin src'si                       |
+    | media         | CSS'de normalde tanımlanacak herhangi bir geçerli medya sorgusunu kabul eder. |
+    | type          | Kaynak dosyanın MIME türü. Örneğin, video/mp4, video/webm veya video/ogg. |
 '''
+
 
 sample = """
 with video():

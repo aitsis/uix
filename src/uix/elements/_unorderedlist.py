@@ -10,11 +10,15 @@ class unorderedlist(Element):
 
 title = "unorderedlist"
 description = '''
-Temel unorderedlist elementi listitem elementleri ile kullanılır.
-value : unorderedlistin içeriği
-id : unorderedlistin id'si
-role : unorderedlistin rolü
+# unorderedlist(value,id,role)
+1. Temel unorderedlist elementi listitem elementleri ile kullanılır.
+    | attr          | desc                                              |
+    | :------------ | :------------------------------------------------ |
+    | id            | unorderedlistin id'si                          |
+    | value         | unorderedlistin içeriği                       |
+    | role          | unorderedlistin rolü |
 '''
+
 sample = """
 with parent:
     with unorderedlist(""):

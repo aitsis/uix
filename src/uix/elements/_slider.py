@@ -20,16 +20,17 @@ class slider(Element):
         return self
     
 title = "Slider"
-description = '''
-Slider elementi. Değer değiştiğinde bir fonksiyon çağırılabilir.
-value : Sliderın değeri
-id : Sliderın id'si
-min : Sliderın minimum değeri
-max : Sliderın maksimum değeri
-step : Sliderın artış miktarı
-events : Slidera ait eventler:
-    change : Sliderın değeri değiştiğinde
-'''
+description = """
+# slider(value,id,min,max,step)
+1. Slider bir input elementidir.
+    | attr          | desc                                              |
+    | :------------ | :------------------------------------------------ |
+    | id            | Slider elementinin id'si                          |
+    | value         | Slider elementinin içeriği                       |
+    | min           | Slider elementinin minimum değeri                |
+    | max           | Slider elementinin maksimum değeri               |
+    | step          | Slider elementinin artış değeri                  |
+"""
 sample = """
 
     def on_slider_change():

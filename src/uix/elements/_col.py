@@ -8,11 +8,16 @@ class col(Element):
 
 
 title = "column"
+
 description = '''
-Temel column elementi.
-value : column içeriği
-id : column id'si
+# col(value,id = None)
+1. Temel column elementi.
+    | attr          | desc                                              |
+    | :------------ | :------------------------------------------------ |
+    | id            | Column elementinin id'si                         |
+    | value         | Column elementinin içeriği                      |
 '''
+
 sample = """
 with parent:
     with border("").style("padding","10px"):

@@ -8,9 +8,16 @@ class row(Element):
 
 
 title = "Row"
+
 description = '''
-Row elementi. Temel olarak bir satırı temsil eder. İçerisindeki elemanları yan yana ekler.
+# row(value,id)
+1. Row elementi. Temel olarak bir satırı temsil eder. İçerisindeki elemanları yan yana ekler.
+    | attr          | desc                                              |
+    | :------------ | :------------------------------------------------ |
+    | id            | Row elementinin id'si                          |
+    | value         | Row elementinin içeriği                       |
 '''
+
 sample = """
 with row():
     button("Buton",id="btn1")

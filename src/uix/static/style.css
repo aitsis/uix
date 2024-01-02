@@ -526,3 +526,19 @@ button:disabled {
   border-radius: 3px;
   padding: 5px;
 }
+
+
+/* table css */
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+table {
+  border-collapse: collapse;
+}
+       
+th, td {    
+  text-align: left;
+  padding: 8px;
+}
+       
+tr:nth-child(even){background-color: var(--background-secondary)}

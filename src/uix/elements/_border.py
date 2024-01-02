@@ -8,13 +8,22 @@ class border(Element):
 title = "Border"
 
 description = '''
-Border elementi. Kenarında 1px kalınlığında çizgi bulunan bir div oluşturur. İçerisine elemanlar eklenerek kullanılır.
-id= Border elementinin id'si
-value= Border elementinin içeriği
+# border(value,id)
+1. Border elementi. Kenarında 1px kalınlığında çizgi bulunan bir div oluşturur.
+İçerisine elemanlar eklenerek kullanılır.
+    | attr          | desc                                              |
+    | :------------ | :------------------------------------------------ |
+    | id            | Border elementinin id'si                          |
+    | value         | Border elementinin içeriği                       |
 '''
 
 sample = """
-with border(''):
-    with div(''):
-        text("Border")    
+def button_generator(value):
+    button(value)
+
+
+for i in range(len(example_button)):
+    with border("",) as border_demo:
+        button_generator(example_button[i])
+
 """

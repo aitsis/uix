@@ -18,13 +18,16 @@ class grid(Element):
 title = "Grid"
 
 description = '''
-    Grid elementi. Grid özelliğinde bir div oluşturur. column ve row değerleri girilerek içerisindeki elemanlar grid özelliğine göre konumlandırılır.
-    id= Grid elementinin id'si
-    value= Grid elementinin içeriği
-    columns= Grid elementinin sütun değerlerini belirler. Örneğin: "150px 600px"
-    rows= Grid elementinin satır değerlerini belirler. Örneğin: "150px 600px"
-
+# grid(value,id,columns,rows)
+1. Grid elementi. Grid özelliğinde bir div oluşturur. column ve row değerleri girilerek içerisindeki elemanlar grid özelliğine göre konumlandırılır.
+    | attr          | desc                                              |
+    | :------------ | :------------------------------------------------ |
+    | id            | Grid elementinin id'si                          |
+    | value         | Grid elementinin içeriği                       |
+    | columns       | Grid elementinin sütun değerlerini belirler. Örneğin: "150px 600px" |
+    | rows          | Grid elementinin satır değerlerini belirler. Örneğin: "150px 600px" |
 '''
+
 
 sample = """
 with grid("",columns = "150px 600px 200px",rows="auto auto"):

@@ -1,16 +1,19 @@
 from ..core.element import Element
 
 class table(Element):
-    def __init__(self,id = None,value = None):
+    def __init__(self,value = None, id = None):
         super().__init__(value, id = id)    
         self.tag = "table"
 
 title = "Table"
-description = """
-Temel html tablo etiketidir.
-value: tablo değeri
-id: tablo id değeri
-"""
+description = '''
+# table(value,id = None)
+1. Table elementi. Html'deki table elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır.
+    | attr          | desc                                              |
+    | :------------ | :------------------------------------------------ |
+    | id            | Table elementinin id'si                          |
+    | value         | Table elementinin içeriği                       |
+'''
 sample = """
 with table():
     with tr():
