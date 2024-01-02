@@ -22,20 +22,20 @@ class button(Element):
         
 
 title = "Button"
-description = '''
-Temel buton elementi.
-value : Butonun üzerindeki yazı
-id : Butonun id'si
-type : Butonun tipi (button, submit, reset)
-formID : Butonun ait olduğu formun id'si
-disabled : Butonun etkinliğini kapatır.
-events : Butona ait eventler:
-    click : Butona tıklandığında
-with parent:
-    button("Buton",id="btn1").on("click",lambda: print("Tıklandı"))
 
+description = '''
+# button(value,id = None, type='button', formID=None, disabled=False)
+1. Temel buton elementi.
+    | attr          | desc                                              |
+    | :------------ | :------------------------------------------------ |
+    | id            | Buton elementinin id'si                          |
+    | value         | Buton elementinin içeriği                       |
+    | type          | Buton elementinin tipi                          |
+    | formID        | Buton elementinin ait olduğu formun id'si       |
+    | disabled      | Buton elementinin etkinliğini kapatır           |
 '''
+
 sample = """
 with parent:
-    button("Buton",id="btn1")
+    button("Click me!",id="btn1")
 """

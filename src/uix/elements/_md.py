@@ -35,7 +35,6 @@ uix.html.add_css("md2_css_style", style = '''
         }
         /* Optional: Style for inline code */
         code {
-            background-color: #000; /* Change this color to your preference */
             padding: 0.2em 0.4em;
             border-radius: 3px;
         }
@@ -58,10 +57,14 @@ class md(Element):
 
 
 title = "Markdown"
+
 description = '''
-Markdown elementi. Markdown dilinde yazılmış metni html'e çevirir.
-id= Markdown elementinin id'si
-value= Markdown elementinin içeriği
+# md(value,id)
+1. Markdown elementi. Markdown dilinde yazılmış metni html'e çevirir.
+    | attr          | desc                                              |
+    | :------------ | :------------------------------------------------ |
+    | id            | Markdown elementinin id'si                          |
+    | value         | Markdown elementinin içeriği                       |
 '''
 
 sample = """

@@ -11,13 +11,18 @@ class select(Element):
             self.attrs["disabled"] = "disabled"
 
 title = "select"
+
 description = '''
-Temel select elementi. Tek başına kullanılmaz. Option elementleri ile kullanılır.
-value : Selectin içeriği
-id : Selectin id'si
-selected : Option değerlerinden hangisinin başlangıç değeri olucağını tanımlar.
-disabled : Selectin etkinliğini kapatır.
+# select(value,id)
+1. Temel select elementi. Tek başına kullanılmaz. Option elementleri ile kullanılır.
+    | attr          | desc                                              |
+    | :------------ | :------------------------------------------------ |
+    | id            | Select elementinin id'si                          |
+    | value         | Select elementinin içeriği                       |
+    | selected      | Option değerlerinden hangisinin başlangıç değeri olucak tanımlar. |
+    | disabled      | Selectin etkinliğini kapatır. |
 '''
+
 sample = """
  with select(""):
         option("Option 1")

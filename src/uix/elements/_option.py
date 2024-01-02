@@ -18,13 +18,18 @@ class option(Element):
 
 
 title = "option"
+
 description = '''
-Temel option elementi.
-value : Optionun değeri
-id : Optionun id'si
-selected : Optionun varsayılan olarak seçili olucak değeri tanımlar.
-disabled : Optionun etkinliğini kapatır.
+# option(value,id)
+1. Temel option elementi.
+    | attr          | desc                                              |
+    | :------------ | :------------------------------------------------ |
+    | id            | Option elementinin id'si                          |
+    | value         | Option elementinin içeriği                       |
+    | selected      | Optionun varsayılan olarak seçili olucak değeri tanımlar. |
+    | disabled      | Optionun etkinliğini kapatır. |
 '''
+
 sample = """
 with parent:
     option("value",id="option1")

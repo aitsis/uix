@@ -7,11 +7,14 @@ class container(Element):
 
 
 title = "Container"
-description = '''
-Container elementi. İçerisine elemanlar eklenerek kullanılır. Eklenen elemanları yatayda ve dikeyde ortalar.
 
-id= Container elementinin id'si
-value= Container elementinin içeriği
+description = '''
+# container(value,id = None)
+1. Container elementi. İçerisine elemanlar eklenerek kullanılır. Eklenen elemanları yatayda ve dikeyde ortalar.
+    | attr          | desc                                              |
+    | :------------ | :------------------------------------------------ |
+    | id            | Container elementinin id'si                          |
+    | value         | Container elementinin içeriği                       |
 '''
 
 sample = """

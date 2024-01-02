@@ -7,9 +7,12 @@ class div(Element):
 title = "Div"
 
 description = '''
-Div elementi. Html'deki div elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır.
-id= Div elementinin id'si
-value= Div elementinin içeriği
+# div(value,id = None)
+1. Div elementi. Html'deki div elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır.
+    | attr          | desc                                              |
+    | :------------ | :------------------------------------------------ |
+    | id            | Div elementinin id'si                          |
+    | value         | Div elementinin içeriği                       |
 '''
 
 sample = """

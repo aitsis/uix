@@ -12,13 +12,16 @@ class label(Element):
         self.has_content = True
 
 title = "Label"
+
 description = '''
-Label elementi. Bir input elementine ait label elementi için kullanılır.
-value : Label içeriği
-id : Labelin id'si
-attributes : Labela ait attribute'lar
-attrs["tabindex"] : Labelin tabindex'i. Varsayılan değer: -1. Değer -1 ise tab ile focuslanamaz.
-usefor : Labelin kullanıldığı input elementinin id'si
+# label(value,id,tabindex = -1,usefor = None)
+1. Label elementi. Bir input elementine ait label elementi için kullanılır.
+    | attr          | desc                                              |
+    | :------------ | :------------------------------------------------ |
+    | id            | Labelin id'si                          |
+    | value         | Label içeriği                       |
+    | tabindex      | Labelin tabindex'i. Varsayılan değer: -1. Değer -1 ise tab ile focuslanamaz. |
+    | usefor        | Labelin kullanıldığı input elementinin id'si |
 '''
 sample = """
     with parent:

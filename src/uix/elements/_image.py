@@ -10,10 +10,13 @@ class image(Element):
 title = "Image"
 
 description = '''
-Html'deki img elementine karşılık gelir. Sayfada görüntülenmesi istenen resimler için kullanılır.
+# image(value,id = None)
+1. Html'deki img elementine karşılık gelir. Sayfada görüntülenmesi istenen resimler için kullanılır.
 
-id= Image elementinin id'si
-value= Image elementinin src'si
+    | attr          | desc                                              |
+    | :------------ | :------------------------------------------------ |
+    | id            | Image elementinin id'si                          |
+    | value         | Image elementinin src'si                       |
 '''
 
 sample = """

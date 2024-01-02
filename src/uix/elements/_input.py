@@ -25,15 +25,19 @@ class input(Element):
     
 
     title = "input"
+
     description = '''
-    Temel input elementi.
-    value : Inputun otomaik olarak doldurulacak değeri
-    id : Inputun id'si
-    type : Inputun type değerleri (text, password, email, date, datetime, time, tel)
-    name : Input alanının form gönderildiğinde sunucuya gönderilecek verinin adını belirtir.
-    placeholder : Inputun açıklama metni
-    step : Inputun sayısal değerlerde artış miktarı
-    required : Inputun zorunlu olup olmadığı
+    # input(value,id,type,name,placeholder,step,required)
+    1. Temel input elementi.
+        | attr          | desc                                              |
+        | :------------ | :------------------------------------------------ |
+        | id            | Input elementinin id'si                          |
+        | value         | Input elementinin içeriği                       |
+        | type          | Input elementinin tipi                          |
+        | name          | Input elementinin name'i                        |
+        | placeholder   | Input elementinin placeholder'i                 |
+        | step          | Input elementinin step'i                        |
+        | required      | Input elementinin required'u                    |
     '''
     sample = """
     with parent:

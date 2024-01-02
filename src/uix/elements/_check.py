@@ -16,16 +16,17 @@ class check(Element):
         return self
 
 title = "Check"
-description = """
-Checkbox bir input elementidir.
-checked : Check'in seçili olup olmadığı
-id : Check'in id'si
-disabled : Check'in etkinliğini kapatır.
-events : Check'e ait eventler:
-    click : Check'e tıklandığında
-with parent:
-    check("Check 1",id="check1").on("click",lambda: print("Tıklandı"))
 
+description = """
+
+# check(value,id,checked,disabled)
+1. Checkbox bir input elementidir.
+    | attr          | desc                                              |
+    | :------------ | :------------------------------------------------ |
+    | id            | Check elementinin id'si                           |
+    | value         | Check elementinin içeriği                        |
+    | checked       | Check'in seçili olup olmadığı                     |
+    | disabled      | Check'in etkinliğini kapatır.                     |
 """
 sample = """
 with parent:

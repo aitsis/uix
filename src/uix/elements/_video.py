@@ -3,8 +3,8 @@ from ..core.element import Element
 print("Imported: video")
 
 class video(Element):
-     def __init__(self, id=None, value=None,loop="true", autoplay="true", muted="true", src=None):
-        super().__init__(id=id, value=value)
+     def __init__(self, value = None, id = None,loop="true", autoplay="true", muted="true", src=None):
+        super().__init__(value=value,id=id)
     
         if src is not None:
             self.attrs["src"] = src
@@ -18,14 +18,17 @@ class video(Element):
 
 title = "Video"
 
-description = '''
-    Video elementi. Html'deki video elementine karşılık gelir. İçerisine source elementleri eklenerek kullanılır.
-    id= Video elementinin id'si
-    loop= Video elementinin sürekli oynatılması
-    autoplay= Video elementinin otomatik oynatılması
-    muted= Video elementinin sesinin kapatılması
-    src= Video elementinin src'si, burası isteğe bağlıdır, direkt src ile kaynak belirtilebileceği gibi source elementleri ile de belirtilebilir.
-'''
+description = """
+# video(id,loop,autoplay,muted)
+1. Html'de video elementine karşılık gelir. İçerisine source elementleri eklenerek kullanılır.
+
+    | attr          | desc                                              |
+    | :------------ | :------------------------------------------------ |
+    | id            | Video elementinin id'si                          |
+    | loop          | Video elementinin sürekli oynatılması            |
+    | autoplay      | Video elementinin otomatik oynatılması           |
+    | muted         | Video elementinin sesinin kapatılması            |
+"""
 
 sample = """
 ## sample1

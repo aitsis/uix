@@ -9,10 +9,12 @@ class page(Element):
 title = "Page"
 
 description = '''
-Page elementi. İçi boş bir ana div oluşturur. İçerisine elemanlar eklenerek kullanılır.
-
-id= Page elementinin id'si
-value= Page elementinin içeriği
+# page(value,id)
+1. Page elementi. İçi boş bir ana div oluşturur. İçerisine elemanlar eklenerek kullanılır.
+    | attr          | desc                                              |
+    | :------------ | :------------------------------------------------ |
+    | id            | Page elementinin id'si                          |
+    | value         | Page elementinin içeriği                       |
 '''
 
 sample = """
