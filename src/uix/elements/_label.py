@@ -24,8 +24,6 @@ description = '''
     | usefor        | Labelin kullanıldığı input elementinin id'si |
 '''
 sample = """
-    with parent:
-        label("Label",id="label1",usefor="input1")
-        input(id="input1", type="text", placeholder="Label için input")
+    label("This Text is a Label!").style("font-size","20px")
         
 """

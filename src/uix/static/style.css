@@ -348,10 +348,6 @@ button:disabled {
   width: fit-content;
   height: fit-content;
   background-color: var(--background);
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
   padding: 7px;
   margin: 0;
   box-sizing: border-box;

@@ -19,11 +19,9 @@ description = '''
     | value         | Liste içeriği                       |
 '''
 sample = """
-    with parent:
-        with orderedlist("Liste",id="list1"):
-            listitem("Liste elemanı 1")
-            listitem("Liste elemanı 2")
-            listitem("Liste elemanı 3")
-            listitem("Liste elemanı 4")
-            listitem("Liste elemanı 5")
+def orderedlist_listitem_example():
+    with orderedlist(id="myList"):
+        listitem(value="Item 1")   
+        listitem(value="Item 2")        
+        listitem(value="Item 3")
  """

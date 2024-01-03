@@ -78,7 +78,7 @@ class Element:
         self.send_value(value)
 
     def send_value(self, value):
-        self.session.send(self.id, value, "change"+self.value_name)
+        self.session.send(self.id, value, "change-"+self.value_name)
 
     def set_value(self, value):
         self.value = value
