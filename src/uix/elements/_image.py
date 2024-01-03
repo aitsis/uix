@@ -20,7 +20,8 @@ description = '''
 '''
 
 sample = """
-with parent():
-    value = "image.png"
-    image(value)
+def image_example():
+    image_url = "https://ai.ait.com.tr/wp-content/uploads/AIT_AI_LOGO.png"
+    main = image(image_url).cls("image")
+    return main
 """

@@ -20,12 +20,12 @@ description = '''
 
 sample = """
 def column_example():
-    with border("").style("padding","10px"):
-        with col("").style("text-align","center"):
+    with border(""):
+        with col(""):
             div("Column 1")
             div("Column 1")
-    with border("").style("padding","10px"):    
-        with col("").style("text-align","center"):
+    with border(""):
+        with col(""):
             div("Column 2")
             div("Column 2")
 """

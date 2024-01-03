@@ -30,18 +30,15 @@ description = '''
 
 
 sample = """
-with grid("",columns = "150px 600px 200px",rows="auto auto"):
-    with div(""):
-        text("Column1, Row1")
-    with div(""):
-        text("Column2, Row1")
-    with div(""):
-        text("Column3, Row1")
-    with div(""):
-        text("Column1, Row2")
-    with div(""):
-        text("Column2, Row2")
-    with div(""):
-        text("Column3, Row2")   ## 3 sütun 2 satırlık bir grid alanı oluşturduk.
+ with grid("",columns= "40% 1fr").style("margin","auto") as grid1:
+        grid1.style("width","400px")
+        grid1.style("border","1px #aaa solid")
+        grid1.style("padding","10px")
+        grid1.style("gap","10px")
+        grid1.style("border-radius","10px")
+        button1("A!")
+        button1("B!")
+        button1("C!")
+        button1("D!")
 """
 

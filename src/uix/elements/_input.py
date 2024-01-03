@@ -41,7 +41,7 @@ description = '''
 '''
 sample = """
 def input_example():
-    with col("").style("height","min-content").style("width","min-content").style("gap","10px"):
+    with col("").style("width","min-content").style("gap","10px"):
         input("", placeholder="Kullanıcı Adı", required=True)
         input("",type="password", placeholder="Şifre")
         input("",type="number", placeholder="Sayı")
@@ -60,7 +60,7 @@ def input_example():
                     
     with border("").style("padding","20px").style("width","50%"):
         input(id="userName", placeholder="Kullanıcı Adı", required=True).on("input",on_change)
-        with row("").style("display","flex").style("justify-content","space-between"):
+        with row(""):
             div("Zorunlu alanlar doldurulmalıdır.").style("font-size","10px")
             button("Gönder", id="submitButton", type="submit", disabled = True)
 """

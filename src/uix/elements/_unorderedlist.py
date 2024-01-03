@@ -21,7 +21,7 @@ description = '''
 
 sample = """
 def unorderedlist_example():
-    with unorderedlist("").style("margin","auto").style("display","block"):
+    with unorderedlist(""):
         listitem("Item 1")
         listitem("Item 2")
         listitem("Item 3")
