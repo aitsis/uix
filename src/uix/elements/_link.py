@@ -27,6 +27,6 @@ description = '''
 
 sample = """
 with parent(''):
-    link("Google", href="https://www.google.com.tr", target="_blank", title="Google'a git")
+    link("Ai Ait",href="https://ai.ait.com.tr/",target="_blank",title="Ai Ait Website'sine Git") 
     
 """
