@@ -15,19 +15,26 @@ description = '''
     | value         | Table elementinin içeriği                       |
 '''
 sample = """
-with table():
-    with tr():
-        with th():
-            text("Başlık 1")
-        with th():
-            text("Başlık 2")
-        with th():
-            text("Başlık 3")
-    with tr():
-        with td():
-            text("Değer 1")
-        with td():
-            text("Değer 2")
-        with td():
-            text("Değer 3")
+def table_example():
+    with table() as main:
+        with thead():
+            with tr():
+                th(value="Name")
+                th(value="Surname")
+                th(value="Age")
+        with tbody():
+            with tr():
+                td(value="John")
+                td(value="Doe")
+                td(value="32")
+            with tr():
+                td(value="Jane")
+                td(value="Doe")
+                td(value="31")
+        with tfoot():
+            with tr():
+                td(value="John")
+                td(value="Doe")
+                td(value="32")
+    return main
 """
