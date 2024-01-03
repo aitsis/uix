@@ -344,7 +344,7 @@ button:disabled {
   height: 85%;
 }
 
-.wrapper {
+.border {
   width: fit-content;
   height: fit-content;
   background-color: var(--background);
@@ -412,10 +412,6 @@ button:disabled {
 
 .center {
   justify-content: center;
-}
-
-.border {
-  border: 1px solid gray;
 }
 
 .hidden {

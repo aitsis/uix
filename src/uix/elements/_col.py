@@ -7,7 +7,7 @@ class col(Element):
 
 
 
-title = "column"
+title = "Column"
 
 description = '''
 # col(value,id = None)
@@ -19,12 +19,12 @@ description = '''
 '''
 
 sample = """
-with parent:
-    with border("").style("padding","10px"):
+def column_example():
+    with border(""):
         with col(""):
             div("Column 1")
             div("Column 1")
-    with border("").style("padding","10px"):    
+    with border(""):
         with col(""):
             div("Column 2")
             div("Column 2")

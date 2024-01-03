@@ -8,7 +8,7 @@ class unorderedlist(Element):
         self.has_content = True
         self.attrs["role"] = role
 
-title = "unorderedlist"
+title = "Unorderedlist"
 description = '''
 # unorderedlist(value,id,role)
 1. Temel unorderedlist elementi listitem elementleri ile kullanılır.
@@ -20,9 +20,9 @@ description = '''
 '''
 
 sample = """
-with parent:
+def unorderedlist_example():
     with unorderedlist(""):
-        listitem(value="Item 1")
-        listitem(value="Item 2")
-        listitem(value="Item 3")
+        listitem("Item 1")
+        listitem("Item 2")
+        listitem("Item 3")
 """

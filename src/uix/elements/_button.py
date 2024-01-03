@@ -36,6 +36,7 @@ description = '''
 '''
 
 sample = """
-with parent:
-    button("Click me!",id="btn1")
+def button_example():
+    main = button("Click me!")
+    return main
 """
