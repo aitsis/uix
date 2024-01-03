@@ -23,5 +23,14 @@ description = """
     | placeholder   | Textarea elementinin placeholder değeri            |
 """
 sample = """
-textarea(placeholder = "Bir şeyler yazın..."):
+def textarea_example():
+    main = textarea("","text", placeholder="Selam").on("input", on_change)
+    div(id="test", value="Selam")
+    return main
+
+def on_change(ctx, id, value):
+    print("Changed", id, value)
+    ctx.elements["test"].value = value
+    ctx.elements["test"].update()
+
 """

@@ -15,19 +15,20 @@ description = '''
     | value         | Table elementinin içeriği                       |
 '''
 sample = """
-with table():
-    with tr():
-        with th():
-            text("Başlık 1")
-        with th():
-            text("Başlık 2")
-        with th():
-            text("Başlık 3")
-    with tr():
-        with td():
-            text("Değer 1")
-        with td():
-            text("Değer 2")
-        with td():
-            text("Değer 3")
+def table_example():
+    with table("", id="table_example"):
+        global fake_data
+        with thead("",id="table_example_header"):
+            with tr("",id="table_example_header_row"):
+                th("ID")
+                th("Name")
+                th("Username")
+                th("Email")
+        with tbody("",id="table_example_body"):
+            for item in fake_data:
+                with tr("",id=item["id"]):
+                    td(item["id"])
+                    td(item["name"])
+                    td(item["username"])
+                    td(item["email"])
 """

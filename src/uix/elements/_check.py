@@ -29,9 +29,16 @@ description = """
     | disabled      | Check'in etkinliğini kapatır.                     |
 """
 sample = """
-with parent:
-    check("Check 1",id="check1")
-    check("Check 2",id="check2")
-    check("Check 3",id="check3")
-    check("Check 4",id="check4")
+def check_example():
+    main = check("", id="check").on("click", on_click)
+    test = div("test", "test")
+    return main
+
+def on_click(ctx, id, value):
+    print("Clicked", id, value)
+    if value == False:
+        ctx.elements["test"].value = "Unchecked!"
+    else:
+        ctx.elements["test"].value = "Checked!"
+    ctx.elements["test"].update()
 """

@@ -23,11 +23,8 @@ description = '''
 
 '''
 sample = """
-    with parent:
-        with orderedlist("Liste",id="list1"):
-            listitem("Liste elemanı 1")
-            listitem("Liste elemanı 2")
-            listitem("Liste elemanı 3")
-            listitem("Liste elemanı 4")
-            listitem("Liste elemanı 5")
+def listitem_example():
+    with unorderedlist("", id="listitem_example"):
+        for item in fake_data:
+            listitem(item["name"], id=item["id"])
  """
