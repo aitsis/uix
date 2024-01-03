@@ -18,12 +18,10 @@ description = '''
 '''
 
 sample = """
-def button_generator(value):
-    button(value)
-
+example_button = ["A!", "B!", "C!", "D!"]
 
 for i in range(len(example_button)):
     with border("",) as border_demo:
-        button_generator(example_button[i])
+        button(example_button[i])
 
 """
