@@ -16,25 +16,19 @@ description = '''
 '''
 sample = """
 def table_example():
-    with table() as main:
-        with thead():
-            with tr():
-                th(value="Name")
-                th(value="Surname")
-                th(value="Age")
-        with tbody():
-            with tr():
-                td(value="John")
-                td(value="Doe")
-                td(value="32")
-            with tr():
-                td(value="Jane")
-                td(value="Doe")
-                td(value="31")
-        with tfoot():
-            with tr():
-                td(value="John")
-                td(value="Doe")
-                td(value="32")
-    return main
+    with table("", id="table_example"):
+        global fake_data
+        with thead("",id="table_example_header"):
+            with tr("",id="table_example_header_row"):
+                th("ID")
+                th("Name")
+                th("Username")
+                th("Email")
+        with tbody("",id="table_example_body"):
+            for item in fake_data:
+                with tr("",id=item["id"]):
+                    td(item["id"])
+                    td(item["name"])
+                    td(item["username"])
+                    td(item["email"])
 """
