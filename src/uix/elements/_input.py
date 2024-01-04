@@ -1,7 +1,7 @@
 from ..core.element import Element
 print("Imported: input")
 class input(Element):
-    def __init__(self,value = None,id = None,type='text',name=None,placeholder="",required=False):
+    def __init__(self,value = None,id = None,type='text',name=None,placeholder="",required=False,list=None):
         super().__init__(value, id = id)
         self.tag = "input"
         self.value_name = "value"
@@ -18,6 +18,9 @@ class input(Element):
 
         if required:
             self.attrs["required"] = "required"
+        
+        if list is not None:
+            self.attrs["list"] = list
 
     def disabled(self):
         self.attrs["disabled"] = "disabled"
@@ -38,6 +41,7 @@ description = '''
     | placeholder   | Input elementinin placeholder'i                 |
     | step          | Input elementinin step'i                        |
     | required      | Input elementinin required'u                    |
+    | list          | Input elementinin list'i                        |
 '''
 sample = """
 def input_example():
