@@ -162,8 +162,8 @@ description = """
 
     | attr                 | desc                                                               |
     | :------------------- | :----------------------------------------------------------------- |
-    | value                | Elementin value'su.                                                |
-    | id                   | Elementin içeriği.                                                 |
+    | value                | Elementin içeriği.                                                 |
+    | id                   | Elementin id'si                                                    |
     | multiple             | Birden fazla dosya seçilmesine izin verir.                         |
     | save_path            | Dosyanın kaydedileceği yol.                                        |
     | on_upload_done       | Dosya yüklendiğinde çalışacak fonksiyon.                           |
