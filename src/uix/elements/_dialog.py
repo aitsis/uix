@@ -5,7 +5,7 @@ print("Imported: dialog")
 uix.html.add_script("dialog", beforeMain = False, script =
 '''
     event_handlers["dialog-open"] = function(id, value, event_name){
-        isClickableAnywhere = value;
+        close_on_outside = value;
         const dialog = document.getElementById(id);
         const closeButton = dialog.querySelector("button");
         
@@ -15,7 +15,7 @@ uix.html.add_script("dialog", beforeMain = False, script =
             dialog.close();
         });
         
-        if (isClickableAnywhere) {
+        if (close_on_outside) {
             window.onclick = function(event) {
                 if (event.target === dialog) {
                     dialog.close();
@@ -40,14 +40,14 @@ dialog {
 }''')
 
 class dialog(Element):
-    def __init__(self,value = None,id = None, is_clickable_anywhere = True):
+    def __init__(self,value = None,id = None, close_on_outside = True):
         super().__init__(value, id = id)
         self.tag = "dialog"
         self.has_content = True
-        self.is_clickable_anywhere = is_clickable_anywhere
+        self.close_on_outside = close_on_outside
 
     def open(self):
-        self.session.send(self.id, self.is_clickable_anywhere, "dialog-open")
+        self.session.send(self.id, self.close_on_outside, "dialog-open")
         return self
         
         
