@@ -22,13 +22,13 @@ class HTMLGen:
     def add_header_item(self, id, item):
         self.header_items.setdefault(id, item)
         
-    def add_script_source(self, id, beforeMain = True, script = None):
+    def add_script_source(self, id, script = None, beforeMain = True):
         if beforeMain:
             self.script_sources_before_main.setdefault(id, script)
         else:
             self.script_sources_after_main.setdefault(id, script)
 
-    def add_script(self, id, beforeMain = True, script = None):
+    def add_script(self, id, script = None, beforeMain = True):
         if beforeMain:
             self.scripts_before_main.setdefault(id, script)
         else:
