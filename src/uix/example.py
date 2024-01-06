@@ -22,4 +22,4 @@ from uix.elements import md
 
 start_example = md(md_text)
 if __name__ == "__main__":
-    uix.start(ui = start_example, debug=True)
+    uix.start(ui = start_example)
