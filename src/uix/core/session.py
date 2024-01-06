@@ -22,6 +22,7 @@ class Session:
             self.ui_root.bind(self)
             html = self.ui_root.render()
             self.send("myapp", html, "init-content")
+            self.ui_root._init()
             self.flush_message_queue()
         else:
             uix.error("No UI Root")

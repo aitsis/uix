@@ -37,6 +37,14 @@ class Element:
             del self.session.elements[self.id]
         for child in self.children:
             child.unbind()
+    
+    def _init(self):
+        self.init()
+        for child in self.children:
+            child._init()
+
+    def init(self):
+        pass
     # WITH ENTRY - EXIT -------------------------------------------------------------------------------
     def enter(self):
         self.old_parent = uix.app.ui_parent
@@ -50,9 +58,11 @@ class Element:
         uix.app.ui_parent = self.old_parent
         if(self.session is not None):
             self.bind(self.session,only_children=True)
+            self._init()
     
     def __enter__(self):
         return self.enter()
+    
     def __exit__(self, type, value, traceback):
         self.exit()
 
