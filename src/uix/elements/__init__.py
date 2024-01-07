@@ -2,22 +2,19 @@ import sys
 import os
 from types import ModuleType
 import importlib
-modules = []
-__all__ = modules
-for file in os.listdir(os.path.dirname(__file__)):
-    if file.endswith(".py") and file.startswith("_") and file != "__init__.py":
-        module_name = file[1:-3]
-        modules.append(module_name)
+__modules = []
+__all__ = __modules
+print("Imported: __init__")
+for __file in os.listdir(os.path.dirname(__file__)):
+    if __file.endswith(".py") and __file.startswith("_") and __file != "__init__.py":
+        module_name = __file[1:-3]
+        __modules.append(module_name)
 
 
 def __getattr__(name):
-    print("Imported: __getattr__ name:", name)
-    print("modules = ", modules)
-    if name in modules:
+    if name in __modules:
         module = importlib.import_module(f"uix.elements._{name}")
-        print("Imported: Module =", module)
         attr = getattr(module, name)
-        print("Imported: attr =", attr)
         return attr
     raise AttributeError(f"module {__name__} has no attribute {name}")
     
@@ -25,7 +22,7 @@ def __getattr__(name):
 def __dir__():
     """Just show what we want to show."""
     print("Imported: __dir__")
-    result = list(modules)
+    result = list(__modules)
     result.extend(
         (
             "__file__",
