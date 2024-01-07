@@ -2,19 +2,17 @@ import uix
 from ..core.element import Element
 print("Imported: dialog")
 
-uix.html.add_script("dialog", beforeMain = False, script =
+uix.html.add_script("dialog", script =
 '''
-    event_handlers["dialog-open"] = function(id, value, event_name){
+    event_handlers["dialog-close"] = function(id, value, event_name){
+        const dialog = document.getElementById(id);
+        dialog.close();
+    };
+
+    event_handlers["dialog-show"] = function(id, value, event_name){
         close_on_outside = value;
         const dialog = document.getElementById(id);
-        const closeButton = dialog.querySelector("button");
-        
         dialog.showModal();
-
-        closeButton.addEventListener("click", function() {
-            dialog.close();
-        });
-        
         if (close_on_outside) {
             window.onclick = function(event) {
                 if (event.target === dialog) {
@@ -22,9 +20,9 @@ uix.html.add_script("dialog", beforeMain = False, script =
                 }
             };
         }
-        
-    }
-''')
+    };
+    
+''',beforeMain=False)
 
 uix.html.add_css("dialog_css", style = '''
 dialog {
@@ -45,12 +43,14 @@ class dialog(Element):
         self.tag = "dialog"
         self.has_content = True
         self.close_on_outside = close_on_outside
-
-    def open(self):
-        self.session.send(self.id, self.close_on_outside, "dialog-open")
+    
+    def show(self):
+        self.session.send(self.id, self.close_on_outside, "dialog-show")
         return self
-        
-        
+    
+    def hide(self):
+        self.session.send(self.id, self.close_on_outside, "dialog-close")
+        return self
 
 title = "Dialog"
 
@@ -73,7 +73,7 @@ def dialog_example1():
             text("Dialog Example 1")
             text("Click anywhere to close")
         button("Close")
-    button("Dialog 1").on("click", lambda ctx, id, value: dialog.open(dialog1))
+    button("Dialog 1").on("click", lambda ctx, id, value: dialog.show(dialog1))
     return dialog1
 
 def dialog_example2():
@@ -82,7 +82,7 @@ def dialog_example2():
             text("Dialog Example 2")
             text("Click the close button to close")
         button("Close")
-    button("Dialog 2").on("click", lambda ctx, id, value: dialog.open(dialog2))
+    button("Dialog 2").on("click", lambda ctx, id, value: dialog.show(dialog2))
     return dialog2
 
 def dialog_example():
