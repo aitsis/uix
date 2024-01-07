@@ -146,7 +146,11 @@ class Element:
                 style_str += f" {style_name}:{style_value};"
             str += style_str + "'"
         for attr_name, attr_value in self.attrs.items():
-            str += f" {attr_name}='{attr_value}'"
+            if isinstance(attr_value, bool):
+                if attr_value:
+                    str += f" {attr_name}"
+            else:
+                str += f" {attr_name}='{attr_value}'"
         for event_name, action in self.events.items():
             str += self.get_client_handler_str(event_name)
         if self.has_content:
