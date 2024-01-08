@@ -10,16 +10,31 @@ const onFileChange = (id,files,eventName) => {
         urls.push(URL.createObjectURL(files[i]));
     }
     clientEmit(id,urls,eventName);
-    // const file = files[0];
-    // const reader = new FileReader();
-    // reader.onload = function(e) {
-    //     const data = e.target.result;
-    //     const img = document.getElementById(id);
-    //     img.src = data;
-    //     clientEmit(id,data,eventName);
-    // }
-    // reader.readAsDataURL(file);
-}
+};
+event_handlers["file-upload"] = (id,url,eventName) => {
+    console.log("file-upload",id,url,eventName);
+    fetch(url).then(response => response.blob()).then(data => 
+    {
+        console.log(data);
+        const xhr = new XMLHttpRequest();
+        xhr.upload.onprogress = function(event) {
+            if (event.lengthComputable) {
+                const percentComplete = event.loaded / event.total;
+                console.log(percentComplete);
+            }
+        };
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                clientEmit(id,{"status":"done","url":url},eventName);
+            } else {
+                clientEmit(id,{"status":"error","url":url, "error": xhr.responseText },eventName);
+            }
+        };
+        xhr.open("POST", "/upload/"+url);
+        xhr.send(data);
+        console.log("uploading");
+    });
+};
 """,beforeMain = False)
 
 
@@ -36,6 +51,10 @@ class file(Element):
             return f" on{event_name}='onFileChange(this.id,this.files,\"{event_name}\")'"
         else:
             return super().get_client_handler_str(event_name)
+
+    def upload(self, url):
+        self.session.send(self.id, url , "file-upload")
+
 
 title = "File"
 description = """

@@ -5,7 +5,7 @@ class header(Element):
     def __init__(self,value = None, id = None):
         super().__init__(value=value, id = id)
         self.tag = "header"
-        self.classes.append("header")
+        #self.classes.append("header")
 
 
 title = "Header"
