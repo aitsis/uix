@@ -122,7 +122,16 @@ class Element:
     def style(self,style,value):
         self.styles[style] = value
         return self
-
+    
+    def size(self, width, height):
+            if type(width) is int:
+                width = str(width) + "px"
+            if type(height) is int:
+                height = str(height) + "px"
+        
+            self.styles["width"] = width
+            self.styles["height"] = height
+            return self
     # PYTHON EVENTS ----------------------------------------------------------------------------------
     def on(self,event_name,action):
         self.events[event_name] = action
