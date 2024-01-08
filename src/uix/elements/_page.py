@@ -4,13 +4,13 @@ print("Imported: page")
 class page(Element):
     def __init__(self,value,id = None):
         super().__init__(value, id = id)
-        self.classes.append("main")
+        self.classes.append("page")
 
 title = "Page"
 
 description = '''
 # page(value,id)
-1. Page elementi. İçi boş bir ana div oluşturur. İçerisine elemanlar eklenerek kullanılır.
+1. Page elementi. İçi boş bir ana div oluşturur. Sıfırdan bir sayfa oluşturmak için kullanılabilir. İçerisine elemanlar eklenerek kullanılır.
     | attr          | desc                                              |
     | :------------ | :------------------------------------------------ |
     | id            | Page elementinin id'si                          |
@@ -18,11 +18,13 @@ description = '''
 '''
 
 sample = """
-with page('') as page:
-    with header("") as header_example:
-        text("Header")
-    with container("") as content:
-        text("Content")
+with page("") as footer_example:
+        with header("",):
+            text("Header Example")
+        with main("",):
+            text("Main Example")
+        with footer("",):
+            text("Footer Example")
         
 """
 

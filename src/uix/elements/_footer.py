@@ -1,22 +1,22 @@
 from ..core.element import Element
-print("Imported: header")
+print("Imported: footer")
 
-class header(Element):
+class footer(Element):
     def __init__(self,value = None, id = None):
         super().__init__(value=value, id = id)
-        self.tag = "header"
+        self.tag = "footer"
 
 
-title = "Header"
+title = "Footer"
 
 description = '''
-# header(value,id = None)
-1. Header elementi. Html header elementine karşılık gelir. İçerisine eklenen elemanlar, kullanıldığı divin en üstünde yer alır.
+# footer(value,id = None)
+1. Footer elementi. Html footer elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır. Sayfanın en altında yer alır.
 
     | attr          | desc                                              |
     | :------------ | :------------------------------------------------ |
-    | id            | Header elementinin id'si                          |
-    | value         | Header elementinin içeriği                       |
+    | id            | Footer elementinin id'si                          |
+    | value         | Footer elementinin içeriği                       |
 '''
 
 sample = """
