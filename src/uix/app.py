@@ -3,7 +3,7 @@ from uuid import uuid4
 import os
 import logging
 # FLASK SERVER -------------------------------------------------------------------------------------
-from flask import Flask, request, send_from_directory, abort, jsonify, make_response
+from flask import Flask, request, send_from_directory, abort, jsonify, Response
 from flask_cors import CORS
 from flask_socketio import SocketIO
 # UIX CORE -----------------------------------------------------------------------------------------
@@ -38,6 +38,27 @@ def index():
 def static_files(path):
         return send_from_directory(static_files_path, path)
 
+# UPLOAD ENDPOINT
+files = {}
+@flask.route("/upload/<path:path>", methods=["POST"])
+def upload(path):
+    if(request.data):
+        files[path] = {"data": request.data, "type": request.mimetype}
+        return jsonify({"success": path})
+    else:
+        return abort(400)
+
+# DOWNLOAD ENDPOINT
+@flask.route("/download/<path:path>", methods=["GET"])
+def download(path):
+    print("download:",path)
+    if path in files:
+        print("download:",path,"found")
+        datadict = files[path]
+        return Response(datadict["data"], mimetype=datadict["type"])
+    else:
+        print("download:",path,"not found")
+        return abort(404)
 # SOCKETIO -----------------------------------------------------------------------------------------
 @socketio.on("connect")
 def socket_on_connect():
