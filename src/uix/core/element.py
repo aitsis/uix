@@ -123,17 +123,20 @@ class Element:
         self.styles[style] = value
         return self
     
-    def size(self, width, height):
+    def size(self, width = None, height = None):
+        if width is not None:
             if type(width) is int:
                 width = str(width) + "px"
+            self.styles["width"] = width
+        if height is not None:       
             if type(height) is int:
                 height = str(height) + "px"
-        
-            self.styles["width"] = width
             self.styles["height"] = height
-            return self
+        return self
     # PYTHON EVENTS ----------------------------------------------------------------------------------
     def on(self,event_name,action):
+        if(self.id is None):
+            self.id = str(uuid4())
         self.events[event_name] = action
         return self
 
