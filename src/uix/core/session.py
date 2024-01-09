@@ -35,7 +35,11 @@ class Session:
                 event_name = data["event_name"]
                 if event_name in elm.events:
                     self.context.element = elm
-                    elm.events[event_name](self.context, id, data["value"])
+                    if "value" in data:
+                        elm.events[event_name](self.context, id, data["value"])
+                    else:
+                        #uix.error("No value in event. name :", event_name, "id:", id, "data:", data)
+                        elm.events[event_name](self.context, id, None)
 
     def clientHandler(self, data):
         if data["id"] == "myapp" and data["value"] == "init":
