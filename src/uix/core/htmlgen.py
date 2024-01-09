@@ -22,11 +22,16 @@ class HTMLGen:
     def add_header_item(self, id, item):
         self.header_items.setdefault(id, item)
         
-    def add_script_source(self, id, script = None, beforeMain = True):
+    def add_script_source(self, id, script = None, beforeMain = True, localpath = None):
+        full_script = script
+        if localpath is not None:
+            full_script = os.path.join(os.path.dirname(os.path.abspath(localpath)), script)
         if beforeMain:
-            self.script_sources_before_main.setdefault(id, script)
+            with open(full_script, 'r') as file:
+                self.script_sources_before_main.setdefault(id, file.read())
         else:
-            self.script_sources_after_main.setdefault(id, script)
+            with open(full_script, 'r') as file:
+                self.script_sources_after_main.setdefault(id, file.read())
 
     def add_script(self, id, script = None, beforeMain = True):
         if beforeMain:
@@ -37,8 +42,11 @@ class HTMLGen:
     def add_css(self, id, style):
         self.styles.setdefault(id, style)
 
-    def add_css_file(self, path):
-        with open(path, 'r') as file:
+    def add_css_file(self, path,localpath = None):
+        full_path = path
+        if localpath is not None:
+            full_path = os.path.join(os.path.dirname(os.path.abspath(localpath)), path)
+        with open(full_path, 'r') as file:
             id = os.path.basename(path)
             self.styles.setdefault(id, file.read())
 
@@ -47,11 +55,12 @@ class HTMLGen:
 
     def minify_css(self, css_code):
         return re.sub(r'\s+', ' ', re.sub(r'/\*.*?\*/', '', css_code)).strip()
-
+    
     def minify_html(self, html_code):
         return re.sub(r'>\s+<', '><', re.sub(r'<!--.*?-->', '', html_code)).strip()
 
     def generate(self):
+        
         # HTML BEGIN ------------------------------------------------------------
         index_str = '<!DOCTYPE html><html lang="en"><head>'
         # HEADER ITEMS ----------------------------------------------------------
@@ -71,7 +80,9 @@ class HTMLGen:
         # SCRIPTS ---------------------------------------------------------------
         # SCRIPT SOURCES --------------------------------------------------------
         for key in self.script_sources_before_main:
+            index_str += '<script>'
             index_str += self.script_sources_before_main[key]
+            index_str += '</script>'
         # BEFORE MAIN SCRIPTS ---------------------------------------------------
         for id in self.scripts_before_main:
             index_str += '<script>'
@@ -87,7 +98,9 @@ class HTMLGen:
             index_str += '</script>'
         # SCRIPT SOURCES --------------------------------------------------------
         for key in self.script_sources_after_main:
+            index_str += '<script>'
             index_str += self.script_sources_after_main[key]
+            index_str += '</script>'
         # HTML END --------------------------------------------------------------
         index_str += '</body>'
         index_str += '</html>'
