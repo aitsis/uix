@@ -38,6 +38,9 @@ def index():
 def static_files(path):
         return send_from_directory(static_files_path, path)
 
+def add_static_route(logical_path, local_directory):
+    flask.add_url_rule(f"/{logical_path}/<path:path>", local_directory, lambda path : send_from_directory(local_directory, path))
+
 # UPLOAD ENDPOINT
 files = {}
 @flask.route("/upload/<path:path>", methods=["POST"])
@@ -59,6 +62,7 @@ def download(path):
     else:
         print("download:",path,"not found")
         return abort(404)
+
 # SOCKETIO -----------------------------------------------------------------------------------------
 @socketio.on("connect")
 def socket_on_connect():
@@ -111,7 +115,6 @@ def init_app(uix_config):
     for pipe in config["pipes"]:
         _pipes.append(pipe)
     
-
     
 def get_start_example():
     from .example import start_example
