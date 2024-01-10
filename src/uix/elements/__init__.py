@@ -1,10 +1,14 @@
+"""
+Elements
+========
+This module contains all the elements that are used in the UIX library.
+
+"""
 import sys
 import os
 from types import ModuleType
 import importlib
 __modules = []
-__all__ = __modules
-print("Imported: __init__")
 for __file in os.listdir(os.path.dirname(__file__)):
     if __file.endswith(".py") and __file.startswith("_") and __file != "__init__.py":
         module_name = __file[1:-3]
@@ -19,9 +23,10 @@ def __getattr__(name):
     raise AttributeError(f"module {__name__} has no attribute {name}")
     
 
+__all__ = list(__modules)
+__version__ = "0.1.0"
 def __dir__():
     """Just show what we want to show."""
-    print("Imported: __dir__")
     result = list(__modules)
     result.extend(
         (
