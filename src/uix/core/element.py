@@ -104,7 +104,11 @@ class Element:
         self.session.send(self.id, class_name, "remove-class")
 
     def set_attr(self, attr_name, attr_value):
+        self.attrs[attr_name] = attr_value
         self.session.send(self.id, attr_value, "change-"+attr_name)
+    
+    def get_attr(self, attr_name):
+        return self.attrs[attr_name]
 
     def set_style(self, attr_name, attr_value):
         self.session.send(self.id, attr_value, "set-"+attr_name)
@@ -174,6 +178,10 @@ class Element:
         else:
             if self.value is not None:
                 if(self.value_name is not None):
-                    str +=f' {self.value_name} ="{self.value}"'
+                    if isinstance(self.value, bool):
+                        if self.value:
+                            str += f" {self.value_name}"
+                    else:
+                        str +=f' {self.value_name} ="{self.value}"'
             str += "/>"
         return str
