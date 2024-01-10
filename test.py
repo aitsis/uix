@@ -1,63 +1,54 @@
+
 import uix
+from uix.elements import div, button, container
+uix.html.add_script("file", script =
+"""
+const onddivChange = (evt) => {
+    console.log("onChange",evt);
+    evtjson = JSON.stringify(evt);
+    console.log("onChange",evtjson);
+    clientEmit(evt.target.id,evtjson,"mychange");
+};
 
-from uix.elements import file, div, image, col, row, progress
-
-def lineitem(value):
-    div(value).style("padding","5px;")
-
-def upload_file(ctx, id, value):
-    print("upload_file",id)
-    ctx.elements["file"].upload(id)
+""")
+class ddiv(uix.Element):
+    def __init__(self, value = None, id = None):
+        super().__init__(value, id)
+        self.tag = "div"
+        
+        self.has_content = True
     
-
-def line(file):
-    with row(id=file.url).style("margin-top","10px").on("click", upload_file) as r:
-        image(value=file.url).size(None,100)
-        lineitem(file.name)
-        lineitem(file.size)
-        lineitem(file.type)
-        progress(id = file.url+"_progress")
-            
-
-def list_files(ctx, files):
-    with ctx.elements["files"]:
-        for file in files:
-            line(file)
-    ctx.elements["files"].update()
-
-def show_error(ctx, error):
-    with ctx.elements["files"]:
-        div(error).style("color","red")
-    ctx.elements["files"].update()
+    def get_client_handler_str(self, event_name):
+        print("get_client_handler_str",event_name)
+        if event_name in ["input","change"]:
+            return f" on{event_name}=onddivChange(event)"
+        else:
+            return super().get_client_handler_str(event_name)
 
 
-def select_callback(ctx, id, data, status):
-    if status == "done":
-        list_files(ctx, data)
-    else:
-        show_error(ctx, data)
 
-def upload_callback(ctx, id, data, status):
-    if status == "done":
-        print("upload done",len(data))
-        #>>>>>>>>>>>>>>>>>>>
-        # USE DATA HERE
-        #<<<<<<<<<<<<<<<<<<<<
-    elif status == "progress":
-        ctx.elements[data["url"] + "_progress"].value = data["progress"]
-    else:
-        show_error(ctx, data)
-
-def file_callback(ctx, id, event, data, status):
-    if event == "select":
-        select_callback(ctx, id, data, status)    
-    elif event == "upload":
-        upload_callback(ctx, id, data, status)
+def on_btn_click(ctx, id, value):
+    with ctx.elements["myEditor"]:
+        button("Deneme")
+    ctx.elements["myEditor"].update()
 
 
-with div(id="root").style("max-height","80%").style("overflow","auto") as root:
-    file(id="file", multiple=True,callback = file_callback, accept="image/png,image/jpeg,image/gif")
-    div("Files:", id="files")
+def on_change(ctx, id, value):
+    print("change :", value)
 
-uix.start(ui = root, config={"debug":True})
-         
+def on_key_events(ctx, id, value):
+    print("key_event :", value)
+
+with div("",id="container") as __root:
+    with ddiv("Hello World22", id ="myEditor") as myeditor:
+        myeditor.attrs["contenteditable"] = True
+        myeditor.value_name = "textContent"
+        myeditor.on("input", on_change)
+        myeditor.on("keyup", on_key_events)
+        myeditor.on("keydown", on_key_events)
+        myeditor.on("mychange", on_change)
+    button("Click Me", id="button").on("click", on_btn_click)
+    
+#__root = button("Hello")
+
+uix.start(ui = __root, config = {"debug":True})
