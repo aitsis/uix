@@ -61,7 +61,6 @@ class file(Element):
         self.attrs["multiple"] = multiple
         self.attrs["accept"] = accept
         self.callback = callback
-        self.accept = accept
         self.events["change"] = self.on_change
         self.events["file-upload"] = self.on_file_upload
 
@@ -96,13 +95,14 @@ class file(Element):
             return
         if status == "progress":
             progress = value["progress"]
-            self.callback(ctx, id, "upload", {"url": url, "progress":progress}, status)
+            self.callback(ctx, id, "upload", {"url": url, "progress":progress}, "progress")
             return
         data = uix.files[url]["data"]
+        uix.files[url]["data"] = None
         if data is None:
             self.callback(ctx, id, "upload", "Internal Server Error. File not uploaded", "error")
             return
-        self.callback(ctx, id, "upload", data, status)
+        self.callback(ctx, id, "upload", data, "done")
 
 title = "File"
 description = """

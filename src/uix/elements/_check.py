@@ -7,13 +7,8 @@ class check(Element):
         self.attrs["type"] = "checkbox"
         self.value_name = "checked"
         self.classes.append("form-check-input")
-        self.disabled = disabled
-
-        if self.disabled:
-            self.attrs["disabled"] = "disabled"
-    def checked(self):
-        self.attrs["checked"] = "checked"
-        return self
+        self.has_content = False
+        self.attrs["disabled"] = disabled
 
 title = "Check"
 
