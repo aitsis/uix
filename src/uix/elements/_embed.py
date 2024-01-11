@@ -26,13 +26,13 @@ title = "Embed"
 description = '''
 # embed(value,id,type,width,height)
 1. Embed elementi. Html'deki embed elementine karşılık gelir.
-    | attr          | desc                                                        |
-    | :------------ | :------------------------------------------------           |
-    | id            | Embed elementinin id'si                                     |
-    | value         | Embed elementinin içeriği                                   |
-    | type          | Embed elementinin tipi(video/webm, image/png, default: None!|             
-    | width         | Embed elementinin genişliği                                 |
-    | height        | Embed elementinin yüksekliği                                |
+| attr          | desc                                                        |
+| :------------ | :------------------------------------------------           |
+| id            | Embed elementinin id'si                                     |
+| value         | Embed elementinin içeriği                                   |
+| type          | Embed elementinin tipi(video/webm, image/png, default: None!|             
+| width         | Embed elementinin genişliği                                 |
+| height        | Embed elementinin yüksekliği                                |
 '''
 
 sample = """
