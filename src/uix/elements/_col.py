@@ -1,7 +1,7 @@
 from ..core.element import Element
 print("Imported: col")
 class col(Element):
-    def __init__(self,value = None,id = None):
+    def __init__(self,value:str = None,id:str = None):
         super().__init__(value, id = id)
         self.classes.append("col")
 
@@ -10,12 +10,13 @@ class col(Element):
 title = "Column"
 
 description = '''
-# col(value,id = None)
+## col(value,id = None)
 1. Temel column elementi.
-    | attr          | desc                                              |
-    | :------------ | :------------------------------------------------ |
-    | id            | Column elementinin id'si                         |
-    | value         | Column elementinin içeriği                      |
+
+| attr          | desc                                              |
+| :------------ | :------------------------------------------------ |
+| id            | Column elementinin id'si                         |
+| value         | Column elementinin içeriği                      |
 '''
 
 sample = """

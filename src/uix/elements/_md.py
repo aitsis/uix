@@ -42,7 +42,7 @@ uix.html.add_css("md2_css_style", style = '''
 ''')
 
 class md(Element):
-    def __init__(self,value = None,id = None):
+    def __init__(self,value:str = None,id:str = None):
         super().__init__(value, id = id)
 
     def bind(self, session, only_children=False):
@@ -59,12 +59,13 @@ class md(Element):
 title = "Markdown"
 
 description = '''
-# md(value,id)
+## md(value,id)
 1. Markdown elementi. Markdown dilinde yazılmış metni html'e çevirir.
-    | attr          | desc                                              |
-    | :------------ | :------------------------------------------------ |
-    | id            | Markdown elementinin id'si                          |
-    | value         | Markdown elementinin içeriği                       |
+
+| attr          | desc                                              |
+| :------------ | :------------------------------------------------ |
+| id            | Markdown elementinin id'si                          |
+| value         | Markdown elementinin içeriği                       |
 '''
 
 sample = """

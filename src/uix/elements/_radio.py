@@ -1,22 +1,23 @@
 from ..core.element import Element
 
 class radio(Element):
-    def __init__(self,value = None, id = None,name = None):
+    def __init__(self,value:str = None, id:str = None,name:str = None):
         super().__init__(value, id = id)
         self.tag = "input"
         self.attrs["type"] = "radio"
         self.attrs["name"] = name
 
-title = "radio"
+title = "Radio"
 
 description = """
-# radio(value,id,name)
+## radio(value,id,name)
 1. Temel HTML radio elementi.
-    | attr          | desc                                              |
-    | :------------ | :------------------------------------------------ |
-    | id            | radio elementinin id'si                          |
-    | value         | radio elementinin değeri                       |
-    | name          | radio elementinin bağlı olduğu grubun adı       |
+
+| attr          | desc                                              |
+| :------------ | :------------------------------------------------ |
+| id            | radio elementinin id'si                          |
+| value         | radio elementinin değeri                       |
+| name          | radio elementinin bağlı olduğu grubun adı       |
 """
 
 

@@ -1,7 +1,7 @@
 from ..core.element import Element
 print("Imported: progress")
 class progress(Element):
-    def __init__(self,value = 0,id = None, max = 100):
+    def __init__(self,value:str = 0,id:str = None, max:int = 100):
         super().__init__(value, id = id)
         self.tag = "progress"
         self.max = max
@@ -12,8 +12,9 @@ class progress(Element):
 title = "Progress"
 
 description = """
-# progress(value,id,max)
+## progress(value,id,max)
 1. Progress bir input elementidir.
+
 | attr          | desc                                              |
 | :------------ | :------------------------------------------------ |
 | id            | Progress elementinin id'si                        |
