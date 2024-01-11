@@ -1,7 +1,7 @@
 from ..core.element import Element
 print("Imported: image")
 class image(Element):
-    def __init__(self,value = None,id = None):
+    def __init__(self,value:str = None,id:str = None):
         super().__init__(value, id = id)
         self.tag = "img"
         self.value_name = "src"
@@ -13,10 +13,10 @@ description = '''
 # image(value,id = None)
 1. Html'deki img elementine karşılık gelir. Sayfada görüntülenmesi istenen resimler için kullanılır.
 
-    | attr          | desc                                              |
-    | :------------ | :------------------------------------------------ |
-    | id            | Image elementinin id'si                          |
-    | value         | Image elementinin src'si                       |
+| attr          | desc                                              |
+| :------------ | :------------------------------------------------ |
+| id            | Image elementinin id'si                          |
+| value         | Image elementinin src'si                       |
 '''
 
 sample = """

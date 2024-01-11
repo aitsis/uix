@@ -3,7 +3,7 @@ from ..core.element import Element
 print("Imported: video")
 
 class video(Element):
-     def __init__(self, value = None, id = None,loop="true", autoplay="true", muted="true", src=None):
+     def __init__(self, value:str = None, id:str = None,loop: bool=True, autoplay: bool=True, muted: bool=True, src:str=None):
         super().__init__(value=value,id=id)
     
         if src is not None:
@@ -22,12 +22,12 @@ description = """
 # video(id,loop,autoplay,muted)
 1. Html'de video elementine karşılık gelir. İçerisine source elementleri eklenerek kullanılır.
 
-    | attr          | desc                                              |
-    | :------------ | :------------------------------------------------ |
-    | id            | Video elementinin id'si                          |
-    | loop          | Video elementinin sürekli oynatılması            |
-    | autoplay      | Video elementinin otomatik oynatılması           |
-    | muted         | Video elementinin sesinin kapatılması            |
+| attr          | desc                                              |
+| :------------ | :------------------------------------------------ |
+| id            | Video elementinin id'si                          |
+| loop          | Video elementinin sürekli oynatılması            |
+| autoplay      | Video elementinin otomatik oynatılması           |
+| muted         | Video elementinin sesinin kapatılması            |
 """
 
 sample = """

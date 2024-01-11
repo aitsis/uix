@@ -2,7 +2,7 @@ from ..core.element import Element
 print("Imported: page")
 
 class page(Element):
-    def __init__(self,value,id = None):
+    def __init__(self,value:str,id:str = None):
         super().__init__(value, id = id)
         self.classes.append("page")
 
@@ -11,10 +11,11 @@ title = "Page"
 description = '''
 # page(value,id)
 1. Page elementi. İçi boş bir ana div oluşturur. Sıfırdan bir sayfa oluşturmak için kullanılabilir. İçerisine elemanlar eklenerek kullanılır.
-    | attr          | desc                                              |
-    | :------------ | :------------------------------------------------ |
-    | id            | Page elementinin id'si                          |
-    | value         | Page elementinin içeriği                       |
+
+| attr          | desc                                              |
+| :------------ | :------------------------------------------------ |
+| id            | Page elementinin id'si                          |
+| value         | Page elementinin içeriği                       |
 '''
 
 sample = """

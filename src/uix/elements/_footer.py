@@ -2,7 +2,7 @@ from ..core.element import Element
 print("Imported: footer")
 
 class footer(Element):
-    def __init__(self,value = None, id = None):
+    def __init__(self,value:str= None, id:str = None):
         super().__init__(value=value, id = id)
         self.tag = "footer"
 
@@ -13,10 +13,10 @@ description = '''
 # footer(value,id = None)
 1. Footer elementi. Html footer elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır. Sayfanın en altında yer alır.
 
-    | attr          | desc                                              |
-    | :------------ | :------------------------------------------------ |
-    | id            | Footer elementinin id'si                          |
-    | value         | Footer elementinin içeriği                       |
+| attr          | desc                                              |
+| :------------ | :------------------------------------------------ |
+| id            | Footer elementinin id'si                          |
+| value         | Footer elementinin içeriği                       |
 '''
 
 sample = """

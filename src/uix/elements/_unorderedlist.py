@@ -1,7 +1,7 @@
 from ..core.element import Element
 print("Imported: unorderedlist")
 class unorderedlist(Element):
-    def __init__(self,value = None, id = None, role = None):
+    def __init__(self,value:str = None, id:str = None, role:str = None):
         super().__init__(value = value, id = id)
         self.tag = "ul"
         self.value_name = "innerHTML"
@@ -12,11 +12,12 @@ title = "Unorderedlist"
 description = '''
 # unorderedlist(value,id,role)
 1. Temel unorderedlist elementi listitem elementleri ile kullanılır.
-    | attr          | desc                                              |
-    | :------------ | :------------------------------------------------ |
-    | id            | unorderedlistin id'si                          |
-    | value         | unorderedlistin içeriği                       |
-    | role          | unorderedlistin rolü |
+
+| attr          | desc                                              |
+| :------------ | :------------------------------------------------ |
+| id            | unorderedlistin id'si                          |
+| value         | unorderedlistin içeriği                       |
+| role          | unorderedlistin rolü |
 '''
 
 sample = """

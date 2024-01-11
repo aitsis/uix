@@ -1,7 +1,7 @@
 from ..core.element import Element
 
 class tbody(Element):
-    def __init__(self,value = None, id = None,name = None):
+    def __init__(self,value:str = None, id:str = None,name:str = None):
         super().__init__(value, id = id)    
         self.tag = "tbody"
 
@@ -10,10 +10,11 @@ title = "Table Body"
 description = '''
 # tbody(value,id = None)
 1. Tbody elementi. Html'deki tbody elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır.
-    | attr          | desc                                              |
-    | :------------ | :------------------------------------------------ |
-    | id            | Tbody elementinin id'si                          |
-    | value         | Tbody elementinin içeriği                       |
+
+| attr          | desc                                              |
+| :------------ | :------------------------------------------------ |
+| id            | Tbody elementinin id'si                          |
+| value         | Tbody elementinin içeriği                       |
 '''
 
 sample = """

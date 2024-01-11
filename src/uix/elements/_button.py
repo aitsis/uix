@@ -1,7 +1,7 @@
 from ..core.element import Element
 print("Imported: Button")
 class button(Element):
-    def __init__(self,value,id = None, type='button', formID=None, disabled=False):
+    def __init__(self,value:str,id:str = None, type:str='button', formID:str=None, disabled:bool=False):
         super().__init__(value, id = id)
         self.tag = "button"
         self.attrs["type"] = type
@@ -26,13 +26,14 @@ title = "Button"
 description = '''
 # button(value,id = None, type='button', formID=None, disabled=False)
 1. Temel buton elementi.
-    | attr          | desc                                              |
-    | :------------ | :------------------------------------------------ |
-    | id            | Buton elementinin id'si                          |
-    | value         | Buton elementinin içeriği                       |
-    | type          | Buton elementinin tipi                          |
-    | formID        | Buton elementinin ait olduğu formun id'si       |
-    | disabled      | Buton elementinin etkinliğini kapatır           |
+
+| attr          | desc                                              |
+| :------------ | :------------------------------------------------ |
+| id            | Buton elementinin id'si                          |
+| value         | Buton elementinin içeriği                       |
+| type          | Buton elementinin tipi                          |
+| formID        | Buton elementinin ait olduğu formun id'si       |
+| disabled      | Buton elementinin etkinliğini kapatır           |
 '''
 
 sample = """

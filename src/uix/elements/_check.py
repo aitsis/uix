@@ -1,7 +1,7 @@
 from ..core.element import Element
 print("Imported: Check")
 class check(Element):
-    def __init__(self, value = None, checked = False, id = None, disabled = False ):
+    def __init__(self, value: str = None, id: str = None, disabled:bool = False ):
         super().__init__(value, id = id)
         self.tag = "input"
         self.attrs["type"] = "checkbox"
@@ -16,12 +16,13 @@ description = """
 
 # check(value,id,checked,disabled)
 1. Checkbox bir input elementidir.
-    | attr          | desc                                              |
-    | :------------ | :------------------------------------------------ |
-    | id            | Check elementinin id'si                           |
-    | value         | Check elementinin içeriği                        |
-    | checked       | Check'in seçili olup olmadığı                     |
-    | disabled      | Check'in etkinliğini kapatır.                     |
+
+| attr          | desc                                              |
+| :------------ | :------------------------------------------------ |
+| id            | Check elementinin id'si                           |
+| value         | Check elementinin içeriği                        |
+| checked       | Check'in seçili olup olmadığı                     |
+| disabled      | Check'in etkinliğini kapatır.                     |
 """
 sample = """
 def check_example():

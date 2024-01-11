@@ -2,7 +2,7 @@ from ..core.element import Element
 print("Imported: source")
 
 class source(Element):
-    def __init__(self,value,id = None, media = None,type ="video/mp4"):
+    def __init__(self,value:str,id:str = None, media:str = None,type:str ="video/mp4"):
         super().__init__(value, id = id)
         self.tag = "source"
         self.value_name = "src"
@@ -17,12 +17,13 @@ title = "Source"
 description = '''
 # source(value,id,media,type)
 1. Source elementi.
-    | attr          | desc                                              |
-    | :------------ | :------------------------------------------------ |
-    | id            | Source elementinin id'si                          |
-    | value         | Source elementinin src'si                       |
-    | media         | CSS'de normalde tanımlanacak herhangi bir geçerli medya sorgusunu kabul eder. |
-    | type          | Kaynak dosyanın MIME türü. Örneğin, video/mp4, video/webm veya video/ogg. |
+
+| attr          | desc                                              |
+| :------------ | :------------------------------------------------ |
+| id            | Source elementinin id'si                          |
+| value         | Source elementinin src'si                       |
+| media         | CSS'de normalde tanımlanacak herhangi bir geçerli medya sorgusunu kabul eder. |
+| type          | Kaynak dosyanın MIME türü. Örneğin, video/mp4, video/webm veya video/ogg. |
 '''
 
 

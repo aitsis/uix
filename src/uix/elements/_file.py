@@ -53,7 +53,7 @@ class file(Element):
     File elementi. Bir dosya seçme penceresi açar.
     callback(ctx, event, data, status)
     """
-    def __init__(self, value=None, id=None, multiple = False, callback = None, accept = False):
+    def __init__(self, value: str=None, id:str =None, multiple:bool = False, callback = None, accept:bool = False):
         super().__init__(value, id)
         self.tag = "input"
         self.attrs["type"] = "file"
@@ -63,7 +63,6 @@ class file(Element):
         self.callback = callback
         self.events["change"] = self.on_change
         self.events["file-upload"] = self.on_file_upload
-
     def get_client_handler_str(self, event_name):
         if event_name in ["input","change"]:
             return f" on{event_name}='onFileChange(this.id,this.files,\"{event_name}\")'"
@@ -110,17 +109,17 @@ description = """
 
 1. File elementi. Bir dosya seçme penceresi açar.
 
-    | attr                 | desc                                                               |
-    | :------------------- | :----------------------------------------------------------------- |
-    | value                | Elementin içeriği.                                                 |
-    | id                   | Elementin id'si                                                    |
-    | multiple             | Birden fazla dosya seçilmesine izin verir.                         |
-    | save_path            | Dosyanın kaydedileceği yol.                                        |
-    | on_upload_done       | Dosya yüklendiğinde çalışacak fonksiyon.                           |
-    | on_upload_started    | Dosya yüklenmeye başladığında çalışacak fonksiyon.                 |
-    | on_error             | Dosya yüklenirken hata oluştuğunda çalışacak fonksiyon.            |
-    | accept               | Seçilebilir  dosya uzantısı tanımlama (audio/* ,video/*, image/*)  |
-    | useAPI               | Dosya yükleme işlemini API üzerinden yapar.                        |
+| attr                 | desc                                                               |
+| :------------------- | :----------------------------------------------------------------- |
+| value                | Elementin içeriği.                                                 |
+| id                   | Elementin id'si                                                    |
+| multiple             | Birden fazla dosya seçilmesine izin verir.                         |
+| save_path            | Dosyanın kaydedileceği yol.                                        |
+| on_upload_done       | Dosya yüklendiğinde çalışacak fonksiyon.                           |
+| on_upload_started    | Dosya yüklenmeye başladığında çalışacak fonksiyon.                 |
+| on_error             | Dosya yüklenirken hata oluştuğunda çalışacak fonksiyon.            |
+| accept               | Seçilebilir  dosya uzantısı tanımlama (audio/* ,video/*, image/*)  |
+| useAPI               | Dosya yükleme işlemini API üzerinden yapar.                        |
 """
 sample = """
 from uix.elements import file, div, image, col

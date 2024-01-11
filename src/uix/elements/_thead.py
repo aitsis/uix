@@ -1,7 +1,7 @@
 from ..core.element import Element
 
 class thead(Element):
-    def __init__(self,value = None, id = None, name = None):
+    def __init__(self,value:str = None, id:str = None, name:str = None):
         super().__init__(value, id = id)    
         self.tag = "thead"
 
@@ -11,10 +11,10 @@ description = '''
 # thead(value,id = None)
 1. Tablonun başlık kısmı. Tablonun içerisine başlık eklemek için kullanılır.
 
-    | attr          | desc                                              |
-    | :------------ | :------------------------------------------------ |
-    | id            | thead elementinin id'si                          |
-    | value         | thead elementinin içeriği                       |
+| attr          | desc                                              |
+| :------------ | :------------------------------------------------ |
+| id            | thead elementinin id'si                          |
+| value         | thead elementinin içeriği                       |
 '''
 
 sample = """

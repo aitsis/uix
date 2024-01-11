@@ -38,7 +38,7 @@ dialog {
 }''')
 
 class dialog(Element):
-    def __init__(self,value = None,id = None, close_on_outside = True):
+    def __init__(self,value:str = None,id:str = None, close_on_outside:bool = True):
         super().__init__(value, id = id)
         self.tag = "dialog"
         self.has_content = True
@@ -59,11 +59,11 @@ description = '''
 
 1. Dialog elementi. Bir dialog penceresi açar.
 
-    | attr                  | desc                                              |
-    | :-------------------- | :------------------------------------------------ |
-    | id                    | Dialog elementinin id'si                          |
-    | value                 | Dialog elementinin içeriği                       |
-    | close_on_outside      | Dışarı tıklanınca kapanma özelliği               |
+| attr                  | desc                                              |
+| :-------------------- | :------------------------------------------------ |
+| id                    | Dialog elementinin id'si                          |
+| value                 | Dialog elementinin içeriği                       |
+| close_on_outside      | Dışarı tıklanınca kapanma özelliği               |
 '''
 
 sample = """

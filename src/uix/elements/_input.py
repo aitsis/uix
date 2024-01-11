@@ -1,7 +1,7 @@
 from ..core.element import Element
 print("Imported: input")
 class input(Element):
-    def __init__(self,value = None,id = None,type='text',name=None,placeholder="",required=False,list=None):
+    def __init__(self,value:str = None,id:str = None,type: str='text',name:str=None,placeholder:str="",required:bool=False,list:str=None):
         super().__init__(value, id = id)
         self.tag = "input"
         self.value_name = "value"
@@ -32,16 +32,17 @@ title = "Input"
 description = '''
 # input(value,id,type,name,placeholder,step,required)
 1. Temel input elementi.
-    | attr          | desc                                              |
-    | :------------ | :------------------------------------------------ |
-    | id            | Input elementinin id'si                          |
-    | value         | Input elementinin içeriği                       |
-    | type          | Input elementinin tipi                          |
-    | name          | Input elementinin name'i                        |
-    | placeholder   | Input elementinin placeholder'i                 |
-    | step          | Input elementinin step'i                        |
-    | required      | Input elementinin required'u                    |
-    | list          | Input elementinin list'i                        |
+
+| attr          | desc                                              |
+| :------------ | :------------------------------------------------ |
+| id            | Input elementinin id'si                          |
+| value         | Input elementinin içeriği                       |
+| type          | Input elementinin tipi                          |
+| name          | Input elementinin name'i                        |
+| placeholder   | Input elementinin placeholder'i                 |
+| step          | Input elementinin step'i                        |
+| required      | Input elementinin required'u                    |
+| list          | Input elementinin list'i                        |
 '''
 sample = """
 def input_example():
