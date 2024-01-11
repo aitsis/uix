@@ -26,6 +26,7 @@ title = "Embed"
 description = '''
 # embed(value,id,type,width,height)
 1. Embed elementi. Html'deki embed elementine karşılık gelir.
+
 | attr          | desc                                                        |
 | :------------ | :------------------------------------------------           |
 | id            | Embed elementinin id'si                                     |
