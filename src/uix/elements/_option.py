@@ -1,7 +1,7 @@
 from ..core.element import Element
 print("Imported: option")
 class option(Element):
-    def __init__(self,value = None,id = None):
+    def __init__(self,value:str = None,id:str = None):
         super().__init__(value, id = id,)
         self.tag = "option"
         self.value_name = "innerHTML"
@@ -20,14 +20,15 @@ class option(Element):
 title = "option"
 
 description = '''
-# option(value,id)
+## option(value,id)
 1. Temel option elementi.
-    | attr          | desc                                              |
-    | :------------ | :------------------------------------------------ |
-    | id            | Option elementinin id'si                          |
-    | value         | Option elementinin içeriği                       |
-    | selected      | Optionun varsayılan olarak seçili olucak değeri tanımlar. |
-    | disabled      | Optionun etkinliğini kapatır. |
+
+| attr          | desc                                              |
+| :------------ | :------------------------------------------------ |
+| id            | Option elementinin id'si                          |
+| value         | Option elementinin içeriği                       |
+| selected      | Optionun varsayılan olarak seçili olucak değeri tanımlar. |
+| disabled      | Optionun etkinliğini kapatır. |
 '''
 
 sample = """

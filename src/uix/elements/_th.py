@@ -1,21 +1,21 @@
 from ..core.element import Element
 
 class th(Element):
-    def __init__(self,value = None, id = None, name = None):
+    def __init__(self,value:str = None, id:str = None, name:str = None):
         super().__init__(value, id = id)    
         self.tag = "th"
 
 title = "Table Header"
 
 description = '''
-# th(value,id = None)
+## th(value,id = None)
 
 1. Html'deki th elementine karşılık gelir. Tablo başlıkları için kullanılır.
     
-        | attr          | desc                                              |
-        | :------------ | :------------------------------------------------ |
-        | id            | Th elementinin id'si                          |
-        | value         | Th elementinin içeriği                       |
+| attr          | desc                                              |
+| :------------ | :------------------------------------------------ |
+| id            | Th elementinin id'si                          |
+| value         | Th elementinin içeriği                       |
     '''
 
 sample = """

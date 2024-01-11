@@ -2,7 +2,7 @@ from ..core.element import Element
 print("Imported: slider")
 
 class slider(Element):
-    def __init__(self, value=None, id=None, min=0, max=100, step=1,):
+    def __init__(self, value:str=None, id:str=None, min:int=0, max:int=100, step:int=1,):
         super().__init__(value=value, id=id)
         self.min = min
         self.max = max
@@ -21,8 +21,9 @@ class slider(Element):
     
 title = "Slider"
 description = """
-# slider(value,id,min,max,step)
+## slider(value,id,min,max,step)
 1. Slider bir input elementidir.
+
     | attr          | desc                                              |
     | :------------ | :------------------------------------------------ |
     | id            | Slider elementinin id'si                          |

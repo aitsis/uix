@@ -2,7 +2,7 @@ from ..core.element import Element
 print("Imported: element")
 
 class datalist(Element):
-    def __init__(self, value=None, id=None):
+    def __init__(self, value: str=None, id:str =None):
         super().__init__(value, id=id)
         self.tag = "datalist"
         self.value_name = "innerHTML"
@@ -10,12 +10,13 @@ class datalist(Element):
 
 title = "Datalist"
 description = '''
-# datalist(value,id = "myDataList")
+## datalist(value,id = "myDataList")
 1. Datalist elementi. Html'deki datalist elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır.
-    | attr          | desc                                              |
-    | :------------ | :------------------------------------------------ |
-    | id            | Datalist elementinin id'si                          |
-    | value         | Datalist elementinin içeriği                       |
+
+| attr          | desc                                              |
+| :------------ | :------------------------------------------------ |
+| id            | Datalist elementinin id'si                          |
+| value         | Datalist elementinin içeriği                       |
 '''
 sample = """
 def on_click(ctx,id,value):
