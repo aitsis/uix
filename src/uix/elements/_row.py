@@ -10,7 +10,7 @@ class row(Element):
 title = "Row"
 
 description = '''
-# row(value,id)
+## row(value,id)
 1. Row elementi. Temel olarak bir satırı temsil eder. İçerisindeki elemanları yan yana ekler.
 
 | attr          | desc                                              |

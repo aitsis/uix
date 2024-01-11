@@ -10,7 +10,7 @@ class footer(Element):
 title = "Footer"
 
 description = '''
-# footer(value,id = None)
+## footer(value,id = None)
 1. Footer elementi. Html footer elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır. Sayfanın en altında yer alır.
 
 | attr          | desc                                              |

@@ -8,7 +8,7 @@ class tr(Element):
 title = "Table Row"
 
 description = '''
-# tr(value,id = None)
+## tr(value,id = None)
 1. Html'deki tr elementine karşılık gelir. Tablo içerisinde satır oluşturmak için kullanılır.
 
 | attr          | desc                                              |

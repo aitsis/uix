@@ -8,7 +8,7 @@ class tbody(Element):
 
 title = "Table Body"
 description = '''
-# tbody(value,id = None)
+## tbody(value,id = None)
 1. Tbody elementi. Html'deki tbody elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır.
 
 | attr          | desc                                              |

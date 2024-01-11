@@ -9,7 +9,7 @@ class page(Element):
 title = "Page"
 
 description = '''
-# page(value,id)
+## page(value,id)
 1. Page elementi. İçi boş bir ana div oluşturur. Sıfırdan bir sayfa oluşturmak için kullanılabilir. İçerisine elemanlar eklenerek kullanılır.
 
 | attr          | desc                                              |

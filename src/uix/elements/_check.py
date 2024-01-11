@@ -14,7 +14,7 @@ title = "Check"
 
 description = """
 
-# check(value,id,checked,disabled)
+## check(value,id,checked,disabled)
 1. Checkbox bir input elementidir.
 
 | attr          | desc                                              |

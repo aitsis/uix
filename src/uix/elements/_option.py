@@ -20,7 +20,7 @@ class option(Element):
 title = "option"
 
 description = '''
-# option(value,id)
+## option(value,id)
 1. Temel option elementi.
 
 | attr          | desc                                              |

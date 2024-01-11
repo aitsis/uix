@@ -2,7 +2,7 @@ from ..core.element import Element as Element
 from uix.elements._textarea import _textarea
 class textarea(Element):
     """
-# textarea(value,id,placeholder)
+## textarea(value,id,placeholder)
 1. Temel textarea elementi.
 
 | attr          | desc                                              |
@@ -15,7 +15,7 @@ class textarea(Element):
 from uix.elements._dialog import _dialog
 class dialog(Element):
     '''
-# dialog(value,id = None, is_clickable_anywhere = True)
+## dialog(value,id = None, is_clickable_anywhere = True)
 
 1. Dialog elementi. Bir dialog penceresi açar.
 
@@ -29,7 +29,7 @@ class dialog(Element):
 from uix.elements._td import _td
 class td(Element):
     '''
-# td(value,id = None)
+## td(value,id = None)
 1. Td elementi. Html'deki td elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır.
 
 | attr          | desc                                              |
@@ -41,7 +41,7 @@ class td(Element):
 from uix.elements._div import _div
 class div(Element):
     '''
-# div(value,id = None)
+## div(value,id = None)
 1. Div elementi. Html'deki div elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır.
 
 | attr          | desc                                              |
@@ -53,7 +53,7 @@ class div(Element):
 from uix.elements._form import _form
 class form(Element):
     '''
-# form(value,id,action,method,enctype)
+## form(value,id,action,method,enctype)
 1. Temel form elementi.
 
 | attr          | desc                                              |
@@ -75,7 +75,7 @@ class form(Element):
 from uix.elements._radio import _radio
 class radio(Element):
     """
-# radio(value,id,name)
+## radio(value,id,name)
 1. Temel HTML radio elementi.
 
 | attr          | desc                                              |
@@ -88,7 +88,7 @@ class radio(Element):
 from uix.elements._border import _border
 class border(Element):
     '''
-# border(value,id)
+## border(value,id)
 1. Border elementi. Kenarında 1px kalınlığında çizgi bulunan bir div oluşturur.
 İçerisine elemanlar eklenerek kullanılır.
 
@@ -101,7 +101,7 @@ class border(Element):
 from uix.elements._label import _label
 class label(Element):
     '''
-# label(value,id,tabindex = -1,usefor = None)
+## label(value,id,tabindex = -1,usefor = None)
 1. Label elementi. Bir input elementine ait label elementi için kullanılır.
 
 | attr          | desc                                              |
@@ -115,7 +115,7 @@ class label(Element):
 from uix.elements._page import _page
 class page(Element):
     '''
-# page(value,id)
+## page(value,id)
 1. Page elementi. İçi boş bir ana div oluşturur. Sıfırdan bir sayfa oluşturmak için kullanılabilir. İçerisine elemanlar eklenerek kullanılır.
 
 | attr          | desc                                              |
@@ -127,7 +127,7 @@ class page(Element):
 from uix.elements._tfoot import _tfoot
 class tfoot(Element):
     '''
-# tfoot(value,id = None)
+## tfoot(value,id = None)
 1. Tablonun alt kısmı için kullanılır.
 
 | attr          | desc                                              |
@@ -139,7 +139,7 @@ class tfoot(Element):
 from uix.elements._row import _row
 class row(Element):
     '''
-# row(value,id)
+## row(value,id)
 1. Row elementi. Temel olarak bir satırı temsil eder. İçerisindeki elemanları yan yana ekler.
 
 | attr          | desc                                              |
@@ -151,7 +151,7 @@ class row(Element):
 from uix.elements._input import _input
 class input(Element):
     '''
-# input(value,id,type,name,placeholder,step,required)
+## input(value,id,type,name,placeholder,step,required)
 1. Temel input elementi.
 
 | attr          | desc                                              |
@@ -169,7 +169,7 @@ class input(Element):
 from uix.elements._slider import _slider
 class slider(Element):
     """
-# slider(value,id,min,max,step)
+## slider(value,id,min,max,step)
 1. Slider bir input elementidir.
 
     | attr          | desc                                              |
@@ -184,7 +184,7 @@ class slider(Element):
 from uix.elements._tbody import _tbody
 class tbody(Element):
     '''
-# tbody(value,id = None)
+## tbody(value,id = None)
 1. Tbody elementi. Html'deki tbody elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır.
 
 | attr          | desc                                              |
@@ -196,7 +196,7 @@ class tbody(Element):
 from uix.elements._details import _details
 class details(Element):
     '''
-# details(value,id = None)
+## details(value,id = None)
 
 1. Details elementi. Bilgilerin yalnızca widget "açık" duruma getirildiğinde görülebildiği bir açıklama widget'ı oluşturur.
 
@@ -210,7 +210,7 @@ class details(Element):
 from uix.elements._datalist import _datalist
 class datalist(Element):
     '''
-# datalist(value,id = "myDataList")
+## datalist(value,id = "myDataList")
 1. Datalist elementi. Html'deki datalist elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır.
 
 | attr          | desc                                              |
@@ -222,7 +222,7 @@ class datalist(Element):
 from uix.elements._container import _container
 class container(Element):
     '''
-# container(value,id = None)
+## container(value,id = None)
 1. Container elementi. İçerisine elemanlar eklenerek kullanılır. Eklenen elemanları yatayda ve dikeyde ortalar.
 
 | attr          | desc                                              |
@@ -234,7 +234,7 @@ class container(Element):
 from uix.elements._select import _select
 class select(Element):
     '''
-# select(value,id)
+## select(value,id)
 1. Temel select elementi. Tek başına kullanılmaz. Option elementleri ile kullanılır.
 
 | attr          | desc                                              |
@@ -248,7 +248,7 @@ class select(Element):
 from uix.elements._canvas import _canvas
 class canvas(Element):
     '''
-# canvas(value,id = None)
+## canvas(value,id = None)
 1. Canvas elementi. Html'deki canvas elementine karşılık gelir. Genellikle Komponentler içinde kullanılır.
 
 | attr          | desc                                              |
@@ -261,7 +261,7 @@ class canvas(Element):
 from uix.elements._unorderedlist import _unorderedlist
 class unorderedlist(Element):
     '''
-# unorderedlist(value,id,role)
+## unorderedlist(value,id,role)
 1. Temel unorderedlist elementi listitem elementleri ile kullanılır.
 
 | attr          | desc                                              |
@@ -274,7 +274,7 @@ class unorderedlist(Element):
 from uix.elements._button import _button
 class button(Element):
     '''
-# button(value,id = None, type='button', formID=None, disabled=False)
+## button(value,id = None, type='button', formID=None, disabled=False)
 1. Temel buton elementi.
 
 | attr          | desc                                              |
@@ -289,7 +289,7 @@ class button(Element):
 from uix.elements._col import _col
 class col(Element):
     '''
-# col(value,id = None)
+## col(value,id = None)
 1. Temel column elementi.
 
 | attr          | desc                                              |
@@ -301,7 +301,7 @@ class col(Element):
 from uix.elements._text import _text
 class text(Element):
     '''
-# text(value,id = None)
+## text(value,id = None)
 1. Html'deki p elementine karşılık gelir. Sayfada görüntülenmesi istenen yazılar için kullanılır.
 
 | attr          | desc                                              |
@@ -313,7 +313,7 @@ class text(Element):
 from uix.elements._header import _header
 class header(Element):
     '''
-# header(value,id = None)
+## header(value,id = None)
 1. Header elementi. Html header elementine karşılık gelir. İçerisine eklenen elemanlar, kullanıldığı divin en üstünde yer alır.
 
 | attr          | desc                                              |
@@ -325,7 +325,7 @@ class header(Element):
 from uix.elements._option import _option
 class option(Element):
     '''
-# option(value,id)
+## option(value,id)
 1. Temel option elementi.
 
 | attr          | desc                                              |
@@ -339,7 +339,7 @@ class option(Element):
 from uix.elements._listitem import _listitem
 class listitem(Element):
     '''
-# listitem(value,id)
+## listitem(value,id)
 1. Liste elemanı elementi. Sıralı liste elementine veya sırasız liste elementine eleman eklemek için kullanılır.
 
 | attr          | desc                                              |
@@ -355,7 +355,7 @@ class listitem(Element):
 from uix.elements._table import _table
 class table(Element):
     '''
-# table(value,id = None)
+## table(value,id = None)
 1. Table elementi. Html'deki table elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır.
 
 | attr          | desc                                              |
@@ -367,7 +367,7 @@ class table(Element):
 from uix.elements._file import _file
 class file(Element):
     """
-# file(value,id = None, multiple = False, save_path = None, on_upload_done = None, on_upload_started = None, on_error = None, accept = None)
+## file(value,id = None, multiple = False, save_path = None, on_upload_done = None, on_upload_started = None, on_error = None, accept = None)
 
 1. File elementi. Bir dosya seçme penceresi açar.
 
@@ -387,7 +387,7 @@ class file(Element):
 from uix.elements._link import _link
 class link(Element):
     '''
-# link(value,id,href,title,target)
+## link(value,id,href,title,target)
 1. Link elementi. Html'deki a elementine karşılık gelir. Sayfaya bağlantı eklemek için kullanılır.
 
 | attr          | desc                                              |
@@ -402,7 +402,7 @@ class link(Element):
 from uix.elements._tr import _tr
 class tr(Element):
     '''
-# tr(value,id = None)
+## tr(value,id = None)
 1. Html'deki tr elementine karşılık gelir. Tablo içerisinde satır oluşturmak için kullanılır.
 
 | attr          | desc                                              |
@@ -414,7 +414,7 @@ class tr(Element):
 from uix.elements._source import _source
 class source(Element):
     '''
-# source(value,id,media,type)
+## source(value,id,media,type)
 1. Source elementi.
 
 | attr          | desc                                              |
@@ -428,7 +428,7 @@ class source(Element):
 from uix.elements._md import _md
 class md(Element):
     '''
-# md(value,id)
+## md(value,id)
 1. Markdown elementi. Markdown dilinde yazılmış metni html'e çevirir.
 
 | attr          | desc                                              |
@@ -440,7 +440,7 @@ class md(Element):
 from uix.elements._footer import _footer
 class footer(Element):
     '''
-# footer(value,id = None)
+## footer(value,id = None)
 1. Footer elementi. Html footer elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır. Sayfanın en altında yer alır.
 
 | attr          | desc                                              |
@@ -452,7 +452,7 @@ class footer(Element):
 from uix.elements._orderedlist import _orderedlist
 class orderedlist(Element):
     '''
-# orderedlist(value,id)
+## orderedlist(value,id)
 1. Sıralı liste elementi. Listeye eleman eklemek için listitem elementi kullanılır.
 
 | attr          | desc                                              |
@@ -464,7 +464,7 @@ class orderedlist(Element):
 from uix.elements._thead import _thead
 class thead(Element):
     '''
-# thead(value,id = None)
+## thead(value,id = None)
 1. Tablonun başlık kısmı. Tablonun içerisine başlık eklemek için kullanılır.
 
 | attr          | desc                                              |
@@ -476,7 +476,7 @@ class thead(Element):
 from uix.elements._video import _video
 class video(Element):
     """
-# video(id,loop,autoplay,muted)
+## video(id,loop,autoplay,muted)
 1. Html'de video elementine karşılık gelir. İçerisine source elementleri eklenerek kullanılır.
 
 | attr          | desc                                              |
@@ -490,7 +490,7 @@ class video(Element):
 from uix.elements._grid import _grid
 class grid(Element):
     '''
-# grid(value,id,columns,rows)
+## grid(value,id,columns,rows)
 1. Grid elementi. Grid özelliğinde bir div oluşturur. column ve row değerleri girilerek içerisindeki elemanlar grid özelliğine göre konumlandırılır.
 
 | attr          | desc                                              |
@@ -504,7 +504,7 @@ class grid(Element):
 from uix.elements._image import _image
 class image(Element):
     '''
-# image(value,id = None)
+## image(value,id = None)
 1. Html'deki img elementine karşılık gelir. Sayfada görüntülenmesi istenen resimler için kullanılır.
 
 | attr          | desc                                              |
@@ -516,7 +516,7 @@ class image(Element):
 from uix.elements._th import _th
 class th(Element):
     '''
-# th(value,id = None)
+## th(value,id = None)
 
 1. Html'deki th elementine karşılık gelir. Tablo başlıkları için kullanılır.
     
@@ -529,7 +529,7 @@ class th(Element):
 from uix.elements._main import _main
 class main(Element):
     '''
-# main(value,id = None)
+## main(value,id = None)
 
 1. Main elementi. Html main elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır.
 
@@ -542,7 +542,7 @@ class main(Element):
 from uix.elements._progress import _progress
 class progress(Element):
     """
-# progress(value,id,max)
+## progress(value,id,max)
 1. Progress bir input elementidir.
 
 | attr          | desc                                              |
@@ -556,7 +556,7 @@ from uix.elements._check import _check
 class check(Element):
     """
 
-# check(value,id,checked,disabled)
+## check(value,id,checked,disabled)
 1. Checkbox bir input elementidir.
 
 | attr          | desc                                              |

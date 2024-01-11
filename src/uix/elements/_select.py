@@ -13,7 +13,7 @@ class select(Element):
 title = "Select"
 
 description = '''
-# select(value,id)
+## select(value,id)
 1. Temel select elementi. Tek başına kullanılmaz. Option elementleri ile kullanılır.
 
 | attr          | desc                                              |

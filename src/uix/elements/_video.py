@@ -19,7 +19,7 @@ class video(Element):
 title = "Video"
 
 description = """
-# video(id,loop,autoplay,muted)
+## video(id,loop,autoplay,muted)
 1. Html'de video elementine karşılık gelir. İçerisine source elementleri eklenerek kullanılır.
 
 | attr          | desc                                              |

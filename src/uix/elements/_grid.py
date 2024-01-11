@@ -18,7 +18,7 @@ class grid(Element):
 title = "Grid"
 
 description = '''
-# grid(value,id,columns,rows)
+## grid(value,id,columns,rows)
 1. Grid elementi. Grid özelliğinde bir div oluşturur. column ve row değerleri girilerek içerisindeki elemanlar grid özelliğine göre konumlandırılır.
 
 | attr          | desc                                              |

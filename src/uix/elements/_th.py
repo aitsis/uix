@@ -8,7 +8,7 @@ class th(Element):
 title = "Table Header"
 
 description = '''
-# th(value,id = None)
+## th(value,id = None)
 
 1. Html'deki th elementine karşılık gelir. Tablo başlıkları için kullanılır.
     

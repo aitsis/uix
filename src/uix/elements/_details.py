@@ -10,7 +10,7 @@ class details(Element):
 title = "Details"
 
 description = '''
-# details(value,id = None)
+## details(value,id = None)
 
 1. Details elementi. Bilgilerin yalnızca widget "açık" duruma getirildiğinde görülebildiği bir açıklama widget'ı oluşturur.
 

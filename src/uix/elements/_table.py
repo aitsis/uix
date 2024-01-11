@@ -7,7 +7,7 @@ class table(Element):
 
 title = "Table"
 description = '''
-# table(value,id = None)
+## table(value,id = None)
 1. Table elementi. Html'deki table elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır.
 
 | attr          | desc                                              |

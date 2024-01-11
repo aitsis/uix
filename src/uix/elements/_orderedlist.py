@@ -11,7 +11,7 @@ class orderedlist(Element):
 title = "Ordered List"
 
 description = '''
-# orderedlist(value,id)
+## orderedlist(value,id)
 1. Sıralı liste elementi. Listeye eleman eklemek için listitem elementi kullanılır.
 
 | attr          | desc                                              |

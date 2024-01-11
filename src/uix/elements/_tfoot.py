@@ -8,7 +8,7 @@ class tfoot(Element):
 title = "Table Footer"
 
 description = '''
-# tfoot(value,id = None)
+## tfoot(value,id = None)
 1. Tablonun alt kısmı için kullanılır.
 
 | attr          | desc                                              |

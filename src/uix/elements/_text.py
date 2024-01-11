@@ -10,7 +10,7 @@ class text(Element):
 title = "Text"
 
 description = '''
-# text(value,id = None)
+## text(value,id = None)
 1. Html'deki p elementine karşılık gelir. Sayfada görüntülenmesi istenen yazılar için kullanılır.
 
 | attr          | desc                                              |

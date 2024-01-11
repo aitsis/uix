@@ -8,7 +8,7 @@ class border(Element):
 title = "Border"
 
 description = '''
-# border(value,id)
+## border(value,id)
 1. Border elementi. Kenarında 1px kalınlığında çizgi bulunan bir div oluşturur.
 İçerisine elemanlar eklenerek kullanılır.
 

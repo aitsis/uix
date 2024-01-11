@@ -10,7 +10,7 @@ class col(Element):
 title = "Column"
 
 description = '''
-# col(value,id = None)
+## col(value,id = None)
 1. Temel column elementi.
 
 | attr          | desc                                              |

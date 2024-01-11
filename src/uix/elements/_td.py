@@ -7,7 +7,7 @@ class td(Element):
 
 title = "Table Data"
 description = '''
-# td(value,id = None)
+## td(value,id = None)
 1. Td elementi. Html'deki td elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır.
 
 | attr          | desc                                              |

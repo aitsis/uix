@@ -55,7 +55,7 @@ class dialog(Element):
 title = "Dialog"
 
 description = '''
-# dialog(value,id = None, is_clickable_anywhere = True)
+## dialog(value,id = None, is_clickable_anywhere = True)
 
 1. Dialog elementi. Bir dialog penceresi açar.
 

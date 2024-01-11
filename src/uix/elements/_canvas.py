@@ -13,7 +13,7 @@ class canvas(Element):
 title = "Canvas"
 
 description = '''
-# canvas(value,id = None)
+## canvas(value,id = None)
 1. Canvas elementi. Html'deki canvas elementine karşılık gelir. Genellikle Komponentler içinde kullanılır.
 
 | attr          | desc                                              |

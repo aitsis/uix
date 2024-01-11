@@ -14,7 +14,7 @@ class textarea(Element):
 
 title = "Textarea"
 description = """
-# textarea(value,id,placeholder)
+## textarea(value,id,placeholder)
 1. Temel textarea elementi.
 
 | attr          | desc                                              |

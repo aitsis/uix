@@ -21,7 +21,7 @@ class slider(Element):
     
 title = "Slider"
 description = """
-# slider(value,id,min,max,step)
+## slider(value,id,min,max,step)
 1. Slider bir input elementidir.
 
     | attr          | desc                                              |

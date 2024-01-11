@@ -15,7 +15,7 @@ class source(Element):
 title = "Source"
 
 description = '''
-# source(value,id,media,type)
+## source(value,id,media,type)
 1. Source elementi.
 
 | attr          | desc                                              |

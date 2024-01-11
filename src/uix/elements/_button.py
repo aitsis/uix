@@ -24,7 +24,7 @@ class button(Element):
 title = "Button"
 
 description = '''
-# button(value,id = None, type='button', formID=None, disabled=False)
+## button(value,id = None, type='button', formID=None, disabled=False)
 1. Temel buton elementi.
 
 | attr          | desc                                              |

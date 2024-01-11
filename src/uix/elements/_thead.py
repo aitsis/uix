@@ -8,7 +8,7 @@ class thead(Element):
 title = "Table Head"
 
 description = '''
-# thead(value,id = None)
+## thead(value,id = None)
 1. Tablonun başlık kısmı. Tablonun içerisine başlık eklemek için kullanılır.
 
 | attr          | desc                                              |

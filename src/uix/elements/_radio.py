@@ -10,7 +10,7 @@ class radio(Element):
 title = "Radio"
 
 description = """
-# radio(value,id,name)
+## radio(value,id,name)
 1. Temel HTML radio elementi.
 
 | attr          | desc                                              |

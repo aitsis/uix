@@ -7,7 +7,7 @@ class div(Element):
 title = "Div"
 
 description = '''
-# div(value,id = None)
+## div(value,id = None)
 1. Div elementi. Html'deki div elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır.
 
 | attr          | desc                                              |

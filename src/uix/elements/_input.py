@@ -30,7 +30,7 @@ class input(Element):
 title = "Input"
 
 description = '''
-# input(value,id,type,name,placeholder,step,required)
+## input(value,id,type,name,placeholder,step,required)
 1. Temel input elementi.
 
 | attr          | desc                                              |

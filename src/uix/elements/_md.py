@@ -59,7 +59,7 @@ class md(Element):
 title = "Markdown"
 
 description = '''
-# md(value,id)
+## md(value,id)
 1. Markdown elementi. Markdown dilinde yazılmış metni html'e çevirir.
 
 | attr          | desc                                              |

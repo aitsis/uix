@@ -10,7 +10,7 @@ class datalist(Element):
 
 title = "Datalist"
 description = '''
-# datalist(value,id = "myDataList")
+## datalist(value,id = "myDataList")
 1. Datalist elementi. Html'deki datalist elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır.
 
 | attr          | desc                                              |

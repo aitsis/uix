@@ -14,7 +14,7 @@ class label(Element):
 title = "Label"
 
 description = '''
-# label(value,id,tabindex = -1,usefor = None)
+## label(value,id,tabindex = -1,usefor = None)
 1. Label elementi. Bir input elementine ait label elementi için kullanılır.
 
 | attr          | desc                                              |

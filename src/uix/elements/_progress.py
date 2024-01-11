@@ -12,7 +12,7 @@ class progress(Element):
 title = "Progress"
 
 description = """
-# progress(value,id,max)
+## progress(value,id,max)
 1. Progress bir input elementidir.
 
 | attr          | desc                                              |

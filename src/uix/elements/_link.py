@@ -14,7 +14,7 @@ class link(Element):
 title = "Link"
 
 description = '''
-# link(value,id,href,title,target)
+## link(value,id,href,title,target)
 1. Link elementi. Html'deki a elementine karşılık gelir. Sayfaya bağlantı eklemek için kullanılır.
 
 | attr          | desc                                              |

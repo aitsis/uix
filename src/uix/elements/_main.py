@@ -10,7 +10,7 @@ class main(Element):
 title = "Main"
 
 description = '''
-# main(value,id = None)
+## main(value,id = None)
 
 1. Main elementi. Html main elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır.
 
