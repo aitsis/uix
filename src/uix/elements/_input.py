@@ -21,15 +21,6 @@ class input(Element):
         
         if list is not None:
             self.attrs["list"] = list
-        
-        if step is not None:
-            self.attrs["step"] = step
-
-        if min is not None:
-            self.attrs["min"] = min
-        
-        if max is not None:
-            self.attrs["max"] = max
 
     def disabled(self):
         self.attrs["disabled"] = "disabled"
@@ -41,20 +32,6 @@ title = "Input"
 description = '''
 ## input(value,id,type,name,placeholder,step,required)
 1. Temel input elementi.
-<<<<<<< HEAD
-    | attr          | desc                                            |
-    | :------------ | :-----------------------------------------------|
-    | id            | Input elementinin id'si                         |
-    | value         | Input elementinin içeriği                       |
-    | type          | Input elementinin tipi                          |
-    | name          | Input elementinin name'i                        |
-    | placeholder   | Input elementinin placeholder'i                 |
-    | required      | Input elementinin required'u                    |
-    | list          | Input elementinin list'i                        |
-    | step          | Input elementinin step'i                        |
-    | min           | Input elementinin min'i                         |
-    | max           | Input elementinin max'i                         |
-=======
 
 | attr          | desc                                              |
 | :------------ | :------------------------------------------------ |
@@ -66,7 +43,6 @@ description = '''
 | step          | Input elementinin step'i                        |
 | required      | Input elementinin required'u                    |
 | list          | Input elementinin list'i                        |
->>>>>>> eac99a1f2d08f3bb067309c66d16ac24de1aabdf
 '''
 sample = """
 def input_example():

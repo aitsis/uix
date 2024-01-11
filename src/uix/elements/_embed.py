@@ -2,7 +2,7 @@ from ..core.element import Element
 print("Imported: embed")
 
 class embed(Element):
-    def __init__(self, value=None, id=None, type=None, width=None, height=None):
+    def __init__(self, value:str=None, id:str=None, type:str=None, width:str=None, height:str=None):
         super().__init__(value = value, id=id)
         self.tag = "embed"
         self.value_name = "src"
