@@ -339,6 +339,10 @@ button:disabled {
   color: #fff;
 }
 
+.btn-inactive {
+  background-color: var(--background);
+}
+
 .btn-info {
   background-color: var(--info-color);    
 }
@@ -449,89 +453,9 @@ header {
   width: 100%;
 }
 
-/* BURADAN Aşağısı TAB */
-.tabs {
-  width: 460px;
-  height: 100%;
-  float: none;
-  list-style: none;
-  position: relative;
-  text-align: left;
-  bottom: 41px;
-}
-
-.tabs li {
-  float: left;
-  display: block;
-}
-
-.tabs input[type="radio"] {
-  position: absolute;
-  top: 0;
-  left: -9999px;
-}
-
-.tabs label {
-  display: block;
-  padding: 14px 21px;
-  border-radius: 2px 2px 0 0;
-  font-size: 20px;
-  font-weight: normal;
-  background: gray;
-  cursor: pointer;
-  position: relative;
-  top: 10px;
-  -moz-transition: all 0.2s ease-in-out;
-  -o-transition: all 0.2s ease-in-out;
-  -webkit-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
-  border-radius: 12px 12px 0px 0px;
-}
-
-.tabs label:hover {
-  background: var(--background-secondary);
-}
-
-.tabs .tab-content {
-  z-index: 2;
-  display: none;
-  overflow: hidden;
-  width: 500px;
-  font-size: 17px;
-  line-height: 25px;
-  position: absolute;
-  left: 0;
-  background: var(--background-secondary);
-  border-radius: 12px 12px 12px 12px;
-  border: 1px solid gray;
-  padding: 30px;
-}
-
-.tabs [id^="tab"]:checked+label {
-  top: 0;
-  padding-top: 17px;
-  background: var(--background-secondary);
-}
-
-.tabs [id^="tab"]:checked~[id^="tab-content"] {
-  display: flex;
-}
-
-.clear-tab {
-  font-size: initial !important;
-  background-color: initial !important;
-  display: initial !important;
-  top: initial !important;
-  cursor: initial !important;
-  padding: 0 !important;
-}
-
-/* BURADAN Yukarısı TAB */
-
 .opacity-30 {
   opacity:0.3 ;
 }
-
 
 
 /* UIX */
@@ -551,9 +475,19 @@ table {
   border-collapse: collapse;
 }
        
-th, td {    
+th {    
+  font-size: 16px;
+  background-color: #00583d70;
+  border: 1px solid gray;
   text-align: left;
   padding: 8px;
+  text-transform: uppercase;
+} 
+
+td {    
+  text-align: left;
+  padding: 8px;
+  border: 1px solid gray
 }
        
 tr:nth-child(even){background-color: var(--background-secondary)}
