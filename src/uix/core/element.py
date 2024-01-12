@@ -33,8 +33,9 @@ class Element:
             child.bind(session)
 
     def unbind(self):
-        if self.id is not None:
-            del self.session.elements[self.id]
+        if self.id is not None and self.session is not None:
+            if self.id in self.session.elements:
+                del self.session.elements[self.id]
         for child in self.children:
             child.unbind()
     
