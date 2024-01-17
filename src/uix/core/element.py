@@ -112,6 +112,7 @@ class Element:
         return self.attrs[attr_name]
 
     def set_style(self, attr_name, attr_value):
+        self.styles[attr_name] = attr_value
         self.session.send(self.id, attr_value, "set-"+attr_name)
 
     def focus(self):
