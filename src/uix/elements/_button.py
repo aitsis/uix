@@ -6,7 +6,6 @@ class button(Element):
         self.tag = "button"
         self.attrs["type"] = type
         self.value_name = "innerHTML"
-        self.classes.append("btn")
         self.disabled = disabled
 
         if formID is not None:
