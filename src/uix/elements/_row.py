@@ -6,7 +6,6 @@ class row(Element):
         self.classes.append("row")
 
 
-
 title = "Row"
 
 description = '''
