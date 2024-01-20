@@ -36,7 +36,23 @@ description = '''
 '''
 
 sample = """
+button_demo_svg = '<g>INFO_SVG_ICERIGI</g>'
+
+def degistir(ctx, id, value):
+    ctx.elements["btn-icon1"].value = "fa-solid fa-user"
+
 def button_example():
-    main = button("Click me!")
+    with div().cls("row").style("gap","10px") as main:
+        button("Değiştir").on("click", degistir)
+        button("Sarı").cls("btn-warning")
+        button("Kırmızı").cls("btn-red")
+        button("Info").cls("btn-info")
+        button("Reset", type="reset").cls("btn-reset")
+        with button("", id="myID", type="sumbit").cls("btn-svg-demo"):
+            svg(button_demo_svg).size(20,20).viewbox("0,0,512,512")
+        with button("", id="btn-fontawesome").cls("btn-inactive btn-svg-demo").style("color","black"):
+            icon(id= "btn-icon1", value= "fa-solid fa-house")
+        button("Disabled", disabled=True)
+            
     return main
 """
