@@ -9,7 +9,9 @@ class HTMLGen:
             'meta-viewport': '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
             'socket.io': '<script src="socket.io.min.js"></script>',
             'style': '<link rel="stylesheet" href="style.css">',
-            'favicon': '<link rel="icon" href="https://ai.ait.com.tr/wp-content/uploads/cropped-favicon_aiait-32x32.png" sizes="32x32" />'
+            'tooltip': '<link rel="stylesheet" href="tooltip.css">',
+            'favicon': '<link rel="icon" href="https://ai.ait.com.tr/wp-content/uploads/cropped-favicon_aiait-32x32.png" sizes="32x32" />',
+            'fontawesome': '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />'
         }
         self.header_items = {}
         self.default_script_sources = {"main": "<script src='main.js'></script>"}

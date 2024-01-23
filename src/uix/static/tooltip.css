@@ -1,0 +1,172 @@
+/* 
+  You want a simple and fancy tooltip?
+  Just copy all [data-tooltip] blocks:
+*/
+[uix-tooltip] {
+    --arrow-size: 5px;
+    position: relative;
+    z-index: 10;
+  }
+  
+  /* Positioning and visibility settings of the tooltip */
+  [uix-tooltip]:before,
+  [uix-tooltip]:after {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    left: 50%;
+    bottom: calc(100% + var(--arrow-size));
+    pointer-events: none;
+    transition: 0.2s;
+    will-change: transform;
+  }
+  
+  /* The actual tooltip with a dynamic width */
+  [uix-tooltip]:before {
+    content: attr(uix-tooltip);
+    padding: 10px 18px;
+    min-width: 50px;
+    max-width: 300px;
+    width: max-content;
+    width: -moz-max-content;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: rgba(59, 72, 80, 0.95);
+    box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    text-align: center;
+    white-space: pre-wrap;
+    transform: translate(-50%,  calc(0px - var(--arrow-size))) scale(0.5);
+  }
+  
+  /* Tooltip arrow */
+  [uix-tooltip]:after {
+    content: '';
+    border-style: solid;
+    border-width: var(--arrow-size) var(--arrow-size) 0px var(--arrow-size); /* CSS triangle */
+    border-color: rgba(55, 64, 70, 0.9) transparent transparent transparent;
+    transition-duration: 0s; /* If the mouse leaves the element, 
+                                the transition effects for the 
+                                tooltip arrow are "turned off" */
+    transform-origin: top;   /* Orientation setting for the
+                                slide-down effect */
+    transform: translateX(-50%) scaleY(0);
+  }
+  
+  /* Tooltip becomes visible at hover */
+  [uix-tooltip]:hover:before,
+  [uix-tooltip]:hover:after {
+    visibility: visible;
+    opacity: 1;
+  }
+  /* Scales from 0.5 to 1 -> grow effect */
+  [uix-tooltip]:hover:before {
+    transition-delay: 0.3s;
+    transform: translate(-50%, calc(0px - var(--arrow-size))) scale(1);
+  }
+  /* 
+    Arrow slide down effect only on mouseenter (NOT on mouseleave)
+  */
+  [uix-tooltip]:hover:after {
+    transition-delay: 0.5s; /* Starting after the grow effect */
+    transition-duration: 0.2s;
+    transform: translateX(-50%) scaleY(1);
+  }
+  /*
+    That's it for the basic tooltip.
+  
+    If you want some adjustability
+    here are some orientation settings you can use:
+  */
+  
+  /* LEFT */
+  /* Tooltip + arrow */
+  [uix-tooltip-location="left"]:before,
+  [uix-tooltip-location="left"]:after {
+    left: auto;
+    right: calc(100% + var(--arrow-size));
+    bottom: 50%;
+  }
+  
+  /* Tooltip */
+  [uix-tooltip-location="left"]:before {
+    transform: translate(calc(0px - var(--arrow-size)), 50%) scale(0.5);
+  }
+  [uix-tooltip-location="left"]:hover:before {
+    transform: translate(calc(0px - var(--arrow-size)), 50%) scale(1);
+  }
+  
+  /* Arrow */
+  [uix-tooltip-location="left"]:after {
+    border-width: var(--arrow-size) 0px var(--arrow-size) var(--arrow-size);
+    border-color: transparent transparent transparent rgba(55, 64, 70, 0.9);
+    transform-origin: left;
+    transform: translateY(50%) scaleX(0);
+  }
+  [uix-tooltip-location="left"]:hover:after {
+    transform: translateY(50%) scaleX(1);
+  }
+  
+  
+  
+  /* RIGHT */
+  [uix-tooltip-location="right"]:before,
+  [uix-tooltip-location="right"]:after {
+    left: calc(100% + var(--arrow-size));
+    bottom: 50%;
+  }
+  
+  [uix-tooltip-location="right"]:before {
+    transform: translate(var(--arrow-size), 50%) scale(0.5);
+  }
+  [uix-tooltip-location="right"]:hover:before {
+    transform: translate(var(--arrow-size), 50%) scale(1);
+  }
+  
+  [uix-tooltip-location="right"]:after {
+    border-width: var(--arrow-size) var(--arrow-size) var(--arrow-size) 0px;
+    border-color: transparent rgba(55, 64, 70, 0.9) transparent transparent;
+    transform-origin: right;
+    transform: translateY(50%) scaleX(0);
+  }
+  [uix-tooltip-location="right"]:hover:after {
+    transform: translateY(50%) scaleX(1);
+  }
+  
+  
+  
+  /* BOTTOM */
+  [uix-tooltip-location="bottom"]:before,
+  [uix-tooltip-location="bottom"]:after {
+    top: calc(100% + var(--arrow-size));
+    bottom: auto;
+  }
+  
+  [uix-tooltip-location="bottom"]:before {
+    transform: translate(-50%, var(--arrow-size)) scale(0.5);
+  }
+  [uix-tooltip-location="bottom"]:hover:before {
+    transform: translate(-50%, var(--arrow-size)) scale(1);
+  }
+  
+  [uix-tooltip-location="bottom"]:after {
+    border-width: 0px var(--arrow-size) var(--arrow-size) var(--arrow-size);
+    border-color: transparent transparent rgba(55, 64, 70, 0.9) transparent;
+    transform-origin: bottom;
+  }
+   
+  /* Settings that make the pen look nicer */
+
+  /* Thumbnail settings */
+  @media (max-width: 750px) {
+    html {
+      animation-duration: 0.6s;
+    }
+    
+    [uix-tooltip]:after {
+      bottom: calc(100% + 3px);
+    }
+    [uix-tooltip]:after {
+      border-width: 7px 7px 0px 7px;
+    }
+  }
