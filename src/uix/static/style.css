@@ -108,9 +108,7 @@ a:hover {
   background: white;
   border-radius: 12px;
 }
-.canvas-container{
-  height: 100% !important;
-}
+
 .modal {
   position: fixed;
   z-index: 999999999;
