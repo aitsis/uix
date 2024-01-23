@@ -125,8 +125,11 @@ class Element:
             self.classes.extend([cls.strip() for cls in classes])
         return self
 
-    def style(self,style,value):
-        self.styles[style] = value
+    def style(self,style,value = None):
+        if value is None: 
+            self.styles[style] = None
+        else:
+            self.styles[style] = value
         return self
     
     def size(self, width = None, height = None):
@@ -139,6 +142,11 @@ class Element:
                 height = str(height) + "px"
             self.styles["height"] = height
         return self
+    
+    def attr(self, attr_name, attr_value):
+        self.attrs[attr_name]=attr_value
+        return self
+
     # PYTHON EVENTS ----------------------------------------------------------------------------------
     def on(self,event_name,action):
         if(self.id is None):
@@ -161,7 +169,10 @@ class Element:
         if(len(self.styles) > 0):
             style_str = " style='"
             for style_name, style_value in self.styles.items():
-                style_str += f" {style_name}:{style_value};"
+                if style_value is None:
+                    style_str += style_name
+                else:
+                    style_str += f" {style_name}:{style_value};"
             str += style_str + "'"
         for attr_name, attr_value in self.attrs.items():
             if isinstance(attr_value, bool):
