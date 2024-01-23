@@ -7,7 +7,7 @@
 | GET -> index.html | app -> route -> createHTML|
 |index.html + main.js load| |
 |onload -> socket connection| Create Session Instance|
-|socket - >emit -> myapp,init | app->from_client
+|socket - >emit -> (id = ait-uix),init | app->from_client
 || Run Pipes|
 || session->clientHandler |
 || Create Elements |

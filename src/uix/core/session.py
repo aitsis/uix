@@ -21,7 +21,7 @@ class Session:
             self.ui_root = deepcopy(uix.app.ui_root)
             self.ui_root.bind(self)
             html = self.ui_root.render()
-            self.send("myapp", html, "init-content")
+            self.send("ait-uix", html, "init-content")
             self.ui_root._init()
             self.flush_message_queue()
         else:
@@ -42,7 +42,7 @@ class Session:
                         elm.events[event_name](self.context, id, None)
 
     def clientHandler(self, data):
-        if data["id"] == "myapp" and data["value"] == "init":
+        if data["id"] == "ait-uix" and data["value"] == "init":
             self.InitializeClient()                
         else:
             if not hasattr(context, "session"):
@@ -70,7 +70,7 @@ class Session:
         self.message_queue = []
 
     def navigate(self, path):
-        self.send("myapp", path, "navigate")
+        self.send("ait-uix", path, "navigate")
 
     def next_id(self):
         self._next_id += 1

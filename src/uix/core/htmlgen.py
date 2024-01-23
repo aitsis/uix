@@ -76,7 +76,7 @@ class HTMLGen:
         index_str += '</head>'
         # BODY ------------------------------------------------------------------
         index_str += '<body>'
-        index_str += "<div id='uix-main' class='container'><div id='myapp'></div></div>"
+        index_str += "<div id='ait-uix'></div>"
         # SCRIPTS ---------------------------------------------------------------
         # SCRIPT SOURCES --------------------------------------------------------
         for key in self.script_sources_before_main:

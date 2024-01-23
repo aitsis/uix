@@ -2,8 +2,8 @@ from ..core.element import Element
 
 print("Imported: canvas")
 class canvas(Element):
-    def __init__(self,id:str = None, width: int= 300, height: int = 150):
-        super().__init__(None, id = id)
+    def __init__(self,id:str = None, value = None, width: int= 300, height: int = 150):
+        super().__init__(value = value, id = id)
         self.tag = "canvas"
         self.attrs["width"] = width
         self.attrs["height"] = height
