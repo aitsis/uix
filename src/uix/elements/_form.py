@@ -16,7 +16,7 @@ class form(Element):
         enctype=enctypes[0],
         ):
         super().__init__(value=value, id=id)
-        self.tagname = "form"
+        self.tag = "form"
         if method is not None:
             self.attrs["method"] = method
         
