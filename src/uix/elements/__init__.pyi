@@ -1,4 +1,16 @@
 from ..core.element import Element as Element
+from uix.elements._span import _span
+class span(Element):
+    '''
+## span(value,id = None)
+1. Span elementi. Html'deki span elementine karşılık gelir. İçerisine elemanlar eklenerek kullanılır.
+
+| attr          | desc                                              |
+| :------------ | :------------------------------------------------ |
+| id            | Span elementinin id'si                            |
+| value         | Span elementinin içeriği                          |
+'''
+    def __init__(self,value:str = None,id:str = None)-> None: ...
 from uix.elements._canvas import _canvas
 class canvas(Element):
     '''
