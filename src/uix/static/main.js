@@ -2,43 +2,8 @@
 let socket;
 let event_handlers = {};
 let page_loaded = false;
-document.cookie = `locale=${localStorage.getItem('locale') || navigator.language || navigator.userLanguage}; path=/`;
-
-
-const COOKIE_ATTRIBUTES = ['maxAge', 'path', 'httponly', 'secure', 'samesite'];
-
-const clientPublicData = {
-    locale: localStorage.getItem('locale') ? localStorage.getItem('locale') : navigator.language || navigator.userLanguage,
-    userAgent: navigator.userAgent,
-};
-
-
-
-// Utility functions
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2)
-        return parts.pop().split(';').shift();
-    else
-        return null;
-}
-
-const setCookie = (data) => {
-    const value = data.value;
-    let cookieString = `${value.name}=${value.value};`;
-    COOKIE_ATTRIBUTES.forEach(attr => {
-        if (value[attr]) {
-            cookieString += attr === 'maxAge' ? `max-age=${value[attr]};` : `${attr}=${value[attr]};`;
-        }
-    });
-    document.cookie = cookieString;
-};
-
 // Socket event handlers
 const socketEvents = {
-    'set-cookie': setCookie,
-    'delete-cookie': (data) => { document.cookie = `${data.value.name}=; max-age=0`; },
     'navigate': (data) => { window.location = data.value; },
     'scroll-to': (data) => { document.getElementById(data.id).scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" }); },
     'alert': (data) => { alert(data.value); },
@@ -51,6 +16,20 @@ const socketEvents = {
 
 function clientEmit(id, value, event_name) {
     socket.emit('from_client', { id: id, value: value, event_name: event_name });
+}
+
+function mouseEvent(event) {
+    const keys = ['x', 'y', 'screenX', 'screenY', 'pageX', 'pageY', 'offsetX', 'offsetY', 'movementX', 'movementY', 'button', 'buttons', 'altKey', 'ctrlKey', 'metaKey', 'shiftKey']
+    value = {};
+    keys.forEach(key => {value[key] = event[key];});
+    clientEmit(event.target.id, value, event.type);
+}
+
+function keyboardEvent(event) {
+    const keys = ['key', 'code', 'location', 'ctrlKey', 'shiftKey', 'altKey', 'metaKey', 'repeat', 'isComposing', 'charCode', 'keyCode', 'which']
+    value = {};
+    keys.forEach(key => {value[key] = event[key];});
+    clientEmit(event.target.id, value, event.type);
 }
 
 const getSocketInstance = () => {

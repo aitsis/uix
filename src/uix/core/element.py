@@ -156,7 +156,14 @@ class Element:
 
     # JAVASCRIPT EMIT --------------------------------------------------------------------------------
     def get_client_handler_str(self, event_name):
-        return f" on{event_name}='clientEmit(this.id,this.{self.value_name},\"{event_name}\")'"
+        mouse_events = ["mousedown","mouseup","mouseover","mousemove","mouseout","mouseenter","mouseleave"]
+        keyboard_events = ["keydown","keyup","keypress"]
+        if event_name in mouse_events:
+            return f" on{event_name}='mouseEvent(event)'"
+        elif event_name in keyboard_events:
+            return f" on{event_name}='keyboardEvent(event)'"
+        else:
+            return f" on{event_name}='clientEmit(this.id,this.{self.value_name},\"{event_name}\")'"
 
     # RENDER -----------------------------------------------------------------------------------------
     def render(self):
