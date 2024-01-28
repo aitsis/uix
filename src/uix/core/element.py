@@ -108,9 +108,10 @@ class Element:
         self.attrs[attr_name] = attr_value
         self.session.send(self.id, attr_value, "change-"+attr_name)
     
-    def get_attr(self, attr_name):
-        return self.attrs[attr_name]
-
+    def get_attr(self, attr_name,callback):
+        self.events["get-"+attr_name] = callback
+        self.session.send(self.id, None, "get-"+attr_name)
+        
     def set_style(self, attr_name, attr_value):
         self.styles[attr_name] = attr_value
         self.session.send(self.id, attr_value, "set-"+attr_name)
@@ -147,6 +148,9 @@ class Element:
         self.attrs[attr_name]=attr_value
         return self
 
+    def bg(self, color):
+        self.styles["background-color"] = color
+        return self
     # PYTHON EVENTS ----------------------------------------------------------------------------------
     def on(self,event_name,action):
         if(self.id is None):
