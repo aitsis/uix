@@ -63,6 +63,13 @@ const handleDynamicEvents = (data) => {
         el['style'][data.event_name.split("-")[1]] = data.value;
         return true;
     }
+    if (data.event_name.startsWith("get-")) {
+        const el = document.getElementById(data.id);
+        const attr_name = data.event_name.split("-")[1];
+        const value = el[attr_name];
+        clientEmit(data.id, value, data.event_name);
+        return true;
+    }
     return false;
 };
 
