@@ -43,10 +43,9 @@ class Session:
 
     def clientHandler(self, data):
         if data["id"] == "ait-uix" and data["value"] == "init":
-            self.InitializeClient()                
-        else:
-            if not hasattr(context, "session"):
-                context.session = self
+            self.InitializeClient()
+            context.session = self
+        else:    
             self.eventHandler(data)
     
     def push_parent(self, parent):
