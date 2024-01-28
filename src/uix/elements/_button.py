@@ -1,3 +1,4 @@
+from uuid import uuid4
 from ..core.element import Element
 print("Imported: Button")
 class button(Element):
@@ -16,7 +17,7 @@ class button(Element):
 
     def bind(self,session):
         if self.id is None:
-            self.id = "btn_" + str(session.next_id())
+            self.id = str(uuid4())
         super().bind(session)
         
 
