@@ -20,7 +20,7 @@ ui_parent = None
 sessions = {}
 html = HTMLGen()
 _pipes: List[Pipe] = []
-
+on_session_init = None
 
 # SERVER -------------------------------------------------------------------------------------------
 flask = Flask(__name__)
@@ -54,9 +54,9 @@ def upload(path):
 # DOWNLOAD ENDPOINT
 @flask.route("/download/<path:path>", methods=["GET"])
 def download(path):
-    print("download:",path)
+    #print("download:",path)
     if path in files:
-        print("download:",path,"found")
+        #print("download:",path,"found")
         datadict = files[path]
         return Response(datadict["data"], mimetype=datadict["type"])
     else:
