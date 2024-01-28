@@ -45,6 +45,8 @@ class Session:
         if data["id"] == "ait-uix" and data["value"] == "init":
             self.InitializeClient()
             context.session = self
+            if uix.app.on_session_init is not None:
+                uix.app.on_session_init(context)
         else:    
             self.eventHandler(data)
     
