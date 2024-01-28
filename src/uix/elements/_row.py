@@ -5,7 +5,18 @@ class row(Element):
         super().__init__(value = value, id = id)
         self.classes.append("row")
 
-
+    def center(self):
+        self.styles["justify-content"] = "center"
+        return self
+    
+    def left(self):
+        self.styles["justify-content"] = "flex-start"
+        return self
+    
+    def right(self):
+        self.styles["justify-content"] = "flex-end"
+        return self
+    
 title = "Row"
 
 description = '''
@@ -16,6 +27,15 @@ description = '''
 | :------------ | :------------------------------------------------ |
 | id            | Row elementinin id'si                          |
 | value         | Row elementinin içeriği                       |
+
+## Row Elementi Fonksiyonları
+
+| Fonksiyon     | Açıklama                                          |
+| :------------ | :------------------------------------------------ |
+| center()      | Row elementinin elemanlarını ortalar.            |
+| left()        | Row elementinin elemanlarını sola yaslar.        |
+| right()       | Row elementinin elemanlarını sağa yaslar.        |
+
 '''
 
 sample = """

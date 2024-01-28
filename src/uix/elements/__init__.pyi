@@ -47,6 +47,15 @@ class row(Element):
 | :------------ | :------------------------------------------------ |
 | id            | Row elementinin id'si                          |
 | value         | Row elementinin içeriği                       |
+
+## Row Elementi Fonksiyonları
+
+| Fonksiyon     | Açıklama                                          |
+| :------------ | :------------------------------------------------ |
+| center()      | Row elementinin elemanlarını ortalar.            |
+| left()        | Row elementinin elemanlarını sola yaslar.        |
+| right()       | Row elementinin elemanlarını sağa yaslar.        |
+
 '''
     def __init__(self,value:str = None, id:str = None)-> None: ...
 from uix.elements._source import _source
@@ -100,7 +109,7 @@ class textarea(Element):
 | value         | Textarea elementinin içeriği                       |
 | placeholder   | Textarea elementinin placeholder değeri            |
 """
-    def __init__(self, value:str = None , id:str = None, placeholder:str = None)-> None: ...
+    def __init__(self, value:str = None , id:str = None, placeholder:str = None, required:bool = False)-> None: ...
 from uix.elements._listitem import _listitem
 class listitem(Element):
     '''
@@ -555,6 +564,19 @@ class link(Element):
 | target        | Linkin açılacağı pencere seçeneği                 |
 '''
     def __init__(self,value:str,id:str = None, href:str = None, title:str="", target:str="")-> None: ...
+from uix.elements._icon import _icon
+class icon(Element):
+    '''
+## icon(value,id = None)
+1. Icon elementi. Html'deki i elementine karşılık gelir. Fontawesome sınıfları kullanılarak svg iconlar oluşturulabilir.
+2. https://fontawesome.com/search?o=r&m=free adresinden kullanılabilir iconlara ulaşılabilir.
+
+| attr          | desc                                              |
+| :------------ | :------------------------------------------------ |
+| id            | Icon elementinin id'si                            |
+| value         | Fontawesome sitesinden alınan classlar kullanılır |
+'''
+    def __init__(self,value:str = None,id:str = None)-> None: ...
 from uix.elements._progress import _progress
 class progress(Element):
     """

@@ -7,7 +7,7 @@ class canvas(Element):
         self.tag = "canvas"
         self.attrs["width"] = width
         self.attrs["height"] = height
-        self.has_content = False
+        self.tag_name = None
         
 
 title = "Canvas"
