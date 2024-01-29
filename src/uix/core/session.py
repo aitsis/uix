@@ -42,12 +42,14 @@ class Session:
                         elm.events[event_name](self.context, id, None)
 
     def clientHandler(self, data):
+        global context
         if data["id"] == "ait-uix" and data["value"] == "init":
             self.InitializeClient()
-            context.session = self
             if uix.app.on_session_init is not None:
                 uix.app.on_session_init(context)
-        else:    
+        else:
+            if not hasattr(context, "session"):
+                context.session = self
             self.eventHandler(data)
     
     def push_parent(self, parent):
