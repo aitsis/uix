@@ -21,15 +21,33 @@ from uix.elements import table, tr, td, tbody, th, thead, row # type: ignore
 from uix.elements._table import title, description, sample as code
 
 uix.html.add_css("custom-table",'''
-          
+:root {
+/* 0px yazılırsa ilgili çizgi kaldırılmış olur */                  
+    --dikeycizgiler: 1px solid black;
+    --yataycizgiler: 3px solid gray;
+}
+
+/* BORDER none yapılarak sıfırlanıyor */                           
+#custom-table, #custom-table th, #custom-table td {
+    border: none;
+    border-collapse: collapse;
+}
+#custom-table th, #custom-table td {
+    border-right: var(--dikeycizgiler);
+    border-left: var(--dikeycizgiler);
+}
+                
+#custom-table tr, #custom-table td {
+    border-bottom: var(--yataycizgiler);
+    border-top: var(--yataycizgiler);
+}                                                  
+                                
 #custom-table thead {    
   background-color: #ff000026;
 } 
 
 #custom-table tr:nth-child(even){ 
-  background-color: black;
-}
-                 
+  background-color: initial;    //Zebra efekti kaldırılmış olur. İstenirse başka renkte verilebilir.
 }
 ''')
 

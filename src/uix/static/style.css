@@ -466,7 +466,8 @@ header {
 
 
 /* table css */
-table {
+table, th, td {
+  border: 1px solid gray;
   border-collapse: collapse;
 }
        
@@ -476,7 +477,6 @@ thead {
 
 th {    
   font-size: 16px;
-  border: 1px solid gray;
   text-align: left;
   padding: 8px;
   text-transform: uppercase;
@@ -489,5 +489,4 @@ tr:nth-child(even){
 td {    
   text-align: left;
   padding: 8px;
-  border: 1px solid gray;
 }      
