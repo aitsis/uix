@@ -466,26 +466,27 @@ header {
 
 
 /* table css */
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
-table {
+table, th, td {
+  border: 1px solid gray;
   border-collapse: collapse;
 }
        
+thead {
+  background-color: #00583d70;
+}
+
 th {    
   font-size: 16px;
-  background-color: #00583d70;
-  border: 1px solid gray;
   text-align: left;
   padding: 8px;
   text-transform: uppercase;
 } 
 
+tr:nth-child(even){
+  background-color: var(--background-secondary);
+}
+
 td {    
   text-align: left;
   padding: 8px;
-  border: 1px solid gray
-}
-       
-tr:nth-child(even){background-color: var(--background-secondary)}
+}      
