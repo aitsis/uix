@@ -11,6 +11,7 @@ from .core.htmlgen import HTMLGen
 from .core.session import Session
 from ._config import config
 from .core.pipe import Pipe
+from .core.cookie import cookie_builder_from_query_string
 # GLOBALS ------------------------------------------------------------------------------------------
 static_files_path = os.path.join(os.path.dirname(__file__), "static")
 log_handler = None
@@ -32,6 +33,19 @@ CORS(flask)
 @flask.route("/")
 def index():
     return html.generate()
+
+# SET COOKIE FROM QUERY STRING
+@flask.route('/set-cookie', methods=['GET'])
+def set_cookie():
+    response = jsonify({'success': False})
+    cookie_args = cookie_builder_from_query_string(request.args)
+
+    if cookie_args["key"] is not None and cookie_args["value"] is not None:
+        response.set_cookie(**cookie_args)
+        response.status_code = 204
+        return response
+    else:
+        return jsonify({'error': 'Both "key" and "value" are required parameters'}), 400
 
 # STATIC FILES
 @flask.route("/<path:path>")
