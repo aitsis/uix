@@ -6,14 +6,14 @@ from .context import Context
 context = threading.local()
 
 class Session:
-    def __init__(self,sid):
+    def __init__(self,sid, requestData:dict):
         self.sid = sid
         self.locale = None
         self.ui_root = None
         self._next_id = 0
         self.elements = {}
         self.message_queue = []
-        self.context = Context(self, None)
+        self.context = Context(self, None, requestData)
 
     def InitializeClient(self):
         uix.log("Client Initialized")
