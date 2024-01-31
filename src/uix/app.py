@@ -82,7 +82,7 @@ def download(path):
 def socket_on_connect():
     print("Client Connected")
     sid = request.sid
-    sessions[sid] = Session(sid)
+    sessions[sid] = Session(sid, requestData={"cookies": request.cookies})
 
 @socketio.on("disconnect")
 def socket_on_disconnect():
