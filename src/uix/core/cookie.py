@@ -76,25 +76,24 @@ def build_cookieJar_from_dict(cookie_dict: dict) -> cookiejar.CookieJar:
         CookieJar: The cookie jar.
     """
     cookie_jar = cookiejar.CookieJar()
-    for cookie_name, cookie_values in cookie_dict.items():
-        for cookie_value in cookie_values:
-            cookie = cookiejar.Cookie(
-                version=0,
-                name=cookie_name,
-                value=cookie_value,
-                port=None,
-                port_specified=False,
-                domain="",
-                domain_specified=False,
-                domain_initial_dot=False,
-                path="/",
-                path_specified=True,
-                secure=False,
-                expires=None,
-                discard=True,
-                comment=None,
-                comment_url=None,
-                rest={"HttpOnly": None},
-            )
-            cookie_jar.set_cookie(cookie)
+    for cookie_name, cookie_value in cookie_dict.items():
+        cookie = cookiejar.Cookie(
+            version=0,
+            name=cookie_name,
+            value=cookie_value,
+            port=None,
+            port_specified=False,
+            domain="",
+            domain_specified=False,
+            domain_initial_dot=False,
+            path="/",
+            path_specified=True,
+            secure=False,
+            expires=None,
+            discard=True,
+            comment=None,
+            comment_url=None,
+            rest={"HttpOnly": None},
+        )
+        cookie_jar.set_cookie(cookie)
     return cookie_jar
