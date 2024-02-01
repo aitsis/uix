@@ -11,7 +11,7 @@ from .core.htmlgen import HTMLGen
 from .core.session import Session
 from ._config import config
 from .core.pipe import Pipe
-from .core.cookie import cookie_builder_from_query_string
+from .core.cookie import cookie_builder_from_query_string, build_cookieJar_from_dict
 # GLOBALS ------------------------------------------------------------------------------------------
 static_files_path = os.path.join(os.path.dirname(__file__), "static")
 log_handler = None
@@ -82,7 +82,8 @@ def download(path):
 def socket_on_connect():
     print("Client Connected")
     sid = request.sid
-    sessions[sid] = Session(sid, requestData={"cookies": request.cookies})
+    cookieJar = build_cookieJar_from_dict(request.cookies)
+    sessions[sid] = Session(sid, requestData={"cookies": cookieJar})
 
 @socketio.on("disconnect")
 def socket_on_disconnect():

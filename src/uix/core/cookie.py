@@ -1,3 +1,4 @@
+from http import cookiejar
 from typing import Dict, Union
 
 def cookie_builder_from_query_string(query: Dict[str, Union[str, int, bool]]) -> Dict[str, Union[str, int, None, bool]]:
@@ -63,3 +64,36 @@ def build_cookie_url(base_url: str, cookie_params: dict) -> str:
     query_string = '&'.join(f"{key}={value}" for key, value in cookie_params.items() if value is not None)
     url = f"{base_url}?{query_string}" if query_string else base_url
     return url
+
+def build_cookieJar_from_dict(cookie_dict: dict) -> cookiejar.CookieJar:
+    """
+    Build a CookieJar from a dictionary.
+
+    Args:
+        cookie_dict (dict): The cookie dictionary.
+
+    Returns:
+        CookieJar: The cookie jar.
+    """
+    cookie_jar = cookiejar.CookieJar()
+    for cookie_name, cookie_value in cookie_dict.items():
+        cookie = cookiejar.Cookie(
+            version=0,
+            name=cookie_name,
+            value=cookie_value,
+            port=None,
+            port_specified=False,
+            domain="",
+            domain_specified=False,
+            domain_initial_dot=False,
+            path="/",
+            path_specified=True,
+            secure=False,
+            expires=None,
+            discard=True,
+            comment=None,
+            comment_url=None,
+            rest={"HttpOnly": None},
+        )
+        cookie_jar.set_cookie(cookie)
+    return cookie_jar
