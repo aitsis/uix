@@ -10,6 +10,7 @@ class label(Element):
         self.attrs["tabindex"] = tabindex
         self.attrs["for"] = usefor
         self.has_content = True
+        self.value_name = "innerHTML"
 
 title = "Label"
 
