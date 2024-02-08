@@ -1,5 +1,6 @@
 
 import threading
+from urllib.parse import parse_qs
 import uix
 from copy import deepcopy
 from .context import Context
@@ -14,16 +15,28 @@ class Session:
         self.elements = {}
         self.message_queue = []
         self.context = Context(self, None, requestData)
+        self.paths = []
+        self.args = {}
+        self.cookies = requestData["cookies"]
 
-    def InitializeClient(self):
+    def InitializeClient(self,data):
         uix.log("Client Initialized")
+        qs = parse_qs(data["search"][1:])
+        self.args = qs
+        self.paths = data["path"][1:].split("/")
         if( uix.app.ui_root is not None):
-            self.ui_root = deepcopy(uix.app.ui_root)
+            if callable(uix.app.ui_root):
+                if not hasattr(context, "session"):
+                    context.session = self
+                self.ui_root = uix.app.ui_root()
+            else:
+                self.ui_root = deepcopy(uix.app.ui_root)
             self.ui_root.bind(self)
             html = self.ui_root.render()
             self.send("ait-uix", html, "init-content")
             self.ui_root._init()
             self.flush_message_queue()
+            
         else:
             uix.error("No UI Root")
 
@@ -43,8 +56,8 @@ class Session:
 
     def clientHandler(self, data):
         global context
-        if data["id"] == "ait-uix" and data["value"] == "init":
-            self.InitializeClient()
+        if data["id"] == "ait-uix" and data["event_name"] == "init":
+            self.InitializeClient(data["value"])
             if uix.app.on_session_init is not None:
                 uix.app.on_session_init(context)
         else:

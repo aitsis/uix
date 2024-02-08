@@ -87,7 +87,8 @@ const initSocketEvents = () => {
             window.location.reload();
         }
         page_loaded = true;
-        clientEmit('ait-uix', 'init', 'init');
+        clientEmit('ait-uix', {path:window.location.pathname, search:window.location.search}, 'init');
+        
     });
 
     socket.on('disconnect', () => { });

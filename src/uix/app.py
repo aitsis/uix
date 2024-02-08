@@ -32,7 +32,13 @@ CORS(flask)
 # INDEX
 @flask.route("/")
 def index():
+     return html.generate()
+
+# INDEX_PATH
+@flask.route("/<path:path>")
+def index_with_path(path):
     return html.generate()
+
 
 # SET COOKIE FROM QUERY STRING
 @flask.route('/set-cookie', methods=['GET'])
@@ -48,9 +54,9 @@ def set_cookie():
         return jsonify({'error': 'Both "key" and "value" are required parameters'}), 400
 
 # STATIC FILES
-@flask.route("/<path:path>")
+@flask.route("/static/<path:path>")
 def static_files(path):
-        return send_from_directory(static_files_path, path)
+    return send_from_directory(static_files_path, path)
 
 def add_static_route(logical_path, local_directory):
     flask.add_url_rule(f"/{logical_path}/<path:path>", local_directory, lambda path : send_from_directory(local_directory, path))

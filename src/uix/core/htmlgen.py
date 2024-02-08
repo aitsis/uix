@@ -7,13 +7,13 @@ class HTMLGen:
         self.default_header_items = {
             'meta-charset': '<meta charset="UTF-8">',
             'meta-viewport': '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
-            'socket.io': '<script src="socket.io.min.js"></script>',
-            'style': '<link rel="stylesheet" href="style.css">',
+            'socket.io': '<script src="/static/socket.io.min.js"></script>',
+            'style': '<link rel="stylesheet" href="/static/style.css">',
             'favicon': '<link rel="icon" href="https://ai.ait.com.tr/wp-content/uploads/cropped-favicon_aiait-32x32.png" sizes="32x32" />',
             'fontawesome': '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />'
         }
         self.header_items = {}
-        self.default_script_sources = {"main": "<script src='main.js'></script>"}
+        self.default_script_sources = {"main": "<script src='/static/main.js'></script>"}
         self.script_sources_before_main = {}
         self.script_sources_after_main = {}
         self.scripts_before_main = {}
@@ -60,7 +60,7 @@ class HTMLGen:
     def minify_html(self, html_code):
         return re.sub(r'>\s+<', '><', re.sub(r'<!--.*?-->', '', html_code)).strip()
 
-    def generate(self):
+    def generate(self, page_id = None):
         
         # HTML BEGIN ------------------------------------------------------------
         index_str = '<!DOCTYPE html><html lang="en" translate="no"><head>'
@@ -77,7 +77,10 @@ class HTMLGen:
         index_str += '</head>'
         # BODY ------------------------------------------------------------------
         index_str += '<body>'
-        index_str += "<div id='ait-uix'></div>"
+        if page_id is not None:
+            index_str += f"<div id='ait-uix' page-id={page_id}></div>"
+        else:
+            index_str += "<div id='ait-uix'></div>"
         # SCRIPTS ---------------------------------------------------------------
         # SCRIPT SOURCES --------------------------------------------------------
         for key in self.script_sources_before_main:
