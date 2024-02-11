@@ -94,6 +94,9 @@ class Element:
     def set_value(self, value):
         self.value = value
 
+    def set_timeout(self, time, callback):
+        self.events["timeout"] = callback
+        self.session.send(self.id, time, "set-timeout")
     # RUNTIME JAVASCRIPT -------------------------------------------------------------------------------  
     def toggle_class(self, class_name):
         self.session.send(self.id, class_name, "toggle-class")
