@@ -291,7 +291,7 @@ textarea {
   resize: none;
 }
 
-button {
+button, .btn {
   color: white;
   border-style: none;
   border-radius: 3px;
@@ -308,16 +308,16 @@ button {
   min-width: 100px;
 }
 
-button:active {
+button:active , .btn:active{
   scale: 0.95 !important;
   filter: brightness(70%) !important;
 }
 
-button:hover {
+button:hover , .btn:hover{
   filter: brightness(150%);
 }
 
-button:disabled {
+button:disabled , .btn:disabled {
   pointer-events: none;
   opacity: 0.3;
 }
