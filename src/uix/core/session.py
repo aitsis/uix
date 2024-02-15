@@ -17,7 +17,15 @@ class Session:
         self.context = Context(self, None, requestData)
         self.paths = []
         self.args = {}
+        self.lang = "en"
         self.cookies = requestData["cookies"]
+
+        for cookie in self.cookies:
+            if cookie.name == "lang":
+                self.lang = cookie.value
+                break  # Stop iterating after finding the lang cookie
+            else:
+                print(f"Other cookie: {cookie.name} = {cookie.value}")
 
     def InitializeClient(self,data):
         uix.log("Client Initialized")
