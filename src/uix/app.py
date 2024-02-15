@@ -3,7 +3,7 @@ from uuid import uuid4
 import os
 import logging
 # FLASK SERVER -------------------------------------------------------------------------------------
-from flask import Flask, request, send_from_directory, abort, jsonify, Response
+from flask import Flask, request, send_from_directory, abort, jsonify, Response, make_response, redirect
 from flask_cors import CORS
 from flask_socketio import SocketIO
 # UIX CORE -----------------------------------------------------------------------------------------
@@ -43,12 +43,11 @@ def index_with_path(path):
 # SET COOKIE FROM QUERY STRING
 @flask.route('/set-cookie', methods=['GET'])
 def set_cookie():
-    response = jsonify({'success': False})
     cookie_args = cookie_builder_from_query_string(request.args)
 
     if cookie_args["key"] is not None and cookie_args["value"] is not None:
+        response = make_response(redirect('/'))
         response.set_cookie(**cookie_args)
-        response.status_code = 204
         return response
     else:
         return jsonify({'error': 'Both "key" and "value" are required parameters'}), 400
