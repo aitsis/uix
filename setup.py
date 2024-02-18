@@ -13,7 +13,12 @@ setup(
     package_dir={'': 'src'},  # Tell distutils packages are under src
     install_requires=[
         # List of dependencies
-        
+        "flask",
+        "flask_cors",
+        "flask_socketio",
+        "numpy", 
+        "pillow",
+        "python-dotenv"       
     ],
     classifiers=[
         # Trove classifiers
