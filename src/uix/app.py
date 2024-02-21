@@ -39,6 +39,11 @@ def index():
 def index_with_path(path):
     return html.generate()
 
+@flask.route('/logout', methods=['GET'])
+def logout():
+    response = make_response(redirect('/'))
+    response.set_cookie('token', '', expires=0, path='/', samesite='Strict')
+    return response
 
 # SET COOKIE FROM QUERY STRING
 @flask.route('/set-cookie', methods=['GET'])
