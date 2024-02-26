@@ -11,7 +11,6 @@ const onFileChange = (id,files,eventName) => {
                     size:files[i].size,
                     type:files[i].type,
                     lastModified:files[i].lastModified,
-                    lastModifiedDate:files[i].lastModifiedDate,
                     url:URL.createObjectURL(files[i])
                 });
     }

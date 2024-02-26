@@ -92,7 +92,7 @@ const initSocketEvents = () => {
         
     });
 
-    socket.on('disconnect', () => { });
+    socket.on('disconnect', () => { console.log('socket disconnected.'); });
 
     socket.on('from_server', (data) => {
         //console.log('from_server : ', data);
