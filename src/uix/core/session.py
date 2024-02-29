@@ -28,14 +28,15 @@ class Session:
                 print(f"Other cookie: {cookie.name} = {cookie.value}")
 
     def InitializeClient(self,data):
+        global context
         uix.log("Client Initialized")
         qs = parse_qs(data["search"][1:])
         self.args = qs
         self.paths = data["path"][1:].split("/")
         if( uix.app.ui_root is not None):
+            context.session = self
             if callable(uix.app.ui_root):
-                if not hasattr(context, "session"):
-                    context.session = self
+                #if not hasattr(context, "session"):
                 self.ui_root = uix.app.ui_root()
             else:
                 self.ui_root = deepcopy(uix.app.ui_root)
@@ -69,8 +70,8 @@ class Session:
             if uix.app.on_session_init is not None:
                 uix.app.on_session_init(context)
         else:
-            if not hasattr(context, "session"):
-                context.session = self
+            #if not hasattr(context, "session"):
+            context.session = self
             self.eventHandler(data)
     
     def push_parent(self, parent):

@@ -25,7 +25,7 @@ on_session_init = None
 
 # SERVER -------------------------------------------------------------------------------------------
 flask = Flask(__name__)
-socketio = SocketIO(flask, cors_allowed_origins="*", transports=["websocket"])
+socketio = SocketIO(flask, cors_allowed_origins="*", transports=["pooling","websocket"])
 CORS(flask)
 
 # ROUTES -------------------------------------------------------------------------------------------
@@ -60,10 +60,18 @@ def set_cookie():
 # STATIC FILES
 @flask.route("/static/<path:path>")
 def static_files(path):
-    return send_from_directory(static_files_path, path)
+    response = make_response(send_from_directory(static_files_path, path))
+    response.headers['Cache-Control'] = 'max-age=31536000'
+    return response
+
+def _send_from_directory(directory, path):
+    response = make_response(send_from_directory(directory, path))
+    response.headers['Cache-Control'] = 'max-age=31536000'
+    return response
+
 
 def add_static_route(logical_path, local_directory):
-    flask.add_url_rule(f"/{logical_path}/<path:path>", local_directory, lambda path : send_from_directory(local_directory, path))
+    flask.add_url_rule(f"/{logical_path}/<path:path>", local_directory, lambda path : _send_from_directory(local_directory, path))
 
 # UPLOAD ENDPOINT
 files = {}
