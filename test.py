@@ -2,7 +2,7 @@
 import uix
 from uix.elements import container, image, button, text
 from uix.core.session import context
-
+from uix_components import image_viewer, basic_alert, basic_prompt
 def disable(context, id, value):
     context.elements["my-button"].set_attr("disabled", True)
 
@@ -44,6 +44,7 @@ def view2():
 
 def _root():
     with container() as main:
+        image_viewer(id ="prompt", value="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
         if context.session is not None:
             print("Session:", context.session.args)
             print("Paths:", context.session.paths)
