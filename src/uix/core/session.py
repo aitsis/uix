@@ -11,6 +11,7 @@ class Session:
         self.sid = sid
         self.locale = None
         self.ui_root = None
+        self.ui_parent = None
         self._next_id = 0
         self.elements = {}
         self.message_queue = []
@@ -36,8 +37,7 @@ class Session:
         if( uix.app.ui_root is not None):
             context.session = self
             if callable(uix.app.ui_root):
-                #if not hasattr(context, "session"):
-                self.ui_root = uix.app.ui_root()
+                uix.app.ui_root()
             else:
                 self.ui_root = deepcopy(uix.app.ui_root)
             self.ui_root.bind(self)
@@ -70,7 +70,6 @@ class Session:
             if uix.app.on_session_init is not None:
                 uix.app.on_session_init(context)
         else:
-            #if not hasattr(context, "session"):
             context.session = self
             self.eventHandler(data)
     

@@ -1,9 +1,9 @@
 from uuid import uuid4
-from .session import Session
+from .session import Session, context
 import uix
 class Element:
     def __init__(self, value = None, id = None):
-        self.session = None
+        self.session = context.session
         self.tag = "div"
         self.id = id
         self._value = value
@@ -17,28 +17,20 @@ class Element:
         self.value_name = "value"
         self.has_content = True
         
-        if uix.ui_root is None:
-            uix.ui_root = self
+        if self.session.ui_root is None:
+            self.session.ui_root = self
 
-        self.parent = uix.app.ui_parent
+        self.parent = self.session.ui_parent
         if self.parent is not None:
             self.parent.children.append(self)
     
     def bind(self,session,only_children=False):
-        self.session = session
         if not only_children:
             if self.id is not None:
                 self.session.elements[self.id] = self
         for child in self.children:
             child.bind(session)
 
-    def unbind(self):
-        if self.id is not None and self.session is not None:
-            if self.id in self.session.elements:
-                del self.session.elements[self.id]
-        for child in self.children:
-            child.unbind()
-    
     def _init(self):
         self.init()
         for child in self.children:
@@ -48,18 +40,15 @@ class Element:
         pass
     # WITH ENTRY - EXIT -------------------------------------------------------------------------------
     def enter(self):
-        self.old_parent = uix.app.ui_parent
-        uix.app.ui_parent = self
-        for child in self.children:
-            child.unbind()
+        self.old_parent = self.session.ui_parent
+        self.session.ui_parent = self
         self.children = []
         return self
     
     def exit(self):
-        uix.app.ui_parent = self.old_parent
-        if(self.session is not None):
-            self.bind(self.session,only_children=True)
-            self._init()
+        self.session.ui_parent = self.old_parent
+        self.bind(self.session,only_children=True)
+        self._init()
     
     def __enter__(self):
         return self.enter()
@@ -158,6 +147,7 @@ class Element:
     def on(self,event_name,action):
         if(self.id is None):
             self.id = str(uuid4())
+            self.session.elements[self.id] = self
         self.events[event_name] = action
         return self
 

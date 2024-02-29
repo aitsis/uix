@@ -15,12 +15,7 @@ class button(Element):
         if self.disabled:
             self.attrs["disabled"] = "disabled"
 
-    def bind(self,session):
-        if self.id is None:
-            self.id = str(uuid4())
-        super().bind(session)
         
-
 title = "Button"
 
 description = '''

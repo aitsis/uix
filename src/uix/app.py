@@ -17,7 +17,6 @@ static_files_path = os.path.join(os.path.dirname(__file__), "static")
 log_handler = None
 error_handler = None
 ui_root = None
-ui_parent = None
 sessions = {}
 html = HTMLGen()
 _pipes: List[Pipe] = []
