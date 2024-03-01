@@ -40,9 +40,9 @@ class Session:
                 uix.app.ui_root()
             else:
                 self.ui_root = deepcopy(uix.app.ui_root)
-            self.ui_root.bind(self)
             html = self.ui_root.render()
             self.send("ait-uix", html, "init-content")
+            self.ui_root._init()
             self.flush_message_queue()
             
         else:

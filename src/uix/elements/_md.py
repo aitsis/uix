@@ -1,4 +1,5 @@
 import uix
+from uuid import uuid4
 from ..core.element import Element
 print("Imported: md2")
 uix.html.add_header_item("md2_js", '<script src="https://cdn.jsdelivr.net/npm/markdown-it@14.0.0/dist/markdown-it.min.js"></script>')
@@ -43,12 +44,11 @@ uix.html.add_css("md2_css_style", style = '''
 
 class md(Element):
     def __init__(self,value:str = None,id:str = None):
+        if id is None:
+            id = str(uuid4())
         super().__init__(value, id = id)
-
-    def bind(self, session, only_children=False):
-        if self.id is None:
-            self.id = "md2_" + str(session.next_id())
-        super().bind(session, only_children)
+        
+    def init(self):
         self.session.queue_for_send(self.id, self.value, "md2-change-md")
     
     def send_value(self, value):

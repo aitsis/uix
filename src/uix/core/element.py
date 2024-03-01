@@ -24,12 +24,8 @@ class Element:
         if self.parent is not None:
             self.parent.children.append(self)
     
-    def bind(self,session,only_children=False):
-        if not only_children:
-            if self.id is not None:
-                self.session.elements[self.id] = self
-        for child in self.children:
-            child.bind(session)
+        if self.id is not None:
+            self.session.elements[self.id] = self
 
     def _init(self):
         self.init()
@@ -47,8 +43,6 @@ class Element:
     
     def exit(self):
         self.session.ui_parent = self.old_parent
-        self.bind(self.session,only_children=True)
-        self._init()
     
     def __enter__(self):
         return self.enter()
