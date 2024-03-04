@@ -1,19 +1,18 @@
 import uix
 from uuid import uuid4
 from ..core.element import Element
+from ..core.session import context
 from PIL import Image
 import io
 print("Imported: image")
 class image(Element):
     def __init__(self,value = None,id:str = None, no_cache = True):    
-        super().__init__(None, id = id)
+        super().__init__(value = value, id = id)
         self.no_cache = no_cache
-        self.value = value
         self.tag = "img"
         self.value_name = "src"
         self.has_content = False
         
-
     @property
     def value(self):
         return self._value
@@ -27,9 +26,11 @@ class image(Element):
             self.has_png_image = False
             self._value = value
             
-        if self.session is not None:
+        if self.id is not None:
             self.send_value(self._value)
-
+        else:
+            print("No id for image")
+    
     def __del__(self):
         if self.has_png_image:
             uix.app.files[self.id] = None
