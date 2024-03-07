@@ -12,6 +12,7 @@ class image(Element):
         self.tag = "img"
         self.value_name = "src"
         self.has_content = False
+        self.has_png_image = False
         
     @property
     def value(self):
