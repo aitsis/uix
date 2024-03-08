@@ -3,7 +3,7 @@ from uuid import uuid4
 import os
 import logging
 # FLASK SERVER -------------------------------------------------------------------------------------
-from flask import Flask, request, send_from_directory, abort, jsonify, Response, make_response, redirect
+from flask import Flask, request, send_from_directory, abort, jsonify, Response, make_response, redirect, send_file
 from flask_cors import CORS
 from flask_socketio import SocketIO
 # UIX CORE -----------------------------------------------------------------------------------------
@@ -18,6 +18,7 @@ log_handler = None
 error_handler = None
 ui_root = None
 sessions = {}
+api_handlers = {}
 html = HTMLGen()
 _pipes: List[Pipe] = []
 on_session_init = None
@@ -56,6 +57,18 @@ def set_cookie():
     else:
         return jsonify({'error': 'Both "key" and "value" are required parameters'}), 400
 
+# API ENDPOINT
+def register_api_handler(name, handler):
+    api_handlers[name] = handler
+@flask.route("/api/<path:path>")
+def api_func(path):
+    paths = path.split("/")
+    if paths[0] in api_handlers:
+        response = make_response(api_handlers[paths[0]](paths, request.args))
+        response.headers['Cache-Control'] = 'max-age=31536000'
+        return response
+    else:
+        return abort(404)
 # STATIC FILES
 @flask.route("/static/<path:path>")
 def static_files(path):
