@@ -60,7 +60,7 @@ def set_cookie():
 # API ENDPOINT
 def register_api_handler(name, handler):
     api_handlers[name] = handler
-@flask.route("/api/<path:path>")
+@flask.route("/manual_api/<path:path>")
 def api_func(path):
     paths = path.split("/")
     if paths[0] in api_handlers:
