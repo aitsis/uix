@@ -42,7 +42,8 @@ def index_with_path(path):
 @flask.route('/logout', methods=['GET'])
 def logout():
     response = make_response(redirect('/'))
-    response.set_cookie('token', '', expires=0, path='/', samesite='Strict')
+    response.set_cookie('__u_at', '', expires=0, path='/', samesite='Strict')
+    response.set_cookie('__u_ref', '', expires=0, path='/', samesite='Strict')
     return response
 
 # SET COOKIE FROM QUERY STRING
