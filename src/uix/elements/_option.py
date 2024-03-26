@@ -1,8 +1,8 @@
 from ..core.element import Element
 print("Imported: option")
 class option(Element):
-    def __init__(self,value:str = None,id:str = None):
-        super().__init__(value, id = id,)
+    def __init__(self,value:str = None,id:str = None, text:str = None):
+        super().__init__(value=text, id = id,)
         self.tag = "option"
         self.value_name = "innerHTML"
         self.has_content = True
