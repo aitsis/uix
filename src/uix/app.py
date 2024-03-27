@@ -11,7 +11,7 @@ from .core.htmlgen import HTMLGen
 from .core.session import Session
 from ._config import config
 from .core.pipe import Pipe
-from .core.cookie import cookie_builder_from_query_string, build_cookieJar_from_dict
+from .core.cookie import build_cookieJar_from_dict, extract_cookie_settings_from_request_args
 # GLOBALS ------------------------------------------------------------------------------------------
 static_files_path = os.path.join(os.path.dirname(__file__), "static")
 log_handler = None
@@ -49,14 +49,32 @@ def logout():
 # SET COOKIE FROM QUERY STRING
 @flask.route('/set-cookie', methods=['GET'])
 def set_cookie():
-    cookie_args = cookie_builder_from_query_string(request.args)
+    """
+    Handles setting a cookie based on provided query parameters.
+    Returns a 204 No Content response on success.
 
-    if cookie_args["key"] is not None and cookie_args["value"] is not None:
-        response = make_response(redirect('/'))
-        response.set_cookie(**cookie_args)
+    Examples URLs:
+        http://127.0.0.1:5000/set-cookie?key=my_cookie&value=my_value
+        http://127.0.0.1:5000/set-cookie?key=my_cookie&value=my_value&max_age=3600
+        http://127.0.0.1:5000/set-cookie?key=my_cookie&value=my_value&path=/
+        http://127.0.0.1:5000/set-cookie?key=my_cookie&value=my_value&domain=127.0.0.1
+        http://127.0.0.1:5000/set-cookie?key=my_cookie&value=my_value&expires=1711877452
+        http://127.0.0.1:5000/set-cookie?key=my_cookie&value=my_value&expires=1711877452&secure=true&httponly=true&samesite=strict
+    """
+    try:
+        cookie_settings = extract_cookie_settings_from_request_args(request.args)
+
+        if not cookie_settings['key'] or not cookie_settings['value']:
+            return jsonify({'error': 'Both key and value are required'}), 400
+
+        response = make_response()
+        response.set_cookie(**cookie_settings)
+        response.status_code = 204
         return response
-    else:
-        return jsonify({'error': 'Both "key" and "value" are required parameters'}), 400
+
+    except Exception as e:
+        logging.error(f"Error setting cookie: {e}")
+        return jsonify({'error': 'Internal server error'}), 500
 
 # API ENDPOINT
 def register_api_handler(name, handler):
