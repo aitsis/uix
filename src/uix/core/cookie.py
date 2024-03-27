@@ -1,99 +1,83 @@
-from http import cookiejar
-from typing import Dict, Union
+from urllib.parse import urlencode
 
-def cookie_builder_from_query_string(query: Dict[str, Union[str, int, bool]]) -> Dict[str, Union[str, int, None, bool]]:
+def extract_cookie_settings_from_request_args(request_args):
     """
-    Build a cookie dictionary from query string parameters.
+    Extracts cookie settings from Flask's request.args for potential server-side usage.
+    Handles type conversions, provides default values, and performs validation.
 
     Args:
-        query (dict): Query string parameters.
+        request_args (Dict[str, Union[str, int, bool]]): Flask's request.args dictionary.
 
     Returns:
-        dict: Cookie dictionary.
+        Dict[str, Union[str, int, bool, None]]: A dictionary containing potential cookie settings.
 
     Examples:
-        cookie_builder_from_query_string({'key': 'my_cookie', 'value': 'my_value'})
-        cookie_builder_from_query_string({'key': 'my_cookie', 'value': 'my_value', 'max_age': 3600})
-        cookie_builder_from_query_string({'key': 'my_cookie', 'value': 'my_value', 'path': '/'})
-        cookie_builder_from_query_string({'key': 'my_cookie', 'value': 'my_value', 'domain': '127.0.0.1'})
-        cookie_builder_from_query_string({'key': 'my_cookie', 'value': 'my_value', 'expires': 1711877452, 'secure': True, 'httponly': True, 'samesite': 'strict'})
+        >>> extract_cookie_settings_from_request_args({'key': 'my_cookie', 'value': 'my_value'})
+        {'key': 'my_cookie', 'value': 'my_value', ...}  # Other defaults applied
 
-      Example URLs:
-        http://127.0.0.1:5000/set-cookie?key=my_cookie&value=my_value
-        http://127.0.0.1:5000/set-cookie?key=my_cookie&value=my_value&max_age=3600
-        http://127.0.0.1:5000/set-cookie?key=my_cookie&value=my_value&path=/
-        http://127.0.0.1:5000/set-cookie?key=my_cookie&value=my_value&domain=127.0.0.1
-        http://127.0.0.1:5000/set-cookie?key=my_cookie&value=my_value&expires=1711877452
-        http://127.0.0.1:5000/set-cookie?key=my_cookie&value=my_value&expires=1711877452&secure=true&httponly=true&samesite=strict
+        >>> extract_cookie_settings_from_request_args({'key': 'my_cookie', 'value': 'my_value', 'max_age': '3600'})
+        {'key': 'my_cookie', 'value': 'my_value', 'max_age': 3600, ...}
+
+        >>> extract_cookie_settings_from_request_args({'key': 'my_cookie', 'value': 'my_value', 'path': '/'})
+        {'key': 'my_cookie', 'value': 'my_value', 'path': '/', ...}
+
+        >>> extract_cookie_settings_from_request_args({'key': 'my_cookie', 'value': 'my_value', 'domain': '127.0.0.1'})
+        {'key': 'my_cookie', 'value': 'my_value', 'domain': '127.0.0.1', ...}
+
+        >>> extract_cookie_settings_from_request_args({'key': 'my_cookie', 'value': 'my_value', 'expires': '1711877452', 'secure': 'true', 'httponly': 'true', 'samesite': 'strict'})
+        {'key': 'my_cookie', 'value': 'my_value', 'expires': 1711877452, 'secure': True, 'httponly': True, 'samesite': 'strict', ...}
     """
+    cookie_settings = {
+        'key': request_args.get('key'),
+        'value': request_args.get('value'),
+        'max_age': int(request_args.get('max_age')) if request_args.get('max_age') else None,
+        'expires': int(request_args.get('expires')) if request_args.get('expires') else None,
+        'path': request_args.get('path', '/'),
+        'domain': request_args.get('domain'),
+        'secure': request_args.get('secure', 'False').lower() == 'true',
+        'httponly': request_args.get('httponly', 'False').lower() == 'true',
+        'samesite': request_args.get('samesite', 'Lax').lower() 
+    }
 
-    cookie = {}
-    cookie["key"] = query.get("key", default=None)
-    cookie["value"] = query.get("value", default=None)
-    
-    max_age = query.get("max_age", default=None)
-    cookie["max_age"] = int(max_age) if max_age and max_age.isdigit() else None
-    
-    expires = query.get("expires", default=None)
-    cookie["expires"] = int(expires) if expires is not None else None
-    
-    cookie["path"] = query.get("path", default=None)
-    cookie["domain"] = query.get("domain", default=None)
-    
-    secure = query.get("secure", default="false").lower()
-    cookie["secure"] = secure == "true"
-    
-    httponly = query.get("httponly", default="false").lower()
-    cookie["httponly"] = httponly == "true"
-    
-    cookie["samesite"] = query.get("samesite", default=None)
-    
-    return cookie
+    # Validation: Check for valid 'samesite' value
+    if cookie_settings['samesite'] not in ['lax', 'strict', 'none']:
+        cookie_settings['samesite'] = 'Lax'  # Set to a safe default
+        print(f"Warning: Invalid SameSite value: {cookie_settings['samesite']}. Using 'Lax'")
 
-def build_cookie_url(base_url: str, cookie_params: dict) -> str:
+    return cookie_settings
+
+def build_cookie_url(route_path, cookie_name, cookie_params, cookie_name_key='key'):
     """
-    Build a URL with cookie parameters.
+    Generates a URL with query parameters based on cookie settings.
 
     Args:
-        base_url (str): The base URL.
-        cookie_params (dict): Cookie parameters.
+        route_path (str): The path of the route that sets the cookie (e.g., "/set-cookie").
+        cookie_name (str): The name of the cookie.
+        cookie_params (dict): A dictionary containing cookie settings.
+        cookie_name_key (str, optional): The key to use for the cookie name in the URL. 
+                                         Defaults to 'key' for Flask compatibility.
 
     Returns:
-        str: The complete URL.
-    """
-    query_string = '&'.join(f"{key}={value}" for key, value in cookie_params.items() if value is not None)
-    url = f"{base_url}?{query_string}" if query_string else base_url
-    return url
+        str: The generated URL with query parameters.
 
-def build_cookieJar_from_dict(cookie_dict: dict) -> cookiejar.CookieJar:
-    """
-    Build a CookieJar from a dictionary.
+    Examples:
+        # For Flask:
+        >>> build_cookie_url('/set-cookie', 'my_cookie', {'value': 'my_value'})
+        '/set-cookie?key=my_cookie&value=my_value'
 
-    Args:
-        cookie_dict (dict): The cookie dictionary.
-
-    Returns:
-        CookieJar: The cookie jar.
+        # For a cookie jar (potentially):
+        >>> build_cookie_url('/set-cookie', 'session_id', {'value': '12345'}, cookie_name_key='name')
+        '/set-cookie?name=session_id&value=12345'
     """
-    cookie_jar = cookiejar.CookieJar()
-    for cookie_name, cookie_value in cookie_dict.items():
-        cookie = cookiejar.Cookie(
-            version=0,
-            name=cookie_name,
-            value=cookie_value,
-            port=None,
-            port_specified=False,
-            domain="",
-            domain_specified=False,
-            domain_initial_dot=False,
-            path="/",
-            path_specified=True,
-            secure=False,
-            expires=None,
-            discard=True,
-            comment=None,
-            comment_url=None,
-            rest={"HttpOnly": None},
-        )
-        cookie_jar.set_cookie(cookie)
-    return cookie_jar
+
+    query_params = {cookie_name_key: cookie_name}  # Start with the cookie name
+    query_params.update(cookie_params)
+
+    # Handle special cases (if needed)
+    if 'expires' in query_params:
+        query_params['expires'] = str(query_params['expires'])  
+
+    query_string = urlencode(query_params)
+    return route_path + '?' + query_string
+
+from requests.cookies import cookiejar_from_dict as build_cookieJar_from_dict
