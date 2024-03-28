@@ -27,9 +27,9 @@ uix.html.add_script("dialog", script =
 uix.html.add_css("dialog_css", style = '''
 dialog {
     background: var(--background);
-    color:white;
+    color:var(--font-color);
     border-radius: 3px;
-    border:1px solid gray;
+    border:1px solid var(--border-color);
 }
         
 ::backdrop {

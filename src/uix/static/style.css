@@ -5,8 +5,11 @@ html {
   background-color: var(--background);
   font-family: var(--ait-text-font);
   font-size: 14px;
-  /* Default font size */
-  color: white;
+  letter-spacing: 0.5px;
+  font-weight: 300;
+  color: var(--font-color);
+  /* Default font style */
+
   overflow-x: hidden;
   overflow-y: hidden;
   padding: 0;
@@ -14,13 +17,9 @@ html {
   height: 100%;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--ait-header-text), Tahoma, sans-serif;
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--ait-header-text);
+  font-weight: bold;
 }
 
 header {
@@ -72,16 +71,18 @@ footer {
   --quaternary: rgba(255, 255, 255, 0.2);
   --ait: #00573d;
   --red: #ff0000;
-  --background: #282f3a;
-  --background-secondary: #464c56;
+  --background: #131314;
+  --background-secondary: #1e1f20;
   --background-mask: #00000050;
+  --font-color: rgba(255, 255, 255, 0.8);
+  --border-color: #3d3d3d;
   --success-color: var(--ait);
   --warning-color: #b49300;
   --danger-color: #d50000;
   --info-color: #0071aa;
   --normal-color: gray;
   --ait-text-font: "Exo 2";
-  --ait-header-text: "Trebuchet MS";
+  --ait-header-text: "Exo 2";
 }
 
 a {
@@ -105,7 +106,7 @@ a:hover {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: white;
+  background: var(--font-color);
   border-radius: 12px;
 }
 
@@ -127,9 +128,9 @@ input {
   font-family: var(--ait-text-font);
   outline: none;
   height: 1.2rem;
-  border: #aaa 1px solid;
+  border: var(--border-color) 1px solid;
   padding: 5px;
-  color: white;
+  color: var(--font-color);
   background-color: var(--background-secondary);
   border-radius: 6px;
 }
@@ -158,9 +159,9 @@ input[type=number]::-webkit-inner-spin-button {
 select {
   font-family: var(--ait-text-font);
   outline: none;
-  border: #aaa 1px solid;
+  border: var(--border-color) 1px solid;
   padding: 5px;
-  color: white;
+  color: var(--font-color);
   background-color: var(--background-secondary);
   border-radius: 6px;
 }
@@ -174,7 +175,7 @@ input[type="radio"] {
   -moz-appearance: none;
   width: 20px;
   height: 20px;
-  border: 2px solid gray;
+  border: 2px solid var(--border-color);
   border-radius: 50%;
   outline: none;
   background-color: var(--background-secondary);
@@ -194,7 +195,7 @@ input[type="checkbox"] {
   min-height: 20px !important;
   max-width: 20px !important;
   max-height: 20px !important;
-  border: 2px solid gray;
+  border: 2px solid var(--border-color);
   border-radius: 4px;
   outline: none;
   background-color: var(--background-secondary);
@@ -221,7 +222,7 @@ input[type="radio"]::after {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background-color: white;
+  background-color: var(--font-color);
 }
 
 input[type="checkbox"]::after {
@@ -230,7 +231,7 @@ input[type="checkbox"]::after {
   font-size: 12px;
   top: 0;
   left: 3px;
-  color: white;
+  color: var(--font-color);
 }
 
 
@@ -258,7 +259,7 @@ input[type="range"]::-webkit-slider-thumb {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: white;
+  background: var(--font-color);
   cursor: pointer;
 }
 
@@ -266,7 +267,7 @@ input[type="range"]::-moz-range-thumb {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: white;
+  background: var(--font-color);
   cursor: pointer;
 }
 
@@ -283,16 +284,16 @@ textarea {
   justify-content: center;
   align-items: center;
   background-color: var(--background-secondary);
-  border: 1px solid gray;
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   box-sizing: border-box;
-  color: white;
+  color: var(--font-color);
   outline: none;
   resize: none;
 }
 
 button, .btn {
-  color: white;
+  color: var(--font-color);
   border-style: none;
   border-radius: 3px;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -351,7 +352,7 @@ button:disabled , .btn:disabled {
   display: flex;
   flex-direction: column;
   background-color: var(--background);
-  color: white;
+  color: var(--font-color);
 
 }
 
@@ -377,7 +378,7 @@ header {
   margin: 0;
   box-sizing: border-box;
   border-radius: 3px;
-  border: 1px solid gray;
+  border: 1px solid var(--border-color);
 }
 
 .container {
@@ -421,8 +422,8 @@ header {
   align-items: flex-start;
   padding: 2px;
   margin: 2px;
-  border: 1px solid #444;
-  background-color: white;
+  border: 1px solid var(--border-color);
+  background-color: var(--font-color);
   transition: all 300ms ease-out;
 }
 
@@ -459,7 +460,7 @@ header {
 /* UIX */
 
 .border {
-  border: 1px solid gray;
+  border: 1px solid var(--border-color);
   border-radius: 3px;
   padding: 5px;
 }
@@ -467,7 +468,7 @@ header {
 
 /* table css */
 table, th, td {
-  border: 1px solid gray;
+  border: 1px solid var(--border-color);
   border-collapse: collapse;
 }
        
