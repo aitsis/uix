@@ -17,10 +17,8 @@ const onFileChange = (id,files,eventName) => {
     clientEmit(id,urls,eventName);
 };
 event_handlers["file-upload"] = (id,url,eventName) => {
-    console.log("file-upload",id,url,eventName);
     fetch(url).then(response => response.blob()).then(data => 
     {
-        console.log(data);
         const xhr = new XMLHttpRequest();
         xhr.upload.onprogress = function(event) {
             if (event.lengthComputable) {
@@ -41,7 +39,6 @@ event_handlers["file-upload"] = (id,url,eventName) => {
         };
         xhr.open("POST", "/upload/"+url);
         xhr.send(data);
-        console.log("uploading");
     });
 };
 """,beforeMain = False)
