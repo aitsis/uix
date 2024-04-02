@@ -82,9 +82,7 @@ const initSocketEvents = () => {
     }
 
     socket.on('connect', () => {
-        console.log('socket connected');
         if (page_loaded) {
-            console.log('reloading page.');
             window.location.reload();
         }
         page_loaded = true;
@@ -92,10 +90,9 @@ const initSocketEvents = () => {
         
     });
 
-    socket.on('disconnect', () => { console.log('socket disconnected.'); });
+    socket.on('disconnect', () => {});
 
     socket.on('from_server', (data) => {
-        //console.log('from_server : ', data);
         if (socketEvents[data.event_name]) {
             socketEvents[data.event_name](data);
         } else if (handleDynamicEvents(data)) {
@@ -105,7 +102,7 @@ const initSocketEvents = () => {
         }
     });
 
-    socket.on('error', (error) => { console.log('socket error : ', error);});
+    socket.on('error', (error) => {});
 };
 
 
