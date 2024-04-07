@@ -11,15 +11,19 @@ import uix
 
 from uix.elements import div
 
-main = div("Hello World!").style("font-size","30px")
+def root():
+    main = div("Hello World!").style("font-size","30px")
+    return main
 
-uix.start(ui = main)
+uix.start(ui = root)
 ```
 """
 
 import uix
 from uix.elements import md
 
-start_example = md(md_text)
+def start_example():
+    main = md(md_text)
+    return main
 if __name__ == "__main__":
     uix.start(ui = start_example)
