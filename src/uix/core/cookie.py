@@ -80,4 +80,14 @@ def build_cookie_url(route_path, cookie_name, cookie_params, cookie_name_key='ke
     query_string = urlencode(query_params)
     return route_path + '?' + query_string
 
+def create_cookie_object(cookie_name, cookie_params):
+    return {
+        'route': '/set-cookieS',
+        'method': 'POST',
+        'cookie_settings': {
+            'key': cookie_name,
+            **cookie_params
+        }
+    }
+
 from requests.cookies import cookiejar_from_dict as build_cookieJar_from_dict
