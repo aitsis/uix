@@ -1,6 +1,7 @@
 from typing import List
 from uuid import uuid4
 import os
+import json
 import logging
 # FLASK SERVER -------------------------------------------------------------------------------------
 from flask import Flask, request, send_from_directory, abort, jsonify, Response, make_response, redirect, send_file
@@ -52,6 +53,7 @@ def set_cookie():
     """
     Handles setting a cookie based on provided query parameters.
     Returns a 204 No Content response on success.
+    *DO NOT USE FOR SENSITIVE COOKIES*
 
     Examples URLs:
         http://127.0.0.1:5000/set-cookie?key=my_cookie&value=my_value
@@ -74,6 +76,42 @@ def set_cookie():
 
     except Exception as e:
         logging.error(f"Error setting cookie: {e}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+# SET COOKIE FROM REQUEST BODY
+@flask.route('/set-cookieS', methods=['POST'])
+def set_cookie_secure():
+    """
+    Handles setting a cookie.
+    Returns a 204 No Content response on success.
+
+    Example Request Data (JSON):
+    ```json
+    {
+        "route": "/set-cookieS",
+        "method": "POST",
+        "cookie_settings": {
+            "key": "cookie_name",
+            "value": "value",
+            "expires": 1713278615,
+            "httponly": true
+        }
+    }
+    ```
+    """
+    try:
+        cookie_settings = json.loads(request.data)['cookie_settings']
+
+        if not cookie_settings['key'] or not cookie_settings['value']:
+            return jsonify({'error': 'Both key and value are required'}), 400
+        
+        response = make_response()
+        response.set_cookie(**cookie_settings)
+        response.status_code = 204
+        return response
+
+    except Exception as e:
+        logging.error(e)
         return jsonify({'error': 'Internal server error'}), 500
 
 # API ENDPOINT
