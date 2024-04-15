@@ -6,6 +6,7 @@ class progress(Element):
         self.tag = "progress"
         self.max = max
         self.attrs["max"] = max
+        self.attrs["value"] = value
 
 
 
