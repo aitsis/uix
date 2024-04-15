@@ -82,7 +82,7 @@ def set_cookie():
 @flask.route('/set-cookieS', methods=['POST'])
 def set_cookie_secure():
     """
-    Handles setting a cookie based on provided query parameters.
+    Handles setting a cookie.
     Returns a 204 No Content response on success.
 
     Example Request Data (JSON):
