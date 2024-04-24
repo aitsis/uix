@@ -170,7 +170,11 @@ def socket_on_connect():
     print("Client Connected")
     sid = request.sid
     cookieJar = build_cookieJar_from_dict(request.cookies)
-    sessions[sid] = Session(sid, requestData={"cookies": cookieJar})
+    requestData = {
+      "cookies" : cookieJar,
+      "headers" : request.headers
+    }
+    sessions[sid] = Session(sid, requestData=requestData)
 
 @socketio.on("disconnect")
 def socket_on_disconnect():

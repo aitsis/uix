@@ -20,6 +20,7 @@ class Session:
         self.args = {}
         self.lang = "en"
         self.cookies = requestData["cookies"]
+        self.headers = requestData["headers"]
 
         for cookie in self.cookies:
             if cookie.name == "lang":
