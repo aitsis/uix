@@ -137,6 +137,9 @@ class Element:
     def bg(self, color):
         self.styles["background-color"] = color
         return self
+    def align(self, align):
+        self.styles["text-align"] = align
+        return self
     # PYTHON EVENTS ----------------------------------------------------------------------------------
     def on(self,event_name,action):
         if(self.id is None):

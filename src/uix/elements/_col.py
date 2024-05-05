@@ -5,6 +5,9 @@ class col(Element):
         super().__init__(value, id = id)
         self.classes.append("col")
 
+    def align(self, align):
+        self.styles["justify-content"] = align
+        return self
 
 
 title = "Column"
