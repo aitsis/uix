@@ -11,12 +11,12 @@ class option(Element):
         else:
             self.attrs["value"] = value
 
-    def selected(self):
-        self.attrs["selected"] = "true"
+    def selected(self,selected = True):
+        self.attrs["selected"] = selected
         return self
     
-    def disabled(self):
-        self.attrs["disabled"] = "disabled"
+    def disabled(self,disabled = True):
+        self.attrs["disabled"] = disabled
         return self
 
 
