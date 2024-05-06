@@ -6,14 +6,17 @@ class option(Element):
         self.tag = "option"
         self.value_name = "innerHTML"
         self.has_content = True
-        self.attrs["value"] = value
+        if value is None:
+            self.attrs["value"] = text
+        else:
+            self.attrs["value"] = value
 
-    def selected(self):
-        self.attrs["selected"] = "true"
+    def selected(self,selected = True):
+        self.attrs["selected"] = selected
         return self
     
-    def disabled(self):
-        self.attrs["disabled"] = "disabled"
+    def disabled(self,disabled = True):
+        self.attrs["disabled"] = disabled
         return self
 
 

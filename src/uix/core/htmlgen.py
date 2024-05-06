@@ -28,10 +28,10 @@ class HTMLGen:
         if localpath is not None:
             full_script = os.path.join(os.path.dirname(os.path.abspath(localpath)), script)
         if beforeMain:
-            with open(full_script, 'r') as file:
+            with open(full_script, 'r',encoding="utf-8") as file:
                 self.script_sources_before_main.setdefault(id, file.read())
         else:
-            with open(full_script, 'r') as file:
+            with open(full_script, 'r',encoding="utf-8") as file:
                 self.script_sources_after_main.setdefault(id, file.read())
 
     def add_script(self, id, script = None, beforeMain = True):
