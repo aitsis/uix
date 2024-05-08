@@ -7,13 +7,23 @@ import io
 print("Imported: image")
 class image(Element):
     def __init__(self,value = None,id:str = None, no_cache = True):    
-        super().__init__(value = None, id = id)        
+        super().__init__(value = value, id = id)        
         self.no_cache = no_cache
         self.tag = "img"
         self.value_name = "src"
         self.has_content = False
         self.has_PIL_image = False
-        self.value = value
+
+        if isinstance(value, Image.Image):
+            self.has_PIL_image = True
+            self._value = self._create_image_url(value)
+        else:
+            self.has_PIL_image = False
+            self._value = value
+        if(self.id is None):
+            self.id = str(uuid4())
+            self.session.elements[self.id] = self
+        self.session.queue_for_send(self.id, self.value, "change-"+self.value_name)
     @property
     def value(self):
         return self._value
@@ -26,12 +36,11 @@ class image(Element):
         else:
             self.has_PIL_image = False
             self._value = value
-            
-        if self.id is not None:
-            self.send_value(self._value)
-        else:
-            print("No id for image")
-    
+        if(self.id is None):
+            self.id = str(uuid4())
+            self.session.elements[self.id] = self
+        self.session.send(self.id, self.value, "change-"+self.value_name)
+        
     def __del__(self):
         if self.has_PIL_image:
             uix.app.files[self.id] = None

@@ -72,6 +72,9 @@ class Element:
         self.send_value(value)
 
     def send_value(self, value):
+        if(self.id is None):
+            self.id = str(uuid4())
+            self.session.elements[self.id] = self
         self.session.send(self.id, value, "change-"+self.value_name)
 
     def set_value(self, value):
