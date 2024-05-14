@@ -65,10 +65,11 @@ class HTMLGen:
         # HTML BEGIN ------------------------------------------------------------
         index_str = '<!DOCTYPE html><html lang="en" translate="no"><head>'
         # HEADER ITEMS ----------------------------------------------------------
+        self.default_header_items.update(self.header_items)
+        # for key in self.default_header_items:
+        #     index_str += self.default_header_items[key]
         for key in self.default_header_items:
             index_str += self.default_header_items[key]
-        for key in self.header_items:
-            index_str += self.header_items[key]
         # STYLES ----------------------------------------------------------------
         for key in self.styles:
             index_str += '<style>'

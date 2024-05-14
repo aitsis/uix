@@ -53,9 +53,9 @@ header {
 
 main{
   height: 90%;
-  display: flex;   /* todo  */
-  justify-content: center;   /* todo  */
-  align-items: center;  /* todo  */
+  display: flex;  
+  /* justify-content: center; 
+  align-items: center; */
 }
 
 footer {
@@ -98,12 +98,11 @@ footer {
   display: flex;
   flex-direction: row;
   content: "";
-  display: table;
   clear: both;
   margin: 2px;
   gap: 2px;
-/*   width: 100%;
-  height: 100%;
+  width: 100%;
+/* height: 100%;
   align-items: center;
 */
 }
@@ -115,8 +114,8 @@ footer {
   float: left;
   margin: 2px;
   gap: 2px;
-  /* justify-content: center;
   width: 100%;
+  /* justify-content: center;
   height: 100%;
 */
 }
