@@ -7,22 +7,3 @@ class orderedlist(Element):
         self.tag = "ol"
         self.value_name = "innerHTML"
         self.has_content = True
-        
-title = "Ordered List"
-
-description = '''
-## orderedlist(value,id)
-1. Sıralı liste elementi. Listeye eleman eklemek için listitem elementi kullanılır.
-
-| attr          | desc                                              |
-| :------------ | :------------------------------------------------ |
-| id            | Sıralı Listenin id'si                          |
-| value         | Liste içeriği                       |
-'''
-sample = """
-def orderedlist_listitem_example():
-    with orderedlist(id="myList"):
-        listitem(value="Item 1")   
-        listitem(value="Item 2")        
-        listitem(value="Item 3")
- """

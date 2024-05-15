@@ -15,28 +15,3 @@ class video(Element):
         self.attrs["autoplay"] = autoplay
         self.attrs["playsinline"] = "true"
         self.attrs["muted"] = muted
-
-title = "Video"
-
-description = """
-## video(id,loop,autoplay,muted)
-1. Html'de video elementine karşılık gelir. İçerisine source elementleri eklenerek kullanılır.
-
-| attr          | desc                                              |
-| :------------ | :------------------------------------------------ |
-| id            | Video elementinin id'si                          |
-| loop          | Video elementinin sürekli oynatılması            |
-| autoplay      | Video elementinin otomatik oynatılması           |
-| muted         | Video elementinin sesinin kapatılması            |
-"""
-
-sample = """
-## sample1
-with video(""):
-    value = "https://ai.ait.com.tr/wp-content/uploads/AI_main-video-with-prompt-.mp4"
-    source(value, type="video/mp4")
-
-## sample2
-    video("",src="https://ai.ait.com.tr/wp-content/uploads/AI_main-video-with-prompt-.mp4")
-"""
-
