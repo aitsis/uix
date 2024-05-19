@@ -33,12 +33,16 @@ CORS(flask)
 # INDEX
 @flask.route("/")
 def index():
-     return html.generate()
+    response = make_response(html.generate())
+    response.headers["Cache-Control"] = "no-cache"
+    return response
 
 # INDEX_PATH
 @flask.route("/<path:path>")
 def index_with_path(path):
-    return html.generate()
+    response = make_response(html.generate())
+    response.headers["Cache-Control"] = "no-cache"
+    return response
 
 @flask.route('/logout', methods=['GET'])
 def logout():
