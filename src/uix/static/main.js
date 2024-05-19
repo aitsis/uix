@@ -5,6 +5,8 @@ let page_loaded = false;
 // Socket event handlers
 const socketEvents = {
     'navigate': (data) => { window.location = data.value; },
+    'location-reload': (data) => { window.location.reload(); },
+    'update-document': (data) => { history.replaceState({}, '', data.value.path); document.title = data.value.title; },
     'scroll-to': (data) => { document.getElementById(data.id).scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" }); },
     'alert': (data) => { alert(data.value); },
     'focus': (data) => { document.getElementById(data.id).focus(); },
