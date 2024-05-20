@@ -23,16 +23,21 @@ class HTMLGen:
     def add_header_item(self, id, item):
         self.header_items.setdefault(id, item)
         
-    def add_script_source(self, id, script = None, beforeMain = True, localpath = None):
+    def add_script_source(self, id, script = None, beforeMain = True, localpath = None, _type = None):
         full_script = script
         if localpath is not None:
             full_script = os.path.join(os.path.dirname(os.path.abspath(localpath)), script)
+
+        with open(full_script, 'r', encoding="utf-8") as file:
+            data = {
+                'file_data': file.read(),
+                'script_type': _type
+            }
+
         if beforeMain:
-            with open(full_script, 'r',encoding="utf-8") as file:
-                self.script_sources_before_main.setdefault(id, file.read())
+            self.script_sources_before_main.setdefault(id, data)
         else:
-            with open(full_script, 'r',encoding="utf-8") as file:
-                self.script_sources_after_main.setdefault(id, file.read())
+            self.script_sources_after_main.setdefault(id, data)
 
     def add_script(self, id, script = None, beforeMain = True):
         if beforeMain:
@@ -84,9 +89,10 @@ class HTMLGen:
             index_str += "<div id='ait-uix'></div>"
         # SCRIPTS ---------------------------------------------------------------
         # SCRIPT SOURCES --------------------------------------------------------
-        for key in self.script_sources_before_main:
-            index_str += '<script>'
-            index_str += self.script_sources_before_main[key]
+        for value in self.script_sources_before_main.values():
+            opening_tag = '<script>' if value['script_type'] is None else f'<script type={value["script_type"]}>'
+            index_str += opening_tag
+            index_str += value['file_data']
             index_str += '</script>'
         # BEFORE MAIN SCRIPTS ---------------------------------------------------
         for id in self.scripts_before_main:
@@ -102,9 +108,10 @@ class HTMLGen:
             index_str += self.minify_js(self.scripts_after_main[id])
             index_str += '</script>'
         # SCRIPT SOURCES --------------------------------------------------------
-        for key in self.script_sources_after_main:
-            index_str += '<script>'
-            index_str += self.script_sources_after_main[key]
+        for value in self.script_sources_after_main.values():
+            opening_tag = '<script>' if value['script_type'] is None else f'<script type={value["script_type"]}>'
+            index_str += opening_tag
+            index_str += value['file_data']
             index_str += '</script>'
         # HTML END --------------------------------------------------------------
         index_str += '</body>'
