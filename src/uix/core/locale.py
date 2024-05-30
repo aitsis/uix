@@ -26,7 +26,7 @@ def T(text):
         return text
     else:
         return locale[text]
-    
+
 class Locale:
     def __init__(self,locales_path):
         self.locales_path = locales_path
@@ -48,7 +48,7 @@ class Locale:
         return False
         
     def __getitem__(self, key):
-        if self.lang is None or self.lang == "en":
+        if self.lang is None or self.lang == "en" or key is None or key == "":
             return key
         else:
             if key in self.data:
