@@ -57,8 +57,9 @@ class Element:
     def update(self, content = None):
         if content is not None:
             with self:
-                content()
+                content()        
         self.session.send(self.id, self.render(), "init-content")
+        self._init()
         self.session.flush_message_queue()
 
     # VALUE -----------------------------------------------------------------------------------------
