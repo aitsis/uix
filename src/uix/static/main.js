@@ -15,6 +15,8 @@ const socketEvents = {
     'add-class': (data) => { document.getElementById(data.id).classList.add(data.value); },
     'remove-class': (data) => { document.getElementById(data.id).classList.remove(data.value); },
     'set-timeout': (data) => { setTimeout(() => { clientEmit(data.id, data.value, "timeout"); }, data.value); },
+    'add-child': (data) => { document.getElementById(data.id).insertAdjacentHTML('beforeend', data.value); },
+    'remove-child': (data) => { document.getElementById(data.id).removeChild(document.getElementById(data.value)); },
 };
 
 function clientEmit(id, value, event_name) {
