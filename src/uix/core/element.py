@@ -109,6 +109,14 @@ class Element:
     def focus(self):
         self.session.send(self.id, None, "focus")
 
+    def add_child(self, child):
+        self.children.append(child)
+        self.session.send(self.id, child.render(), "add-child")
+
+    def remove_child(self, child):
+        self.children.remove(child)
+        self.session.send(self.id, child.id, "remove-child")
+
     # RENDER -----------------------------------------------------------------------------------------
     def cls(self, class_names):
         if isinstance(class_names, str):
