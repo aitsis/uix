@@ -91,7 +91,7 @@ class Element:
                 content()
         self.session.send(self.id, {
 					'htmlContent': self.render(),
-					'resources': self.get_resource_load_commands()
+					'resources': self.get_resource_load_commands(self.__class__.__name__)
 				}, "init-content")
         self._init()
         self.session.flush_message_queue()
