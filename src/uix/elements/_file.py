@@ -2,8 +2,8 @@
 import uix
 from ..core.element import Element
 from ..core.file import File
-uix.html.add_script("file", script =
-"""
+
+file_script = """
 const onFileChange = (id,files,eventName) => {
     urls = [];
     for (let i = 0; i < files.length; i++) {
@@ -17,7 +17,7 @@ const onFileChange = (id,files,eventName) => {
     clientEmit(id,urls,eventName);
 };
 event_handlers["file-upload"] = (id,url,eventName) => {
-    fetch(url).then(response => response.blob()).then(data => 
+    fetch(url).then(response => response.blob()).then(data =>
     {
         const xhr = new XMLHttpRequest();
         xhr.upload.onprogress = function(event) {
@@ -41,8 +41,7 @@ event_handlers["file-upload"] = (id,url,eventName) => {
         xhr.send(data);
     });
 };
-""",beforeMain = False)
-
+"""
 
 class file(Element):
     """
@@ -51,6 +50,7 @@ class file(Element):
     """
     def __init__(self, value: str=None, id:str =None, multiple:bool = False, callback = None, accept:bool = False):
         super().__init__(value, id)
+        self.register_script("file_script", file_script)
         self.tag = "input"
         self.attrs["type"] = "file"
         self.attrs["name"] = "file"
@@ -78,7 +78,7 @@ class file(Element):
             self.callback(ctx, id, "select", files, "done")
         else:
             self.callback(ctx, id, "select", "No selected files", "error")
-                
+
     def on_file_upload(self, ctx, id, value):
         if self.callback is None:
             return
