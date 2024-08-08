@@ -25,11 +25,11 @@ class Element:
         }
 
     @classmethod
-    def get_resource_load_commands(cls, class_name):
+    def get_resource_load_commands(cls):
         commands = []
-        for key, script_data in cls.registered_scripts.get(class_name, {}).items():
+        for key, script_data in cls.registered_scripts.get(cls.__name__, {}).items():
             commands.append(f"loadScript('{script_data['content'].strip()}', {str(script_data['is_url']).lower()}, {str(script_data['before_main']).lower()});")
-        for key, style_data in cls.registered_styles.get(class_name, {}).items():
+        for key, style_data in cls.registered_styles.get(cls.__name__, {}).items():
             commands.append(f"loadStyle('{style_data['content'].strip()}', {str(style_data['is_url']).lower()});")
         return commands
 
@@ -91,7 +91,7 @@ class Element:
                 content()
         self.session.send(self.id, {
 					'htmlContent': self.render(),
-					'resources': self.get_resource_load_commands(self.__class__.__name__)
+					'resources': self.get_resource_load_commands()
 				}, "init-content")
         self._init()
         self.session.flush_message_queue()

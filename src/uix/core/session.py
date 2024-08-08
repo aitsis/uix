@@ -47,14 +47,14 @@ class Session:
             }, "init-content")
             self.ui_root._init()
             self.flush_message_queue()
-            
+
         else:
             uix.error("No UI Root")
 
     def get_resource_load_commands(self):
         commands = []
         for element in self.elements.values():
-            commands.extend(element.get_resource_load_commands(element.__class__.__name__))
+            commands.extend(element.get_resource_load_commands())
         return commands
 
     def eventHandler(self, data):
@@ -80,7 +80,7 @@ class Session:
         else:
             context.session = self
             self.eventHandler(data)
-    
+
     def push_parent(self, parent):
         self.parent_stack.append(parent)
 
@@ -97,7 +97,7 @@ class Session:
         self.message_queue.append({'id': id, 'value': value, 'event_name': event_name})
 
     def flush_message_queue(self):
-        for item in self.message_queue:            
+        for item in self.message_queue:
             self.send(item['id'], item['value'], item['event_name'])
         self.message_queue = []
 
