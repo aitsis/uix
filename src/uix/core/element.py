@@ -2,6 +2,37 @@ from uuid import uuid4
 from .session import Session, context
 import uix
 class Element:
+    registered_scripts = {}
+    registered_styles = {}
+
+    @classmethod
+    def register_script(cls, key, content, is_url=False, before_main=False):
+        if cls.__name__ not in cls.registered_scripts:
+            cls.registered_scripts[cls.__name__] = {}
+        cls.registered_scripts[cls.__name__][key] = {
+            'content': content,
+            'is_url': is_url,
+            'before_main': before_main
+        }
+
+    @classmethod
+    def register_style(cls, key, content, is_url=False):
+        if cls.__name__ not in cls.registered_styles:
+            cls.registered_styles[cls.__name__] = {}
+        cls.registered_styles[cls.__name__][key] = {
+            'content': content,
+            'is_url': is_url
+        }
+
+    @classmethod
+    def get_resource_load_commands(cls, class_name):
+        commands = []
+        for key, script_data in cls.registered_scripts.get(class_name, {}).items():
+            commands.append(f"loadScript('{script_data['content'].strip()}', {str(script_data['is_url']).lower()}, {str(script_data['before_main']).lower()});")
+        for key, style_data in cls.registered_styles.get(class_name, {}).items():
+            commands.append(f"loadStyle('{style_data['content'].strip()}', {str(style_data['is_url']).lower()});")
+        return commands
+
     def __init__(self, value = None, id = None):
         self.session = context.session
         self.tag = "div"
@@ -16,14 +47,14 @@ class Element:
         self.old_parent = None
         self.value_name = "value"
         self.has_content = True
-        
+
         if self.session.ui_root is None:
             self.session.ui_root = self
 
         self.parent = self.session.ui_parent
         if self.parent is not None:
             self.parent.children.append(self)
-    
+
         if self.id is not None:
             self.session.elements[self.id] = self
 
@@ -40,25 +71,28 @@ class Element:
         self.session.ui_parent = self
         self.children = []
         return self
-    
+
     def exit(self):
         self.session.ui_parent = self.old_parent
-    
+
     def __enter__(self):
         return self.enter()
-    
+
     def __exit__(self, type, value, traceback):
         self.exit()
 
     def __str__(self):
         return self.render()
-    
+
     # RUNTIME UPDATE ELEMENT ------------------------------------------------------------------------
     def update(self, content = None):
         if content is not None:
             with self:
-                content()        
-        self.session.send(self.id, self.render(), "init-content")
+                content()
+        self.session.send(self.id, {
+					'htmlContent': self.render(),
+					'resources': self.get_resource_load_commands()
+				}, "init-content")
         self._init()
         self.session.flush_message_queue()
 
@@ -84,7 +118,7 @@ class Element:
     def set_timeout(self, time, callback):
         self.events["timeout"] = callback
         self.session.send(self.id, time, "set-timeout")
-    # RUNTIME JAVASCRIPT -------------------------------------------------------------------------------  
+    # RUNTIME JAVASCRIPT -------------------------------------------------------------------------------
     def toggle_class(self, class_name):
         self.session.send(self.id, class_name, "toggle-class")
 
@@ -97,11 +131,11 @@ class Element:
     def set_attr(self, attr_name, attr_value):
         self.attrs[attr_name] = attr_value
         self.session.send(self.id, attr_value, "change-"+attr_name)
-    
+
     def get_attr(self, attr_name,callback):
         self.events["get-"+attr_name] = callback
         self.session.send(self.id, None, "get-"+attr_name)
-        
+
     def set_style(self, attr_name, attr_value):
         self.styles[attr_name] = attr_value
         self.session.send(self.id, attr_value, "set-"+attr_name)
@@ -117,23 +151,23 @@ class Element:
         return self
 
     def style(self,style,value = None):
-        if value is None: 
+        if value is None:
             self.styles[style] = None
         else:
             self.styles[style] = value
         return self
-    
+
     def size(self, width = None, height = None):
         if width is not None:
             if type(width) is int:
                 width = str(width) + "px"
             self.styles["width"] = width
-        if height is not None:       
+        if height is not None:
             if type(height) is int:
                 height = str(height) + "px"
             self.styles["height"] = height
         return self
-    
+
     def attr(self, attr_name, attr_value):
         self.attrs[attr_name]=attr_value
         return self
