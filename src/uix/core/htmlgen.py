@@ -10,7 +10,8 @@ class HTMLGen:
             'socket.io': '<script src="/static/socket.io.min.js"></script>',
             'style': '<link rel="stylesheet" href="/static/style.css">',
             'favicon': '<link rel="icon" href="/static/favicon_aiait-32x32.png" sizes="32x32" />',
-            'fontawesome': '<link rel="stylesheet" href="/static/font-awesome/css/all.css" />'
+            'fontawesome': '<link rel="stylesheet" href="/static/font-awesome/css/all.css" />',
+            'resource-loader': '<script src="/static/resource-loader.js"></script>'
         }
         self.header_items = {}
         self.default_script_sources = {"main": "<script src='/static/main.js'></script>"}
@@ -22,7 +23,7 @@ class HTMLGen:
 
     def add_header_item(self, id, item):
         self.header_items.setdefault(id, item)
-        
+
     def add_script_source(self, id, script = None, beforeMain = True, localpath = None, _type = None):
         full_script = script
         if localpath is not None:
@@ -61,12 +62,12 @@ class HTMLGen:
 
     def minify_css(self, css_code):
         return re.sub(r'\s+', ' ', re.sub(r'/\*.*?\*/', '', css_code)).strip()
-    
+
     def minify_html(self, html_code):
         return re.sub(r'>\s+<', '><', re.sub(r'<!--.*?-->', '', html_code)).strip()
 
     def generate(self, page_id = None):
-        
+
         # HTML BEGIN ------------------------------------------------------------
         index_str = '<!DOCTYPE html><html lang="en" translate="no"><head>'
         # HEADER ITEMS ----------------------------------------------------------
