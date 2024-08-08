@@ -63,7 +63,7 @@
     }
 
     function loadStyle(content, isUrl = false) {
-        return handleResourceLoading(content, isUrl, "style", false);
+        return handleResourceLoading(content, isUrl, "style", true);
     }
 
     window.loadScript = loadScript;
