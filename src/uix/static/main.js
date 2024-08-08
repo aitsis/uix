@@ -10,7 +10,27 @@ const socketEvents = {
     'scroll-to': (data) => { document.getElementById(data.id).scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" }); },
     'alert': (data) => { alert(data.value); },
     'focus': (data) => { document.getElementById(data.id).focus(); },
-    'init-content': (data) => { document.getElementById(data.id).outerHTML = data.value; },
+    "init-content": (data) => {
+        const contentElement = document.getElementById(data.id);
+
+        const { htmlContent = "", resources = [] } = data.value;
+
+        // set html content
+        contentElement.outerHTML = htmlContent;
+
+        // load resources
+        resources.forEach((command) => {
+          if (command.startsWith("loadScript(")) {
+            const regex = /loadScript\('([^']+)',\s*(\w+),\s*(\w+)\);/;
+            const [, content, isUrl, beforeMain] = command.match(regex);
+            loadScript(content, isUrl === "true", beforeMain === "true");
+          } else if (command.startsWith("loadStyle(")) {
+            const regex = /loadStyle\('([^']+)',\s*(\w+)\);/;
+            const [, content, isUrl] = command.match(regex);
+            loadStyle(content, isUrl === "true");
+          }
+        });
+    },
     'toggle-class': (data) => { document.getElementById(data.id).classList.toggle(data.value); },
     'add-class': (data) => { document.getElementById(data.id).classList.add(data.value); },
     'remove-class': (data) => { document.getElementById(data.id).classList.remove(data.value); },
@@ -89,7 +109,7 @@ const initSocketEvents = () => {
         }
         page_loaded = true;
         clientEmit('ait-uix', {path:window.location.pathname, search:window.location.search}, 'init');
-        
+
     });
 
     socket.on('disconnect', () => {});

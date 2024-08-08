@@ -35,19 +35,27 @@ class Session:
         qs = parse_qs(data["search"][1:])
         self.args = qs
         self.paths = data["path"][1:].split("/")
-        if( uix.app.ui_root is not None):
+        if uix.app.ui_root is not None:
             context.session = self
             if callable(uix.app.ui_root):
                 uix.app.ui_root()
             else:
                 self.ui_root = deepcopy(uix.app.ui_root)
-            html = self.ui_root.render()
-            self.send("ait-uix", html, "init-content")
+            self.send("ait-uix", {
+                'htmlContent': self.ui_root.render(),
+                'resources': self.get_resource_load_commands()
+            }, "init-content")
             self.ui_root._init()
             self.flush_message_queue()
             
         else:
             uix.error("No UI Root")
+
+    def get_resource_load_commands(self):
+        commands = []
+        for element in self.elements.values():
+            commands.extend(element.get_resource_load_commands(element.__class__.__name__))
+        return commands
 
     def eventHandler(self, data):
         id = data["id"]
