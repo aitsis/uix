@@ -10,7 +10,7 @@ const socketEvents = {
     'scroll-to': (data) => { document.getElementById(data.id).scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" }); },
     'alert': (data) => { alert(data.value); },
     'focus': (data) => { document.getElementById(data.id).focus(); },
-    "init-content": (data) => {
+    "init-content": async (data) => {
         const contentElement = document.getElementById(data.id);
 
         const { htmlContent = "", resources = [] } = data.value;
@@ -19,17 +19,35 @@ const socketEvents = {
         contentElement.outerHTML = htmlContent;
 
         // load resources
-        resources.forEach((command) => {
-          if (command.startsWith("loadScript(")) {
-            const regex = /loadScript\('([^']+)',\s*(\w+),\s*(\w+)\);/;
-            const [, content, isUrl, beforeMain] = command.match(regex);
-            loadScript(content, isUrl === "true", beforeMain === "true");
-          } else if (command.startsWith("loadStyle(")) {
-            const regex = /loadStyle\('([^']+)',\s*(\w+)\);/;
-            const [, content, isUrl] = command.match(regex);
-            loadStyle(content, isUrl === "true");
-          }
-        });
+        for (const command of resources) {
+            if (command.startsWith("loadScript(")) {
+                try {
+                    const regex = /loadScript\('([\s\S]+)',\s*(\w+),\s*(\w+)\);/;
+                    const match = command.match(regex);
+                    if (match) {
+                        const [, content, isUrl, beforeMain] = match;
+                        await loadScript(content, isUrl === "true", beforeMain === "true");
+                    } else {
+                        console.error("Regex failed to match command:", command);
+                    }
+                } catch (error) {
+                    console.error("Error processing command:", command, error);
+                }
+            } else if (command.startsWith("loadStyle(")) {
+                try {
+                    const regex = /loadStyle\('([\s\S]+)',\s*(\w+)\);/;
+                    const match = command.match(regex);
+                    if (match) {
+                        const [, content, isUrl] = match;
+                        await loadStyle(content, isUrl === "true");
+                    } else {
+                        console.error("Regex failed to match command:", command);
+                    }
+                } catch (error) {
+                    console.error("Error processing command:", command, error);
+                }
+            }
+        }
     },
     'toggle-class': (data) => { document.getElementById(data.id).classList.toggle(data.value); },
     'add-class': (data) => { document.getElementById(data.id).classList.add(data.value); },

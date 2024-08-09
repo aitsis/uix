@@ -58,11 +58,11 @@
         return promise;
     }
 
-    function loadScript(content, isUrl = false, beforeMain = false) {
+    async function loadScript(content, isUrl = false, beforeMain = false) {
         return handleResourceLoading(content, isUrl, "script", beforeMain);
     }
 
-    function loadStyle(content, isUrl = false) {
+    async function loadStyle(content, isUrl = false) {
         return handleResourceLoading(content, isUrl, "style", true);
     }
 
