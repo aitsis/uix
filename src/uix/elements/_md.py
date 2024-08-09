@@ -19,7 +19,7 @@ md2_inline_script = '''
     });
     event_handlers["md2-change-md"] = function(id, value, event_name){
         document.getElementById(id).innerHTML = md.render(value);
-    }
+    };
 '''
 
 md2_style_inline = '''
@@ -39,16 +39,16 @@ md2_style_inline = '''
     </style>
 '''
 
+def register_resources(cls):
+    cls.register_script("md2_js", "https://cdn.jsdelivr.net/npm/markdown-it@14.0.0/dist/markdown-it.min.js", is_url=True, before_main=True)
+    cls.register_script("md2_js_highlight", "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js", is_url=True, before_main=True)
+    cls.register_style("md2_css", "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css", is_url=True)
+    cls.register_script("md2_inline", md2_inline_script, is_url=False, before_main=False)
+    cls.register_style("md2_inline_css", md2_style_inline, is_url=False)
+    return cls
+
+@register_resources
 class md(Element):
-    @classmethod
-    def __init_subclass__(cls):
-        cls.register_script("md2_js", "https://cdn.jsdelivr.net/npm/markdown-it@14.0.0/dist/markdown-it.min.js", is_url=True, before_main=True)
-        cls.register_script("md2_js", "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js", is_url=True, before_main=True)
-        cls.register_style("md2_css", "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css", is_url=True)
-
-        cls.register_script("md2_inline", md2_inline_script, is_url=False, before_main=False)
-        cls.register_style("md2_inline", md2_inline_sttyle, is_url=False)
-
     def __init__(self,value:str = None,id:str = None):
         if id is None:
             id = str(uuid4())

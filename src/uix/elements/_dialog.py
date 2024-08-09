@@ -36,12 +36,14 @@ dialog {
   opacity: 0.3;
 }'''
 
-class dialog(Element):
-    @classmethod
-    def __init_subclass__(cls):
-        cls.register_script("dialog_script", dialog_script)
-        cls.register_style("dialog_css", dialog_css)
+def register_resources(cls):
+    cls.register_script("dialog_script", dialog_script)
+    cls.register_style("dialog_css", dialog_css)
+    cls.register_style("md2_css", "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css", is_url=True)
+    return cls
 
+@register_resources
+class dialog(Element):
     def __init__(self,value:str = None,id:str = None, close_on_outside:bool = True):
         super().__init__(value, id = id)
         self.tag = "dialog"

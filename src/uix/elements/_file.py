@@ -43,11 +43,13 @@ event_handlers["file-upload"] = (id,url,eventName) => {
 };
 """
 
-class file(Element):
-    @classmethod
-    def __init_subclass__(cls):
-        cls.register_script("file_script", file_script)
+def register_resources(cls):
+    cls.register_script("file_script", file_script)
+    cls.register_script("file_script", file_script)
+    return cls
 
+@register_resources
+class file(Element):
     """
     File elementi. Bir dosya seçme penceresi açar.
     callback(ctx, event, data, status)
