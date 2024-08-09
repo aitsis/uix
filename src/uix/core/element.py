@@ -91,7 +91,7 @@ class Element:
                 content()
         self.session.send(self.id, {
 					'htmlContent': self.render(),
-					'resources': self.get_resource_load_commands()
+					'resources': self.get_all_resource_load_commands()
 				}, "init-content")
         self._init()
         self.session.flush_message_queue()
@@ -237,3 +237,10 @@ class Element:
                         str +=f' {self.value_name} ="{self.value}"'
             str += "/>"
         return str
+
+    # RESOURCES -----------------------------------------------------------------------------------------
+    def get_all_resource_load_commands(self):
+        commands = self.get_resource_load_commands()
+        for child in self.children:
+            commands.extend(child.get_all_resource_load_commands())
+        return commands

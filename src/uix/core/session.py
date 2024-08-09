@@ -43,19 +43,13 @@ class Session:
                 self.ui_root = deepcopy(uix.app.ui_root)
             self.send("ait-uix", {
                 'htmlContent': self.ui_root.render(),
-                'resources': self.get_resource_load_commands()
+                'resources': self.ui_root.get_all_resource_load_commands()
             }, "init-content")
             self.ui_root._init()
             self.flush_message_queue()
 
         else:
             uix.error("No UI Root")
-
-    def get_resource_load_commands(self):
-        commands = []
-        for element in self.elements.values():
-            commands.extend(element.get_resource_load_commands())
-        return commands
 
     def eventHandler(self, data):
         id = data["id"]
