@@ -2,6 +2,7 @@ from uuid import uuid4
 from .session import Session, context
 import uix
 class Element:
+    # RESOURCES -----------------------------------------------------------------------------------------
     registered_scripts = {}
     registered_styles = {}
 
@@ -26,12 +27,23 @@ class Element:
 
     @classmethod
     def get_resource_load_commands(cls):
-        commands = []
-        for key, script_data in cls.registered_scripts.get(cls.__name__, {}).items():
-            commands.append(f"loadScript('{script_data['content'].strip()}', {str(script_data['is_url']).lower()}, {str(script_data['before_main']).lower()});")
-        for key, style_data in cls.registered_styles.get(cls.__name__, {}).items():
-            commands.append(f"loadStyle('{style_data['content'].strip()}', {str(style_data['is_url']).lower()});")
-        return commands
+        script_commands = {
+            f"loadScript('{item['content'].strip()}', {str(item['is_url']).lower()}, {str(item['before_main']).lower()});"
+            for item in cls.registered_scripts.get(cls.__name__, {}).values()
+        }
+
+        style_commands = {
+            f"loadStyle('{item['content'].strip()}', {str(item['is_url']).lower()});"
+            for item in cls.registered_styles.get(cls.__name__, {}).values()
+        }
+
+        return script_commands | style_commands
+
+    def get_all_resource_load_commands(self):
+        commands = set(self.get_resource_load_commands())
+        for child in self.children:
+            commands |= set(child.get_all_resource_load_commands())
+        return list(commands)
 
     def __init__(self, value = None, id = None):
         self.session = context.session
@@ -237,10 +249,3 @@ class Element:
                         str +=f' {self.value_name} ="{self.value}"'
             str += "/>"
         return str
-
-    # RESOURCES -----------------------------------------------------------------------------------------
-    def get_all_resource_load_commands(self):
-        commands = self.get_resource_load_commands()
-        for child in self.children:
-            commands.extend(child.get_all_resource_load_commands())
-        return commands
