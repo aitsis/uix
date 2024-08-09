@@ -2,8 +2,8 @@
 import uix
 from ..core.element import Element
 from ..core.file import File
-uix.html.add_script("file", script =
-"""
+
+file_script = """
 const onFileChange = (id,files,eventName) => {
     urls = [];
     for (let i = 0; i < files.length; i++) {
@@ -17,7 +17,7 @@ const onFileChange = (id,files,eventName) => {
     clientEmit(id,urls,eventName);
 };
 event_handlers["file-upload"] = (id,url,eventName) => {
-    fetch(url).then(response => response.blob()).then(data => 
+    fetch(url).then(response => response.blob()).then(data =>
     {
         const xhr = new XMLHttpRequest();
         xhr.upload.onprogress = function(event) {
@@ -41,9 +41,14 @@ event_handlers["file-upload"] = (id,url,eventName) => {
         xhr.send(data);
     });
 };
-""",beforeMain = False)
+"""
 
+def register_resources(cls):
+    cls.register_script("file_script", file_script)
+    cls.register_script("file_script", file_script)
+    return cls
 
+@register_resources
 class file(Element):
     """
     File elementi. Bir dosya seçme penceresi açar.
@@ -78,7 +83,7 @@ class file(Element):
             self.callback(ctx, id, "select", files, "done")
         else:
             self.callback(ctx, id, "select", "No selected files", "error")
-                
+
     def on_file_upload(self, ctx, id, value):
         if self.callback is None:
             return

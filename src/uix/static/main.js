@@ -10,7 +10,46 @@ const socketEvents = {
     'scroll-to': (data) => { document.getElementById(data.id).scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" }); },
     'alert': (data) => { alert(data.value); },
     'focus': (data) => { document.getElementById(data.id).focus(); },
-    'init-content': (data) => { document.getElementById(data.id).outerHTML = data.value; },
+    "init-content": async (data) => {
+        const contentElement = document.getElementById(data.id);
+
+        const { htmlContent = "", resources = [], root_id } = data.value;
+
+        // set html content
+        contentElement.outerHTML = htmlContent;
+
+        // load resources
+        for (const command of resources) {
+            if (command.startsWith("loadScript(")) {
+                try {
+                    const regex = /loadScript\('([\s\S]+)',\s*(\w+),\s*(\w+)\);/;
+                    const match = command.match(regex);
+                    if (match) {
+                        const [, content, isUrl, beforeMain] = match;
+                        await loadScript(content, isUrl === "true", beforeMain === "true");
+                    } else {
+                        console.error("Regex failed to match command:", command);
+                    }
+                } catch (error) {
+                    console.error("Error processing command:", command, error);
+                }
+            } else if (command.startsWith("loadStyle(")) {
+                try {
+                    const regex = /loadStyle\('([\s\S]+)',\s*(\w+)\);/;
+                    const match = command.match(regex);
+                    if (match) {
+                        const [, content, isUrl] = match;
+                        await loadStyle(content, isUrl === "true");
+                    } else {
+                        console.error("Regex failed to match command:", command);
+                    }
+                } catch (error) {
+                    console.error("Error processing command:", command, error);
+                }
+            }
+        }
+        if (root_id) clientEmit(root_id, "flush", "flush-mq")
+    },
     'toggle-class': (data) => { document.getElementById(data.id).classList.toggle(data.value); },
     'add-class': (data) => { document.getElementById(data.id).classList.add(data.value); },
     'remove-class': (data) => { document.getElementById(data.id).classList.remove(data.value); },
@@ -89,7 +128,7 @@ const initSocketEvents = () => {
         }
         page_loaded = true;
         clientEmit('ait-uix', {path:window.location.pathname, search:window.location.search}, 'init');
-        
+
     });
 
     socket.on('disconnect', () => {});

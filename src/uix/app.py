@@ -108,7 +108,7 @@ def set_cookie_secure():
 
         if not cookie_settings['key'] or not cookie_settings['value']:
             return jsonify({'error': 'Both key and value are required'}), 400
-        
+
         response = make_response()
         response.set_cookie(**cookie_settings)
         response.status_code = 204
@@ -145,6 +145,17 @@ def _send_from_directory(directory, path):
 
 def add_static_route(logical_path, local_directory):
     flask.add_url_rule(f"/{logical_path}/<path:path>", local_directory, lambda path : _send_from_directory(local_directory, path))
+
+def serve_module_static_files(module_file, static_dirname = "_public"):
+    module_name = os.path.splitext(os.path.basename(module_file))[0]
+    base_path = os.path.dirname(module_file)
+    public_path = os.path.join(base_path, static_dirname)
+
+    if os.path.exists(public_path):
+        return add_static_route(module_name, public_path)
+    else:
+        print(f"The '{static_dirname}' folder does not exist at {public_path}")
+        return None
 
 # UPLOAD ENDPOINT
 files = {}
@@ -224,8 +235,8 @@ def init_app(uix_config):
     # INIT PIPES -----------------------------------------------------------------------------------
     for pipe in config["pipes"]:
         _pipes.append(pipe)
-    
-    
+
+
 def get_start_example():
     from .example import start_example
     return start_example
@@ -238,6 +249,6 @@ def flask_run():
 # START --------------------------------------------------------------------------------------------
 def start(ui = None, config = None):
     global ui_root
-    ui_root = ui if ui is not None else get_start_example() 
+    ui_root = ui if ui is not None else get_start_example()
     init_app(config)
     flask_run()
