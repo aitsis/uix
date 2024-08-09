@@ -13,7 +13,7 @@ const socketEvents = {
     "init-content": async (data) => {
         const contentElement = document.getElementById(data.id);
 
-        const { htmlContent = "", resources = [] } = data.value;
+        const { htmlContent = "", resources = [], root_id } = data.value;
 
         // set html content
         contentElement.outerHTML = htmlContent;
@@ -48,6 +48,7 @@ const socketEvents = {
                 }
             }
         }
+        if (root_id) clientEmit(root_id, "flush", "flush-mq")
     },
     'toggle-class': (data) => { document.getElementById(data.id).classList.toggle(data.value); },
     'add-class': (data) => { document.getElementById(data.id).classList.add(data.value); },

@@ -41,12 +41,13 @@ class Session:
                 uix.app.ui_root()
             else:
                 self.ui_root = deepcopy(uix.app.ui_root)
+            self.ui_root.on("flush-mq", self._flush_mq)
             self.send("ait-uix", {
                 'htmlContent': self.ui_root.render(),
-                'resources': self.ui_root.get_all_resource_load_commands()
+                'resources': self.ui_root.get_all_resource_load_commands(),
+                "root_id": self.ui_root.id
             }, "init-content")
             self.ui_root._init()
-            self.flush_message_queue()
 
         else:
             uix.error("No UI Root")
@@ -94,6 +95,9 @@ class Session:
         for item in self.message_queue:
             self.send(item['id'], item['value'], item['event_name'])
         self.message_queue = []
+
+    def _flush_mq(self, ctx, id, value):
+        self.flush_message_queue()
 
     def navigate(self, path):
         self.send("ait-uix", path, "navigate")
