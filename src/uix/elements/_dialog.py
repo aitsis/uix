@@ -37,10 +37,13 @@ dialog {
 }'''
 
 class dialog(Element):
+    @classmethod
+    def __init_subclass__(cls):
+        cls.register_script("dialog_script", dialog_script)
+        cls.register_style("dialog_css", dialog_css)
+
     def __init__(self,value:str = None,id:str = None, close_on_outside:bool = True):
         super().__init__(value, id = id)
-        self.register_script("dialog_script", dialog_script)
-        self.register_style("dialog_css", dialog_css)
         self.tag = "dialog"
         self.has_content = True
         self.close_on_outside = close_on_outside
