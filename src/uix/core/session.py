@@ -21,6 +21,7 @@ class Session:
         self.lang = "en"
         self.cookies = requestData["cookies"]
         self.headers = requestData["headers"]
+        self.session_is_init = False
 
         for cookie in self.cookies:
             if cookie.name == "lang":
@@ -48,6 +49,7 @@ class Session:
                 "root_id": self.ui_root.id
             }, "init-content")
             self.ui_root._init()
+            self.session_is_init = True
 
         else:
             uix.error("No UI Root")
