@@ -11,7 +11,9 @@
         }
     }
 
-    function handleResourceLoading(content, isUrl, type, beforeMain) {
+    function handleResourceLoading(content, options) {
+        const { isUrl, type, beforeMain, defer, module, async } = options;
+
         if (isUrl && loadedResources.has(content)) {
             return loadedResources.get(content);
         }
@@ -20,7 +22,9 @@
             let element;
             if (type === "script") {
                 element = document.createElement("script");
-                element.type = "text/javascript";
+                element.type = module ? "module" : "text/javascript";
+                if (defer) element.defer = true;
+                if (async) element.async = true;
             } else if (type === "style") {
                 element = document.createElement(isUrl ? "link" : "style");
                 if (isUrl) {
@@ -30,7 +34,7 @@
             }
 
             if (isUrl) {
-                element.src = content;
+                if (type === "script") element.src = content;
                 element.onload = () => {
                     loadedResources.set(content, promise);
                     resolve();
@@ -40,12 +44,8 @@
                     reject(new Error(`Failed to load ${type}: ${content}`));
                 };
             } else {
-                if (type === "script") {
-                    element.textContent = content;
-                } else {
-                    element.textContent = content;
-                }
-                resolve();
+                element.textContent = content;
+                setTimeout(resolve, 0);
             }
 
             appendElement(element, beforeMain);
@@ -58,12 +58,25 @@
         return promise;
     }
 
-    async function loadScript(content, isUrl = false, beforeMain = false) {
-        return handleResourceLoading(content, isUrl, "script", beforeMain);
+    async function loadScript(content, options = {}) {
+        const defaultOptions = {
+            isUrl: false,
+            beforeMain: false,
+            defer: false,
+            module: false,
+            async: false
+        };
+        const mergedOptions = { ...defaultOptions, ...options, type: "script" };
+        return handleResourceLoading(content, mergedOptions);
     }
 
-    async function loadStyle(content, isUrl = false) {
-        return handleResourceLoading(content, isUrl, "style", true);
+    async function loadStyle(content, options = {}) {
+        const defaultOptions = {
+            isUrl: false,
+            beforeMain: true
+        };
+        const mergedOptions = { ...defaultOptions, ...options, type: "style" };
+        return handleResourceLoading(content, mergedOptions);
     }
 
     window.loadScript = loadScript;
