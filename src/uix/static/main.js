@@ -117,6 +117,43 @@ const handleDynamicEvents = (data) => {
     return false;
 };
 
+const eventQueue = [];
+let isProcessing = false;
+const MAX_RETRIES = 3;
+async function processEventQueue() {
+    if (isProcessing) return;
+    
+    isProcessing = true;
+    
+    while (eventQueue.length > 0) {
+        const { event, retries } = eventQueue.shift();
+        try {
+            await handleEvent(event);
+        } catch (error) {
+            console.error("Error processing event:", event, error);
+            if (retries < MAX_RETRIES) {
+                eventQueue.push({ event, retries: retries + 1 });
+            } else {
+                console.error("Max retries reached for event:", event);
+            }
+        }
+    }
+    
+    isProcessing = false;
+}
+
+async function handleEvent(data) {
+    if (socketEvents[data.event_name]) {
+        await socketEvents[data.event_name](data);
+    } else if (handleDynamicEvents(data)) {
+        return;
+    } else if (event_handlers[data.event_name]) {
+        event_handlers[data.event_name](data.id, data.value, data.event_name);
+    } else {
+        console.warn("Unhandled event:", data);
+    }
+}
+
 const initSocketEvents = () => {
     socket = getSocketInstance();
 
@@ -136,13 +173,8 @@ const initSocketEvents = () => {
     socket.on('disconnect', () => {});
 
     socket.on('from_server', (data) => {
-        if (socketEvents[data.event_name]) {
-            socketEvents[data.event_name](data);
-        } else if (handleDynamicEvents(data)) {
-            return;
-        } else if (event_handlers[data.event_name]) {
-            event_handlers[data.event_name](data.id, data.value, data.event_name);
-        }
+        eventQueue.push({ event: data, retries: 0 });
+        processEventQueue();
     });
 
     socket.on('error', (error) => {});

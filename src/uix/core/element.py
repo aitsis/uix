@@ -35,7 +35,7 @@ class Element:
         added_scripts = set()
         added_styles = set()
 
-        for ancestor in cls.__mro__:
+        for ancestor in reversed(cls.__mro__):
             if ancestor == object:
                 continue
 
