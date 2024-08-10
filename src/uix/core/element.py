@@ -1,3 +1,4 @@
+import json
 from uuid import uuid4
 from .session import Session, context
 import uix
@@ -7,13 +8,16 @@ class Element:
     registered_styles = {}
 
     @classmethod
-    def register_script(cls, key, content, is_url=False, before_main=False):
+    def register_script(cls, key, content, is_url=False, before_main=False, defer=False, module=False, async_load=False):
         if cls.__name__ not in cls.registered_scripts:
             cls.registered_scripts[cls.__name__] = {}
         cls.registered_scripts[cls.__name__][key] = {
             'content': content,
             'is_url': is_url,
-            'before_main': before_main
+            'before_main': before_main,
+            'defer': defer,
+            'module': module,
+            'async': async_load
         }
 
     @classmethod
@@ -29,9 +33,24 @@ class Element:
     def get_resource_load_commands(cls):
         commands = []
         for key, script_data in cls.registered_scripts.get(cls.__name__, {}).items():
-            commands.append(f"loadScript('{script_data['content'].strip()}', {str(script_data['is_url']).lower()}, {str(script_data['before_main']).lower()});")
+            options = {
+                'isUrl': script_data['is_url'],
+                'beforeMain': script_data['before_main'],
+                'defer': script_data.get('defer', False),
+                'module': script_data.get('module', False),
+                'async': script_data.get('async', False)
+            }
+            options_json = json.dumps(options)
+            commands.append(f"loadScript('{script_data['content'].strip()}', {options_json});")
+        
         for key, style_data in cls.registered_styles.get(cls.__name__, {}).items():
-            commands.append(f"loadStyle('{style_data['content'].strip()}', {str(style_data['is_url']).lower()});")
+            options = {
+                'isUrl': style_data['is_url'],
+                'beforeMain': True
+            }
+            options_json = json.dumps(options)
+            commands.append(f"loadStyle('{style_data['content'].strip()}', {options_json});")
+        
         return commands
 
     def get_all_resource_load_commands(self):

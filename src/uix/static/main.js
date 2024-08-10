@@ -12,21 +12,22 @@ const socketEvents = {
     'focus': (data) => { document.getElementById(data.id).focus(); },
     "init-content": async (data) => {
         const contentElement = document.getElementById(data.id);
-
+    
         const { htmlContent = "", resources = [], root_id } = data.value;
-
+    
         // set html content
         contentElement.outerHTML = htmlContent;
-
+    
         // load resources
         for (const command of resources) {
             if (command.startsWith("loadScript(")) {
                 try {
-                    const regex = /loadScript\('([\s\S]+)',\s*(\w+),\s*(\w+)\);/;
+                    const regex = /loadScript\('([\s\S]+)',\s*({[\s\S]+?})\);/;
                     const match = command.match(regex);
                     if (match) {
-                        const [, content, isUrl, beforeMain] = match;
-                        await loadScript(content, isUrl === "true", beforeMain === "true");
+                        const [, content, optionsString] = match;
+                        const options = JSON.parse(optionsString.replace(/'/g, '"'));
+                        await loadScript(content, options);
                     } else {
                         console.error("Regex failed to match command:", command);
                     }
@@ -35,11 +36,12 @@ const socketEvents = {
                 }
             } else if (command.startsWith("loadStyle(")) {
                 try {
-                    const regex = /loadStyle\('([\s\S]+)',\s*(\w+)\);/;
+                    const regex = /loadStyle\('([\s\S]+)',\s*({[\s\S]+?})\);/;
                     const match = command.match(regex);
                     if (match) {
-                        const [, content, isUrl] = match;
-                        await loadStyle(content, isUrl === "true");
+                        const [, content, optionsString] = match;
+                        const options = JSON.parse(optionsString.replace(/'/g, '"'));
+                        await loadStyle(content, options);
                     } else {
                         console.error("Regex failed to match command:", command);
                     }
