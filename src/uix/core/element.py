@@ -32,25 +32,38 @@ class Element:
     @classmethod
     def get_resource_load_commands(cls):
         commands = []
-        for key, script_data in cls.registered_scripts.get(cls.__name__, {}).items():
-            options = {
-                'isUrl': script_data['is_url'],
-                'beforeMain': script_data['before_main'],
-                'defer': script_data.get('defer', False),
-                'module': script_data.get('module', False),
-                'async': script_data.get('async', False)
-            }
-            options_json = json.dumps(options)
-            commands.append(f"loadScript('{script_data['content'].strip()}', {options_json});")
-        
-        for key, style_data in cls.registered_styles.get(cls.__name__, {}).items():
-            options = {
-                'isUrl': style_data['is_url'],
-                'beforeMain': True
-            }
-            options_json = json.dumps(options)
-            commands.append(f"loadStyle('{style_data['content'].strip()}', {options_json});")
-        
+        added_scripts = set()
+        added_styles = set()
+
+        for ancestor in cls.__mro__:
+            if ancestor == object:
+                continue
+
+            for key, script_data in ancestor.registered_scripts.get(ancestor.__name__, {}).items():
+                script_id = (script_data['content'], script_data['is_url'])
+                if script_id not in added_scripts:
+                    added_scripts.add(script_id)
+                    options = {
+                        'isUrl': script_data['is_url'],
+                        'beforeMain': script_data['before_main'],
+                        'defer': script_data.get('defer', False),
+                        'module': script_data.get('module', False),
+                        'async': script_data.get('async', False)
+                    }
+                    options_json = json.dumps(options)
+                    commands.append(f"loadScript('{script_data['content'].strip()}', {options_json});")
+
+            for key, style_data in ancestor.registered_styles.get(ancestor.__name__, {}).items():
+                style_id = (style_data['content'], style_data['is_url'])
+                if style_id not in added_styles:
+                    added_styles.add(style_id)
+                    options = {
+                        'isUrl': style_data['is_url'],
+                        'beforeMain': True
+                    }
+                    options_json = json.dumps(options)
+                    commands.append(f"loadStyle('{style_data['content'].strip()}', {options_json});")
+
         return commands
 
     def get_all_resource_load_commands(self):
