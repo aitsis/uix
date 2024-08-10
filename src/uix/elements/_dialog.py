@@ -37,9 +37,8 @@ dialog {
 }'''
 
 def register_resources(cls):
-    cls.register_script("dialog_script", dialog_script)
     cls.register_style("dialog_css", dialog_css)
-    cls.register_style("md2_css", "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css", is_url=True)
+    cls.register_script("dialog_script", dialog_script)
     return cls
 
 @register_resources

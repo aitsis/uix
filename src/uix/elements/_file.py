@@ -45,7 +45,6 @@ event_handlers["file-upload"] = (id,url,eventName) => {
 
 def register_resources(cls):
     cls.register_script("file_script", file_script)
-    cls.register_script("file_script", file_script)
     return cls
 
 @register_resources
