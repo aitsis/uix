@@ -3,16 +3,36 @@ from uuid import uuid4
 import os
 import json
 import logging
+
 # FLASK SERVER -------------------------------------------------------------------------------------
-from flask import Flask, request, send_from_directory, abort, jsonify, Response, make_response, redirect, send_file
+from flask import (
+    Flask,
+    request,
+    send_from_directory,
+    abort,
+    jsonify,
+    Response,
+    make_response,
+    redirect,
+    send_file,
+)
 from flask_cors import CORS
 from flask_socketio import SocketIO
+
 # UIX CORE -----------------------------------------------------------------------------------------
 from .core.htmlgen import HTMLGen
 from .core.session import Session
 from ._config import config
 from .core.pipe import Pipe
-from .core.cookie import build_cookieJar_from_dict, extract_cookie_settings_from_request_args
+from .core.cookie import (
+    build_cookieJar_from_dict,
+    extract_cookie_settings_from_request_args,
+)
+
+
+# UIX ELEMENTS -------------------------------------------------------------------------------------
+from .elements import text
+
 # GLOBALS ------------------------------------------------------------------------------------------
 static_files_path = os.path.join(os.path.dirname(__file__), "static")
 log_handler = None
@@ -24,10 +44,15 @@ html = HTMLGen()
 _pipes: List[Pipe] = []
 on_session_init = None
 
+all_routes = []
+
 # SERVER -------------------------------------------------------------------------------------------
 flask = Flask(__name__)
-socketio = SocketIO(flask, cors_allowed_origins="*", transports=["pooling","websocket"])
+socketio = SocketIO(
+    flask, cors_allowed_origins="*", transports=["pooling", "websocket"]
+)
 CORS(flask)
+
 
 # ROUTES -------------------------------------------------------------------------------------------
 # INDEX
@@ -37,22 +62,53 @@ def index():
     response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate"
     return response
 
+
 # INDEX_PATH
 @flask.route("/<path:path>")
 def index_with_path(path):
+    if ("/" + path) not in all_routes:
+        if "/404" in all_routes:
+            return abort(404)
+        return abort(404, description="DEFAULT_404_PAGE")
+
     response = make_response(html.generate())
     response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate"
     return response
 
-@flask.route('/logout', methods=['GET'])
-def logout():
-    response = make_response(redirect('/'))
-    response.set_cookie('__u_at', '', expires=0, path='/', samesite='Strict')
-    response.set_cookie('__u_ref', '', expires=0, path='/', samesite='Strict')
+
+# 404
+@flask.errorhandler(404)
+def not_found(error):
+    if error.description == "DEFAULT_404_PAGE":
+        html_content = """
+            <html>
+                <head>
+                    <title>UIX - 404 Not Found</title>
+                </head>
+                <body>
+                    <h1>404 PAGE NOT FOUND</h1>
+                    <p>The page you are looking for does not exist.</p>
+                </body>
+            </html>
+        """
+        response = make_response(html_content)
+    else:
+        response = make_response(html.generate())
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate"
+    response.status_code = 404
     return response
 
+
+@flask.route("/logout", methods=["GET"])
+def logout():
+    response = make_response(redirect("/"))
+    response.set_cookie("__u_at", "", expires=0, path="/", samesite="Strict")
+    response.set_cookie("__u_ref", "", expires=0, path="/", samesite="Strict")
+    return response
+
+
 # SET COOKIE FROM QUERY STRING
-@flask.route('/set-cookie', methods=['GET'])
+@flask.route("/set-cookie", methods=["GET"])
 def set_cookie():
     """
     Handles setting a cookie based on provided query parameters.
@@ -70,8 +126,8 @@ def set_cookie():
     try:
         cookie_settings = extract_cookie_settings_from_request_args(request.args)
 
-        if not cookie_settings['key'] or not cookie_settings['value']:
-            return jsonify({'error': 'Both key and value are required'}), 400
+        if not cookie_settings["key"] or not cookie_settings["value"]:
+            return jsonify({"error": "Both key and value are required"}), 400
 
         response = make_response()
         response.set_cookie(**cookie_settings)
@@ -80,10 +136,11 @@ def set_cookie():
 
     except Exception as e:
         logging.error(f"Error setting cookie: {e}")
-        return jsonify({'error': 'Internal server error'}), 500
+        return jsonify({"error": "Internal server error"}), 500
+
 
 # SET COOKIE FROM REQUEST BODY
-@flask.route('/set-cookieS', methods=['POST'])
+@flask.route("/set-cookieS", methods=["POST"])
 def set_cookie_secure():
     """
     Handles setting a cookie.
@@ -104,10 +161,10 @@ def set_cookie_secure():
     ```
     """
     try:
-        cookie_settings = json.loads(request.data)['cookie_settings']
+        cookie_settings = json.loads(request.data)["cookie_settings"]
 
-        if not cookie_settings['key'] or not cookie_settings['value']:
-            return jsonify({'error': 'Both key and value are required'}), 400
+        if not cookie_settings["key"] or not cookie_settings["value"]:
+            return jsonify({"error": "Both key and value are required"}), 400
 
         response = make_response()
         response.set_cookie(**cookie_settings)
@@ -116,37 +173,49 @@ def set_cookie_secure():
 
     except Exception as e:
         logging.error(e)
-        return jsonify({'error': 'Internal server error'}), 500
+        return jsonify({"error": "Internal server error"}), 500
+
 
 # API ENDPOINT
 def register_api_handler(name, handler):
     api_handlers[name] = handler
+
+
 @flask.route("/manual_api/<path:path>")
 def api_func(path):
     paths = path.split("/")
     if paths[0] in api_handlers:
         response = make_response(api_handlers[paths[0]](paths, request.args))
-        response.headers['Cache-Control'] = 'max-age=31536000'
+        response.headers["Cache-Control"] = "max-age=31536000"
         return response
     else:
-        return abort(404)
+        return (abort(404),)
+
+
 # STATIC FILES
 @flask.route("/static/<path:path>")
 def static_files(path):
     response = make_response(send_from_directory(static_files_path, path))
-    response.headers['Cache-Control'] = 'max-age=31536000'
+    response.headers["Cache-Control"] = "max-age=31536000"
     return response
+
 
 def _send_from_directory(directory, path):
     response = make_response(send_from_directory(directory, path))
-    response.headers['Cache-Control'] = 'max-age=31536000'
+    response.headers["Cache-Control"] = "max-age=31536000"
     return response
 
 
 def add_static_route(logical_path, local_directory):
-    flask.add_url_rule(f"/{logical_path}/<path:path>", local_directory, lambda path : _send_from_directory(local_directory, path))
+    print(f"Adding static route: {logical_path} -> {local_directory}")
+    flask.add_url_rule(
+        f"/{logical_path}/<path:path>",
+        local_directory,
+        lambda path: _send_from_directory(local_directory, path),
+    )
 
-def serve_module_static_files(module_file, static_dirname = "_public"):
+
+def serve_module_static_files(module_file, static_dirname="_public"):
     module_name = os.path.splitext(os.path.basename(module_file))[0]
     base_path = os.path.dirname(module_file)
     public_path = os.path.join(base_path, static_dirname)
@@ -157,27 +226,32 @@ def serve_module_static_files(module_file, static_dirname = "_public"):
         print(f"The '{static_dirname}' folder does not exist at {public_path}")
         return None
 
+
 # UPLOAD ENDPOINT
 files = {}
+
+
 @flask.route("/upload/<path:path>", methods=["POST"])
 def upload(path):
-    if(request.data):
+    if request.data:
         files[path] = {"data": request.data, "type": request.mimetype}
         return jsonify({"success": path})
     else:
         return abort(400)
 
+
 # DOWNLOAD ENDPOINT
 @flask.route("/download/<path:path>", methods=["GET"])
 def download(path):
-    #print("download:",path)
+    # print("download:",path)
     if path in files:
-        #print("download:",path,"found")
+        # print("download:",path,"found")
         datadict = files[path]
         return Response(datadict["data"], mimetype=datadict["type"])
     else:
-        print("download:",path,"not found")
+        print("download:", path, "not found")
         return abort(404)
+
 
 # SOCKETIO -----------------------------------------------------------------------------------------
 @socketio.on("connect")
@@ -185,17 +259,16 @@ def socket_on_connect():
     print("Client Connected")
     sid = request.sid
     cookieJar = build_cookieJar_from_dict(request.cookies)
-    requestData = {
-      "cookies" : cookieJar,
-      "headers" : request.headers
-    }
+    requestData = {"cookies": cookieJar, "headers": request.headers}
     sessions[sid] = Session(sid, requestData=requestData)
+
 
 @socketio.on("disconnect")
 def socket_on_disconnect():
     sid = request.sid
     if sid in sessions:
         del sessions[sid]
+
 
 @socketio.on("from_client")
 def socket_on_client(data):
@@ -205,6 +278,7 @@ def socket_on_client(data):
     if sid in sessions:
         sessions[sid].clientHandler(data)
 
+
 def log(*args):
     if log_handler is not None:
         log_handler(*args)
@@ -212,11 +286,13 @@ def log(*args):
         if config["debug"]:
             print(*args)
 
+
 def error(*args):
     if error_handler is not None:
         error_handler(*args)
     else:
         print(*args)
+
 
 def init_app(uix_config):
     global config
@@ -239,16 +315,24 @@ def init_app(uix_config):
 
 def get_start_example():
     from .example import start_example
+
     return start_example
 
+
 def flask_run():
-    flask.run(port=     config["port"],
-              host=     config["host"],
-              threaded= config["threaded"],
-              debug =   config["debug"])
+    flask.run(
+        port=config["port"],
+        host=config["host"],
+        threaded=config["threaded"],
+        debug=config["debug"],
+    )
+
+
 # START --------------------------------------------------------------------------------------------
-def start(ui = None, config = None):
-    global ui_root
+def start(ui=None, config=None, routes=None):
+    global ui_root, all_routes
     ui_root = ui if ui is not None else get_start_example()
     init_app(config)
+    if routes is not None:
+        all_routes = routes
     flask_run()
