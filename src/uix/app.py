@@ -56,20 +56,17 @@ CORS(flask)
 
 # ROUTES -------------------------------------------------------------------------------------------
 # INDEX
-@flask.route("/")
-def index():
-    response = make_response(html.generate())
-    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate"
-    return response
 
 
 # INDEX_PATH
+@flask.route("/")
 @flask.route("/<path:path>")
-def index_with_path(path):
-    if path.strip("/") not in [x.strip("/") for x in all_routes]:
-        if "404" in [x.strip("/") for x in all_routes]:
-            return abort(404)
-        return abort(404, description="DEFAULT_404_PAGE")
+def index_with_path(path=""):
+    if path == "":
+        if path.strip("/") not in [x.strip("/") for x in all_routes]:
+            if "404" in [x.strip("/") for x in all_routes]:
+                return abort(404)
+            return abort(404, description="DEFAULT_404_PAGE")
 
     response = make_response(html.generate())
     response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate"
