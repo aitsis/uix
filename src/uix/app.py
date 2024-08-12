@@ -62,9 +62,9 @@ CORS(flask)
 @flask.route("/")
 @flask.route("/<path:path>")
 def index_with_path(path=""):
-    if path == "":
-        if path.strip("/") not in [x.strip("/") for x in all_routes]:
-            if "404" in [x.strip("/") for x in all_routes]:
+    if path != "":
+        if path.strip("/") not in all_routes:
+            if "404" in all_routes:
                 return abort(404)
             return abort(404, description="DEFAULT_404_PAGE")
 
@@ -323,5 +323,5 @@ def start(ui=None, config=None, routes=None):
     ui_root = ui if ui is not None else get_start_example()
     init_app(config)
     if routes is not None:
-        all_routes = routes
+        all_routes = [x.strip("/") for x in routes]
     flask_run()
