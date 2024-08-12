@@ -21,6 +21,7 @@ class Session:
         self.lang = "en"
         self.cookies = requestData["cookies"]
         self.headers = requestData["headers"]
+        self.session_is_init = False
 
         for cookie in self.cookies:
             if cookie.name == "lang":
@@ -35,17 +36,21 @@ class Session:
         qs = parse_qs(data["search"][1:])
         self.args = qs
         self.paths = data["path"][1:].split("/")
-        if( uix.app.ui_root is not None):
+        if uix.app.ui_root is not None:
             context.session = self
             if callable(uix.app.ui_root):
                 uix.app.ui_root()
             else:
                 self.ui_root = deepcopy(uix.app.ui_root)
-            html = self.ui_root.render()
-            self.send("ait-uix", html, "init-content")
+            self.ui_root.on("flush-mq", self._flush_mq)
+            self.send("ait-uix", {
+                'htmlContent': self.ui_root.render(),
+                'resources': self.ui_root.get_all_resource_load_commands(),
+                "root_id": self.ui_root.id
+            }, "init-content")
             self.ui_root._init()
-            self.flush_message_queue()
-            
+            self.session_is_init = True
+
         else:
             uix.error("No UI Root")
 
@@ -72,7 +77,7 @@ class Session:
         else:
             context.session = self
             self.eventHandler(data)
-    
+
     def push_parent(self, parent):
         self.parent_stack.append(parent)
 
@@ -89,9 +94,12 @@ class Session:
         self.message_queue.append({'id': id, 'value': value, 'event_name': event_name})
 
     def flush_message_queue(self):
-        for item in self.message_queue:            
+        for item in self.message_queue:
             self.send(item['id'], item['value'], item['event_name'])
         self.message_queue = []
+
+    def _flush_mq(self, ctx, id, value):
+        self.flush_message_queue()
 
     def navigate(self, path):
         self.send("ait-uix", path, "navigate")

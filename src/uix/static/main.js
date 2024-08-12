@@ -10,7 +10,48 @@ const socketEvents = {
     'scroll-to': (data) => { document.getElementById(data.id).scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" }); },
     'alert': (data) => { alert(data.value); },
     'focus': (data) => { document.getElementById(data.id).focus(); },
-    'init-content': (data) => { document.getElementById(data.id).outerHTML = data.value; },
+    "init-content": async (data) => {
+        const contentElement = document.getElementById(data.id);
+    
+        const { htmlContent = "", resources = [], root_id } = data.value;
+    
+        // set html content
+        contentElement.outerHTML = htmlContent;
+    
+        // load resources
+        for (const command of resources) {
+            if (command.startsWith("loadScript(")) {
+                try {
+                    const regex = /loadScript\('([\s\S]+)',\s*({[\s\S]+?})\);/;
+                    const match = command.match(regex);
+                    if (match) {
+                        const [, content, optionsString] = match;
+                        const options = JSON.parse(optionsString.replace(/'/g, '"'));
+                        await loadScript(content, options);
+                    } else {
+                        console.error("Regex failed to match command:", command);
+                    }
+                } catch (error) {
+                    console.error("Error processing command:", command, error);
+                }
+            } else if (command.startsWith("loadStyle(")) {
+                try {
+                    const regex = /loadStyle\('([\s\S]+)',\s*({[\s\S]+?})\);/;
+                    const match = command.match(regex);
+                    if (match) {
+                        const [, content, optionsString] = match;
+                        const options = JSON.parse(optionsString.replace(/'/g, '"'));
+                        await loadStyle(content, options);
+                    } else {
+                        console.error("Regex failed to match command:", command);
+                    }
+                } catch (error) {
+                    console.error("Error processing command:", command, error);
+                }
+            }
+        }
+        if (root_id) clientEmit(root_id, "flush", "flush-mq")
+    },
     'toggle-class': (data) => { document.getElementById(data.id).classList.toggle(data.value); },
     'add-class': (data) => { document.getElementById(data.id).classList.add(data.value); },
     'remove-class': (data) => { document.getElementById(data.id).classList.remove(data.value); },
@@ -78,6 +119,43 @@ const handleDynamicEvents = (data) => {
     return false;
 };
 
+const eventQueue = [];
+let isProcessing = false;
+const MAX_RETRIES = 3;
+async function processEventQueue() {
+    if (isProcessing) return;
+    
+    isProcessing = true;
+    
+    while (eventQueue.length > 0) {
+        const { event, retries } = eventQueue.shift();
+        try {
+            await handleEvent(event);
+        } catch (error) {
+            console.error("Error processing event:", event, error);
+            if (retries < MAX_RETRIES) {
+                eventQueue.push({ event, retries: retries + 1 });
+            } else {
+                console.error("Max retries reached for event:", event);
+            }
+        }
+    }
+    
+    isProcessing = false;
+}
+
+async function handleEvent(data) {
+    if (socketEvents[data.event_name]) {
+        await socketEvents[data.event_name](data);
+    } else if (handleDynamicEvents(data)) {
+        return;
+    } else if (event_handlers[data.event_name]) {
+        event_handlers[data.event_name](data.id, data.value, data.event_name);
+    } else {
+        console.warn("Unhandled event:", data);
+    }
+}
+
 const initSocketEvents = () => {
     socket = getSocketInstance();
 
@@ -91,19 +169,14 @@ const initSocketEvents = () => {
         }
         page_loaded = true;
         clientEmit('ait-uix', {path:window.location.pathname, search:window.location.search}, 'init');
-        
+
     });
 
     socket.on('disconnect', () => {});
 
     socket.on('from_server', (data) => {
-        if (socketEvents[data.event_name]) {
-            socketEvents[data.event_name](data);
-        } else if (handleDynamicEvents(data)) {
-            return;
-        } else if (event_handlers[data.event_name]) {
-            event_handlers[data.event_name](data.id, data.value, data.event_name);
-        }
+        eventQueue.push({ event: data, retries: 0 });
+        processEventQueue();
     });
 
     socket.on('error', (error) => {});
