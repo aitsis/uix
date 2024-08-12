@@ -66,8 +66,8 @@ def index():
 # INDEX_PATH
 @flask.route("/<path:path>")
 def index_with_path(path):
-    if ("/" + path) not in all_routes:
-        if "/404" in all_routes:
+    if path.strip("/") not in [x.strip("/") for x in all_routes]:
+        if "404" in [x.strip("/") for x in all_routes]:
             return abort(404)
         return abort(404, description="DEFAULT_404_PAGE")
 
@@ -77,21 +77,13 @@ def index_with_path(path):
 
 
 # 404
+DEFAULT_404_PAGE_CONTENT = "<html><head><title>UIX - 404 Not Found</title></head><body><h1>404 PAGE NOT FOUND</h1><p>The page you are looking for does not exist.</p></body></html>"
+
+
 @flask.errorhandler(404)
 def not_found(error):
     if error.description == "DEFAULT_404_PAGE":
-        html_content = """
-            <html>
-                <head>
-                    <title>UIX - 404 Not Found</title>
-                </head>
-                <body>
-                    <h1>404 PAGE NOT FOUND</h1>
-                    <p>The page you are looking for does not exist.</p>
-                </body>
-            </html>
-        """
-        response = make_response(html_content)
+        response = make_response(DEFAULT_404_PAGE_CONTENT)
     else:
         response = make_response(html.generate())
     response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate"
