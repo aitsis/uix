@@ -205,6 +205,15 @@ def add_static_route(logical_path, local_directory):
 
 
 def serve_module_static_files(module_file, static_dirname="_public"):
+    """Belirtilen Python modülünün altındaki statik dosyaları servis eder.
+
+    Args:
+        module_file (str): Modülün dosya yolu.
+        static_dirname (str, optional): Statik dosyaların bulunduğu dizin ismi. Varsayılan değer "_public" dir.
+
+    Returns:
+        object: `add_static_route` fonksiyonunun dönüş değeri veya None.
+    """
     module_name = os.path.splitext(os.path.basename(module_file))[0]
     base_path = os.path.dirname(module_file)
     public_path = os.path.join(base_path, static_dirname)
