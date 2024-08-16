@@ -23,6 +23,7 @@ api_handlers = {}
 html = HTMLGen()
 _pipes: List[Pipe] = []
 on_session_init = None
+all_routes = []
 
 # SERVER -------------------------------------------------------------------------------------------
 flask = Flask(__name__)
@@ -30,19 +31,35 @@ socketio = SocketIO(flask, cors_allowed_origins="*", transports=["pooling","webs
 CORS(flask)
 
 # ROUTES -------------------------------------------------------------------------------------------
+
 # INDEX
+# INDEX_PATH
 @flask.route("/")
-def index():
+@flask.route("/<path:path>")
+def index_with_path(path=""):
+    if path != "":
+        if path.strip("/") not in all_routes:
+            if "404" in all_routes:
+                return abort(404)
+            return abort(404, description="DEFAULT_404_PAGE")
+
     response = make_response(html.generate())
     response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate"
     return response
 
-# INDEX_PATH
-@flask.route("/<path:path>")
-def index_with_path(path):
-    response = make_response(html.generate())
+
+# 404
+DEFAULT_404_PAGE_CONTENT = "<html><head><title>UIX - 404 Not Found</title></head><body><h1>404 PAGE NOT FOUND</h1><p>The page you are looking for does not exist.</p></body></html>"
+@flask.errorhandler(404)
+def not_found(error):
+    if error.description == "DEFAULT_404_PAGE":
+        response = make_response(DEFAULT_404_PAGE_CONTENT)
+    else:
+        response = make_response(html.generate())
     response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate"
+    response.status_code = 404
     return response
+
 
 @flask.route('/logout', methods=['GET'])
 def logout():
@@ -256,8 +273,10 @@ def flask_run():
               threaded= config["threaded"],
               debug =   config["debug"])
 # START --------------------------------------------------------------------------------------------
-def start(ui = None, config = None):
-    global ui_root
+def start(ui=None, config=None, routes=None):
+    global ui_root, all_routes
     ui_root = ui if ui is not None else get_start_example()
     init_app(config)
+    if routes is not None:
+        all_routes = [x.strip("/") for x in routes]
     flask_run()

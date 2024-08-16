@@ -31,7 +31,8 @@ class Element:
 
     @classmethod
     def get_resource_load_commands(cls):
-        commands = []
+        style_commands = []
+        script_commands = []
         added_scripts = set()
         added_styles = set()
 
@@ -51,7 +52,7 @@ class Element:
                         'async': script_data.get('async', False)
                     }
                     options_json = json.dumps(options)
-                    commands.append(f"loadScript('{script_data['content'].strip()}', {options_json});")
+                    script_commands.append(f"loadScript('{script_data['content'].strip()}', {options_json});")
 
             for key, style_data in ancestor.registered_styles.get(ancestor.__name__, {}).items():
                 style_id = (style_data['content'], style_data['is_url'])
@@ -62,15 +63,20 @@ class Element:
                         'beforeMain': True
                     }
                     options_json = json.dumps(options)
-                    commands.append(f"loadStyle('{style_data['content'].strip()}', {options_json});")
+                    style_commands.append(f"loadStyle('{style_data['content'].strip()}', {options_json});")
 
-        return commands
+        return {'styles': style_commands, 'scripts': script_commands}
 
     def get_all_resource_load_commands(self):
         commands = self.get_resource_load_commands()
         for child in self.children:
-            commands.extend(child.get_all_resource_load_commands())
-        return list(dict.fromkeys(commands))
+            child_commands = child.get_all_resource_load_commands()
+            commands['styles'].extend(child_commands['styles'])
+            commands['scripts'].extend(child_commands['scripts'])
+
+        commands['styles'] = list(dict.fromkeys(commands['styles']))
+        commands['scripts'] = list(dict.fromkeys(commands['scripts']))
+        return commands
 
     def __init__(self, value = None, id = None):
         self.session = context.session

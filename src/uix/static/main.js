@@ -12,45 +12,41 @@ const socketEvents = {
     'focus': (data) => { document.getElementById(data.id).focus(); },
     "init-content": async (data) => {
         const contentElement = document.getElementById(data.id);
-    
-        const { htmlContent = "", resources = [], root_id } = data.value;
-    
-        // set html content
+        const { htmlContent = "", resources = {}, root_id } = data.value;
+
+        // Helper function to load resources
+        const loadResource = async (command, type) => {
+            const regex = new RegExp(`load${type}\\('([\\s\\S]+)',\\s*({[\\s\\S]+?})\\);`);
+            const match = command.match(regex);
+            if (!match) {
+                console.error(`Regex failed to match ${type} command:`, command);
+                return;
+            }
+            const [, content, optionsString] = match;
+            const options = JSON.parse(optionsString.replace(/'/g, '"'));
+            await (type === 'Style' ? loadStyle : loadScript)(content, options);
+        };
+
+        // Load styles in parallel
+        await Promise.all((resources.styles || []).map(command =>
+            loadResource(command, 'Style').catch(error =>
+                console.error("Error processing style command:", command, error)
+            )
+        ));
+
+        // Set HTML content
         contentElement.outerHTML = htmlContent;
-    
-        // load resources
-        for (const command of resources) {
-            if (command.startsWith("loadScript(")) {
-                try {
-                    const regex = /loadScript\('([\s\S]+)',\s*({[\s\S]+?})\);/;
-                    const match = command.match(regex);
-                    if (match) {
-                        const [, content, optionsString] = match;
-                        const options = JSON.parse(optionsString.replace(/'/g, '"'));
-                        await loadScript(content, options);
-                    } else {
-                        console.error("Regex failed to match command:", command);
-                    }
-                } catch (error) {
-                    console.error("Error processing command:", command, error);
-                }
-            } else if (command.startsWith("loadStyle(")) {
-                try {
-                    const regex = /loadStyle\('([\s\S]+)',\s*({[\s\S]+?})\);/;
-                    const match = command.match(regex);
-                    if (match) {
-                        const [, content, optionsString] = match;
-                        const options = JSON.parse(optionsString.replace(/'/g, '"'));
-                        await loadStyle(content, options);
-                    } else {
-                        console.error("Regex failed to match command:", command);
-                    }
-                } catch (error) {
-                    console.error("Error processing command:", command, error);
-                }
+
+        // Load scripts sequentially
+        for (const command of resources.scripts || []) {
+            try {
+                await loadResource(command, 'Script');
+            } catch (error) {
+                console.error("Error processing script command:", command, error);
             }
         }
-        if (root_id) clientEmit(root_id, "flush", "flush-mq")
+
+        if (root_id) clientEmit(root_id, "flush", "flush-mq");
     },
     'toggle-class': (data) => { document.getElementById(data.id).classList.toggle(data.value); },
     'add-class': (data) => { document.getElementById(data.id).classList.add(data.value); },
@@ -124,9 +120,9 @@ let isProcessing = false;
 const MAX_RETRIES = 3;
 async function processEventQueue() {
     if (isProcessing) return;
-    
+
     isProcessing = true;
-    
+
     while (eventQueue.length > 0) {
         const { event, retries } = eventQueue.shift();
         try {
@@ -140,7 +136,7 @@ async function processEventQueue() {
             }
         }
     }
-    
+
     isProcessing = false;
 }
 
