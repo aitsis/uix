@@ -2,6 +2,7 @@
 let socket;
 let event_handlers = {};
 let page_loaded = false;
+let onFileChange;
 // Socket event handlers
 const socketEvents = {
     'navigate': (data) => { window.location = data.value; },

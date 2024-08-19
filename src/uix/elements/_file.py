@@ -4,7 +4,7 @@ from ..core.element import Element
 from ..core.file import File
 
 file_script = """
-const onFileChange = (id,files,eventName) => {
+onFileChange = (id,files,eventName) => {
     urls = [];
     for (let i = 0; i < files.length; i++) {
         urls.push({ name:files[i].name,
