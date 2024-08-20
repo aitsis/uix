@@ -4,6 +4,8 @@ let event_handlers = {};
 let page_loaded = false;
 // Socket event handlers
 const socketEvents = {
+    'start-loading-bar' : (data) => { startLoadingBar(); },
+    'stop-loading-bar' : (data) => { stopLoadingBar(); },
     'navigate': (data) => { window.location = data.value; },
     'location-reload': (data) => { window.location.reload(); },
     'update-document': (data) => { history.replaceState({}, '', data.value.path); document.title = data.value.title; },
