@@ -2,7 +2,6 @@
 let socket;
 let event_handlers = {};
 let page_loaded = false;
-let onFileChange;
 // Socket event handlers
 const socketEvents = {
     'navigate': (data) => { window.location = data.value; },
@@ -14,7 +13,8 @@ const socketEvents = {
     "init-content": async (data) => {
         const contentElement = document.getElementById(data.id);
         const { htmlContent = "", resources = {}, root_id } = data.value;
-
+        resetResources()
+        
         // Helper function to load resources
         const loadResource = async (command, type) => {
             const regex = new RegExp(`load${type}\\('([\\s\\S]+)',\\s*({[\\s\\S]+?})\\);`);
