@@ -3,6 +3,7 @@ let socket;
 let event_handlers = {};
 let page_loaded = false;
 let logged_history = [];
+let currentHistoryIndex = -1;
 
 // Socket event handlers
 const socketEvents = {
@@ -62,48 +63,58 @@ const socketEvents = {
     'set-timeout': (data) => { setTimeout(() => { clientEmit(data.id, data.value, "timeout"); }, data.value); },
 };
 
+
 function pushClient(data) {
     const newPath = data.value.path;
-    const lastPath = logged_history[logged_history.length - 1];
-    const secondLastPath = logged_history[logged_history.length - 2];
-
-    // Check if the new path is the same as the last or second-to-last path
-    if (newPath === lastPath || newPath === secondLastPath) return
-
-    // Limit the history to 10 entries
-    if (logged_history.length >= 10) {
-        logged_history.shift();
+    
+    // Check if we're at the end of the history
+    if (currentHistoryIndex < logged_history.length - 1) {
+        // We're not at the end, so we need to truncate the forward history
+        logged_history = logged_history.slice(0, currentHistoryIndex + 1);
     }
 
-    // Add the new path to the logged history
-    logged_history.push(newPath);
+    // Check if the new path is different from the current path
+    if (logged_history[currentHistoryIndex] !== newPath) {
+        // Limit the history to 10 entries
+        if (logged_history.length >= 10) {
+            logged_history.shift();
+        } else {
+            currentHistoryIndex++;
+        }
 
-    // Update the browser history and document title
-    history.pushState({path: newPath}, '', newPath);
-    document.title = data.value.title;
+        // Add the new path to the logged history
+        logged_history.push(newPath);
+
+        // Update the browser history and document title
+        history.pushState({historyIndex: currentHistoryIndex}, data.value.title, newPath);
+        document.title = data.value.title;
+    }
 }
 
 function handleNavigation(event) {
     if (!window.root_id) return;
 
-    const currentPath = window.location.pathname;
-    console.log("Current path:", currentPath);
+    const state = event.state || {};
+    const newIndex = state.historyIndex !== undefined ? state.historyIndex : currentHistoryIndex;
 
-    // Find the index of the current path in the logged history
-    const pathIndex = logged_history.lastIndexOf(currentPath);
+    if (newIndex !== currentHistoryIndex) {
+        currentHistoryIndex = newIndex;
+        let currentPath = logged_history[currentHistoryIndex];
 
-    if (pathIndex !== -1) {
-        // If found, update the logged_history to remove any entries after this path
-        logged_history = logged_history.slice(0, pathIndex + 1);
-    } else {
-        // If not found, add it to the logged_history
-        if (logged_history.length >= 10) {
-            logged_history.shift();
+        if (currentPath === undefined) {
+            currentPath = window.location.pathname;
+            // Update logged_history to include this path
+            if (currentHistoryIndex >= 0 && currentHistoryIndex < logged_history.length) {
+                logged_history[currentHistoryIndex] = currentPath;
+            } else {
+                // If the index is out of bounds, adjust the history
+                currentHistoryIndex = logged_history.length;
+                logged_history.push(currentPath);
+            }
         }
-        logged_history.push(currentPath);
-    }
 
-    clientEmit(window.root_id, currentPath, "reload");
+        clientEmit(window.root_id, currentPath, "reload");
+    }
 }
 
 
@@ -246,3 +257,7 @@ window.addEventListener('load', initSocketEvents);
 window.addEventListener('beforeunload', detachSocketEvents);
 
 window.addEventListener("popstate", handleNavigation);
+
+logged_history.push(window.location.pathname);
+currentHistoryIndex = 0;
+history.replaceState({historyIndex: currentHistoryIndex}, document.title, window.location.pathname);
