@@ -2,13 +2,15 @@
 let socket;
 let event_handlers = {};
 let page_loaded = false;
+let logged_history = [];
+
 // Socket event handlers
 const socketEvents = {
     'start-loading-bar' : (data) => { startLoadingBar(); },
     'stop-loading-bar' : (data) => { stopLoadingBar(); },
     'navigate': (data) => { window.location = data.value; },
     'location-reload': (data) => { window.location.reload(); },
-    'update-document': (data) => { history.replaceState({}, '', data.value.path); document.title = data.value.title; },
+    'update-document': (data) => { pushClient(data) },
     'scroll-to': (data) => { document.getElementById(data.id).scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" }); },
     'alert': (data) => { alert(data.value); },
     'focus': (data) => { document.getElementById(data.id).focus(); },
@@ -49,13 +51,61 @@ const socketEvents = {
             }
         }
 
-        if (root_id) clientEmit(root_id, "flush", "flush-mq");
+        if (root_id) {
+            window.root_id = root_id
+            clientEmit(root_id, "flush", "flush-mq");
+        }
     },
     'toggle-class': (data) => { document.getElementById(data.id).classList.toggle(data.value); },
     'add-class': (data) => { document.getElementById(data.id).classList.add(data.value); },
     'remove-class': (data) => { document.getElementById(data.id).classList.remove(data.value); },
     'set-timeout': (data) => { setTimeout(() => { clientEmit(data.id, data.value, "timeout"); }, data.value); },
 };
+
+function pushClient(data) {
+    const newPath = data.value.path;
+    const lastPath = logged_history[logged_history.length - 1];
+    const secondLastPath = logged_history[logged_history.length - 2];
+
+    // Check if the new path is the same as the last or second-to-last path
+    if (newPath === lastPath || newPath === secondLastPath) return
+
+    // Limit the history to 10 entries
+    if (logged_history.length >= 10) {
+        logged_history.shift();
+    }
+
+    // Add the new path to the logged history
+    logged_history.push(newPath);
+
+    // Update the browser history and document title
+    history.pushState({path: newPath}, '', newPath);
+    document.title = data.value.title;
+}
+
+function handleNavigation(event) {
+    if (!window.root_id) return;
+
+    const currentPath = window.location.pathname;
+    console.log("Current path:", currentPath);
+
+    // Find the index of the current path in the logged history
+    const pathIndex = logged_history.lastIndexOf(currentPath);
+
+    if (pathIndex !== -1) {
+        // If found, update the logged_history to remove any entries after this path
+        logged_history = logged_history.slice(0, pathIndex + 1);
+    } else {
+        // If not found, add it to the logged_history
+        if (logged_history.length >= 10) {
+            logged_history.shift();
+        }
+        logged_history.push(currentPath);
+    }
+
+    clientEmit(window.root_id, currentPath, "reload");
+}
+
 
 function clientEmit(id, value, event_name) {
     socket.emit('from_client', { id: id, value: value, event_name: event_name });
@@ -194,3 +244,5 @@ const detachSocketEvents = () => {
 window.addEventListener('load', initSocketEvents);
 
 window.addEventListener('beforeunload', detachSocketEvents);
+
+window.addEventListener("popstate", handleNavigation);
