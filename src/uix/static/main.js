@@ -2,18 +2,24 @@
 let socket;
 let event_handlers = {};
 let page_loaded = false;
+let logged_history = [];
+let currentHistoryIndex = -1;
+
 // Socket event handlers
 const socketEvents = {
+    'start-loading-bar' : (data) => { startLoadingBar(); },
+    'stop-loading-bar' : (data) => { stopLoadingBar(); },
     'navigate': (data) => { window.location = data.value; },
     'location-reload': (data) => { window.location.reload(); },
-    'update-document': (data) => { history.replaceState({}, '', data.value.path); document.title = data.value.title; },
+    'update-document': (data) => { pushClient(data) },
     'scroll-to': (data) => { document.getElementById(data.id).scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" }); },
     'alert': (data) => { alert(data.value); },
     'focus': (data) => { document.getElementById(data.id).focus(); },
     "init-content": async (data) => {
         const contentElement = document.getElementById(data.id);
         const { htmlContent = "", resources = {}, root_id } = data.value;
-
+        resetResources()
+        
         // Helper function to load resources
         const loadResource = async (command, type) => {
             const regex = new RegExp(`load${type}\\('([\\s\\S]+)',\\s*({[\\s\\S]+?})\\);`);
@@ -46,13 +52,71 @@ const socketEvents = {
             }
         }
 
-        if (root_id) clientEmit(root_id, "flush", "flush-mq");
+        if (root_id) {
+            window.root_id = root_id
+            clientEmit(root_id, "flush", "flush-mq");
+        }
     },
     'toggle-class': (data) => { document.getElementById(data.id).classList.toggle(data.value); },
     'add-class': (data) => { document.getElementById(data.id).classList.add(data.value); },
     'remove-class': (data) => { document.getElementById(data.id).classList.remove(data.value); },
     'set-timeout': (data) => { setTimeout(() => { clientEmit(data.id, data.value, "timeout"); }, data.value); },
 };
+
+
+function pushClient(data) {
+    const newPath = data.value.path;
+    
+    // Check if we're at the end of the history
+    if (currentHistoryIndex < logged_history.length - 1) {
+        // We're not at the end, so we need to truncate the forward history
+        logged_history = logged_history.slice(0, currentHistoryIndex + 1);
+    }
+
+    // Check if the new path is different from the current path
+    if (logged_history[currentHistoryIndex] !== newPath) {
+        // Limit the history to 10 entries
+        if (logged_history.length >= 10) {
+            logged_history.shift();
+        } else {
+            currentHistoryIndex++;
+        }
+
+        // Add the new path to the logged history
+        logged_history.push(newPath);
+
+        // Update the browser history and document title
+        history.pushState({historyIndex: currentHistoryIndex}, data.value.title, newPath);
+        document.title = data.value.title;
+    }
+}
+
+function handleNavigation(event) {
+    if (!window.root_id) return;
+
+    const state = event.state || {};
+    const newIndex = state.historyIndex !== undefined ? state.historyIndex : currentHistoryIndex;
+
+    if (newIndex !== currentHistoryIndex) {
+        currentHistoryIndex = newIndex;
+        let currentPath = logged_history[currentHistoryIndex];
+
+        if (currentPath === undefined) {
+            currentPath = window.location.pathname;
+            // Update logged_history to include this path
+            if (currentHistoryIndex >= 0 && currentHistoryIndex < logged_history.length) {
+                logged_history[currentHistoryIndex] = currentPath;
+            } else {
+                // If the index is out of bounds, adjust the history
+                currentHistoryIndex = logged_history.length;
+                logged_history.push(currentPath);
+            }
+        }
+
+        clientEmit(window.root_id, currentPath, "reload");
+    }
+}
+
 
 function clientEmit(id, value, event_name) {
     socket.emit('from_client', { id: id, value: value, event_name: event_name });
@@ -191,3 +255,9 @@ const detachSocketEvents = () => {
 window.addEventListener('load', initSocketEvents);
 
 window.addEventListener('beforeunload', detachSocketEvents);
+
+window.addEventListener("popstate", handleNavigation);
+
+logged_history.push(window.location.pathname);
+currentHistoryIndex = 0;
+history.replaceState({historyIndex: currentHistoryIndex}, document.title, window.location.pathname);
