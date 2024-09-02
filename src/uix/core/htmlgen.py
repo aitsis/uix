@@ -11,7 +11,9 @@ class HTMLGen:
             'style': '<link rel="stylesheet" href="/static/style.css">',
             'favicon': '<link rel="icon" href="/static/favicon_aiait-32x32.png" sizes="32x32" />',
             'fontawesome': '<link rel="stylesheet" href="/static/font-awesome/css/all.css" />',
-            'resource-loader': '<script src="/static/resource-loader.js"></script>'
+            'resource-loader': '<script src="/static/resource-loader.js"></script>',
+            'resource-resetter': '<script src="/static/resource-resetter.js"></script>',
+            'loading-bar': '<script src="/static/loading-bar.js"></script>'
         }
         self.header_items = {}
         self.default_script_sources = {"main": "<script src='/static/main.js'></script>"}

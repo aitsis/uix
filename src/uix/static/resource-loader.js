@@ -1,7 +1,8 @@
 // resource-loader.js
 
 (function () {
-    const loadedResources = new Map();
+    let loadedResources = new Map();
+    window.loadedResources = loadedResources;
 
     function appendElement(element, beforeMain) {
         if (beforeMain) {
@@ -81,4 +82,6 @@
 
     window.loadScript = loadScript;
     window.loadStyle = loadStyle;
+    
+
 })();
