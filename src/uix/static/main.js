@@ -258,6 +258,7 @@ window.addEventListener('beforeunload', detachSocketEvents);
 
 window.addEventListener("popstate", handleNavigation);
 
-logged_history.push(window.location.pathname);
+const fullPath = window.location.pathname + window.location.search;
+logged_history.push(fullPath);
 currentHistoryIndex = 0;
-history.replaceState({historyIndex: currentHistoryIndex}, document.title, window.location.pathname);
+history.replaceState({ historyIndex: currentHistoryIndex }, document.title, fullPath);
