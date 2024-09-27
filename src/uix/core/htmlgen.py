@@ -21,10 +21,19 @@ class HTMLGen:
         self.script_sources_after_main = {}
         self.scripts_before_main = {}
         self.scripts_after_main = {}
+        self.noscripts = []
+        self.header_scripts = []
         self.styles = {}
 
     def add_header_item(self, id, item):
         self.header_items.setdefault(id, item)
+
+    def add_no_script(self, item):
+        self.noscripts.append(item)
+    
+    def add_global_header_script(self, item):
+        self.header_scripts.append(item)
+
 
     def add_script_source(self, id, script = None, beforeMain = True, localpath = None, _type = None):
         full_script = script
@@ -76,6 +85,7 @@ class HTMLGen:
         self.default_header_items.update(self.header_items)
         # for key in self.default_header_items:
         #     index_str += self.default_header_items[key]
+    
         for key in self.default_header_items:
             index_str += self.default_header_items[key]
         # STYLES ----------------------------------------------------------------
@@ -83,9 +93,20 @@ class HTMLGen:
             index_str += '<style>'
             index_str += self.minify_css(self.styles[key])
             index_str += '</style>'
+
+        for key in self.header_scripts:
+            index_str += '<script>'
+            index_str += self.minify_js(key)
+            index_str += '</script>'
         index_str += '</head>'
         # BODY ------------------------------------------------------------------
         index_str += '<body>'
+        if self.noscripts:
+            index_str += '<noscript>'
+            for item in self.noscripts:
+                index_str += item
+            index_str += '</noscript>'
+
         if page_id is not None:
             index_str += f"<div id='ait-uix' page-id={page_id}></div>"
         else:
